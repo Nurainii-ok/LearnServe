@@ -7,10 +7,21 @@
   body {
     font-family: 'Inter', sans-serif;
     background-color: #f8fafc;
+    color: #334155;
+  }
+
+  /* Color Variables */
+  :root {
+    --primary: #93c5fd; /* Soft blue */
+    --primary-dark: #3b82f6; /* Slightly darker blue */
+    --light: #f8fafc;
+    --dark: #1e293b;
+    --gray: #64748b;
+    --light-gray: #e2e8f0;
   }
 
   .hero-section {
-    background: linear-gradient(135deg, #7494ec 0%, #5a67d8 100%);
+    background: var(--primary);
     border-radius: 24px;
     padding: 80px 40px;
     margin: 40px auto;
@@ -26,7 +37,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.2)"/></svg>') repeat;
     pointer-events: none;
   }
 
@@ -45,7 +56,8 @@
 
   .hero-section p {
     font-size: 1.25rem;
-    color: #e2e8f0;
+    color: #ffffff;
+    opacity: 0.9;
     margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
@@ -53,14 +65,12 @@
   }
 
   .user-count {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     padding: 12px 24px;
     display: inline-flex;
     align-items: center;
     margin-bottom: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .user-avatars {
@@ -74,7 +84,7 @@
     border-radius: 50%;
     border: 2px solid white;
     margin-left: -8px;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    background: var(--primary-dark);
   }
 
   .user-avatar:first-child {
@@ -82,8 +92,8 @@
   }
 
   .section-badge {
-    background: #fff5f5;
-    color: #e53e3e;
+    background: #eff6ff;
+    color: var(--primary-dark);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.875rem;
@@ -96,17 +106,17 @@
     background: #ffffff;
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     cursor: pointer;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--light-gray);
     height: 100%;
   }
 
   .category-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(116, 148, 236, 0.15);
-    border-color: #7494ec;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(147, 197, 253, 0.1);
+    border-color: var(--primary);
   }
 
   .category-icon {
@@ -118,18 +128,20 @@
     justify-content: center;
     margin-bottom: 16px;
     font-size: 24px;
+    background: #eff6ff;
+    color: var(--primary-dark);
   }
 
   .category-title {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1a202c;
+    color: var(--dark);
     margin-bottom: 8px;
   }
 
   .category-desc {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--gray);
     line-height: 1.5;
   }
 
@@ -137,19 +149,21 @@
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     cursor: pointer;
+    border: 1px solid var(--light-gray);
   }
 
   .popular-course:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(116, 148, 236, 0.15);
+    box-shadow: 0 10px 15px rgba(147, 197, 253, 0.1);
+    border-color: var(--primary);
   }
 
   .course-image {
     height: 200px;
-    background: linear-gradient(135deg, #7494ec, #a78bfa);
+    background: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,12 +178,12 @@
   .course-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1a202c;
+    color: var(--dark);
     margin-bottom: 8px;
   }
 
   .course-desc {
-    color: #64748b;
+    color: var(--gray);
     margin-bottom: 16px;
   }
 
@@ -188,11 +202,11 @@
 
   .course-price {
     font-weight: 600;
-    color: #7494ec;
+    color: var(--primary-dark);
   }
 
   .promo-section {
-    background: linear-gradient(135deg, #7494ec 0%, #5a67d8 100%);
+    background: var(--primary);
     border-radius: 24px;
     padding: 60px 40px;
     text-align: center;
@@ -214,28 +228,24 @@
     pointer-events: none;
   }
 
-  .promo-content {
-    position: relative;
-    z-index: 2;
-  }
-
   .testimonial-card {
     background: #ffffff;
     border-radius: 16px;
     padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     text-align: center;
     transition: all 0.3s ease;
+    border: 1px solid var(--light-gray);
   }
 
   .testimonial-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(116, 148, 236, 0.1);
+    box-shadow: 0 10px 15px rgba(147, 197, 253, 0.1);
   }
 
   .testimonial-text {
     font-size: 1.125rem;
-    color: #4a5568;
+    color: var(--gray);
     font-style: italic;
     margin-bottom: 24px;
     line-height: 1.6;
@@ -251,7 +261,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7494ec, #a78bfa);
+    background: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,43 +273,56 @@
 
   .author-name {
     font-weight: 600;
-    color: #1a202c;
+    color: var(--dark);
     margin-bottom: 4px;
   }
 
   .author-role {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--gray);
   }
 
   .btn-primary-custom {
-    background: linear-gradient(135deg, #7494ec, #5a67d8);
+    background: var(--primary-dark);
     border: none;
     padding: 16px 32px;
     border-radius: 12px;
     font-weight: 600;
     font-size: 1.125rem;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(116, 148, 236, 0.3);
+    color: white;
   }
 
   .btn-primary-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(116, 148, 236, 0.4);
-    background: linear-gradient(135deg, #5a67d8, #4c51bf);
+    background: #2563eb;
   }
 
   .section-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #1a202c;
+    color: var(--dark);
     margin-bottom: 1rem;
   }
 
   .section-subtitle {
     font-size: 1.125rem;
-    color: #64748b;
+    color: var(--gray);
     margin-bottom: 3rem;
+  }
+
+  .btn-outline-light {
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: 2px solid rgba(255,255,255,0.5);
+    background: transparent;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-light:hover {
+    background: rgba(255,255,255,0.1);
   }
 
   @media (max-width: 768px) {
@@ -317,7 +340,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Animate category cards on scroll
+    // Animate elements on scroll
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -341,7 +364,7 @@
       card.addEventListener('click', function() {
         this.style.transform = 'scale(0.95)';
         setTimeout(() => {
-          this.style.transform = 'translateY(-8px)';
+          this.style.transform = 'translateY(-5px)';
         }, 150);
       });
     });
@@ -353,7 +376,7 @@
     @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
@@ -373,13 +396,13 @@
         <div class="user-avatar"></div>
         <div class="user-avatar"></div>
       </div>
-      <span style="color: white; font-weight: 500;">Join 3 million users</span>
+      <span>Join 3 million users</span>
     </div>
-    <h1>Build Future <span style="color: #a78bfa;">Career.</span></h1>
+    <h1>Build Future <span style="font-weight: 800;">Career.</span></h1>
     <p>LearnServe provides high quality online courses for you to grow your skills and build outstanding portfolio to tackle job interviews</p>
     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
       <button class="btn btn-primary-custom">Explore Courses</button>
-      <button class="btn btn-outline-light" style="padding: 16px 32px; border-radius: 12px; font-weight: 600; border: 2px solid rgba(255,255,255,0.3);">Career Guidance</button>
+      <button class="btn btn-outline-light">Career Guidance</button>
     </div>
   </div>
 </section>
@@ -395,7 +418,7 @@
   <div class="row g-4">
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #7494ec, #a78bfa);">
+        <div class="category-icon">
           💻
         </div>
         <div class="category-title">Software Development</div>
@@ -405,7 +428,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+        <div class="category-icon">
           📱
         </div>
         <div class="category-title">Digital Marketing</div>
@@ -415,7 +438,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+        <div class="category-icon">
           📊
         </div>
         <div class="category-title">Business Intelligence</div>
@@ -425,7 +448,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+        <div class="category-icon">
           🚀
         </div>
         <div class="category-title">Freelancing Journey</div>
@@ -435,7 +458,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+        <div class="category-icon">
           📈
         </div>
         <div class="category-title">Product & Customer Data Analytics</div>
@@ -445,7 +468,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+        <div class="category-icon">
           🎨
         </div>
         <div class="category-title">UX Design Copywriting</div>
@@ -455,7 +478,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+        <div class="category-icon">
           🔍
         </div>
         <div class="category-title">Software Quality Assurance</div>
@@ -465,7 +488,7 @@
     
     <div class="col-lg-3 col-md-6">
       <div class="category-card">
-        <div class="category-icon" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);">
+        <div class="category-icon">
           💼
         </div>
         <div class="category-title">Business</div>
@@ -480,10 +503,10 @@
   <div class="row align-items-center" style="margin-bottom: 40px;">
     <div class="col">
       <h2 class="section-title" style="margin-bottom: 0;">Kelas Populer</h2>
-      <p style="color: #64748b; font-size: 1.125rem;">Kelas terpopuler yang banyak diminati siswa</p>
+      <p class="section-subtitle" style="margin-bottom: 0;">Kelas terpopuler yang banyak diminati siswa</p>
     </div>
     <div class="col-auto">
-      <a href="#" style="color: #7494ec; font-weight: 600; text-decoration: none;">Lihat Semua →</a>
+      <a href="#" style="color: var(--primary-dark); font-weight: 600; text-decoration: none;">Lihat Semua →</a>
     </div>
   </div>
 
@@ -499,7 +522,7 @@
           <div class="course-meta">
             <div class="course-rating">
               <span>⭐</span>
-              <span style="color: #1a202c; font-weight: 500;">4.8 (2.1k)</span>
+              <span>4.8 (2.1k)</span>
             </div>
             <div class="course-price">Rp 299.000</div>
           </div>
@@ -509,7 +532,7 @@
     
     <div class="col-lg-4 col-md-6">
       <div class="popular-course">
-        <div class="course-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+        <div class="course-image">
           🎨
         </div>
         <div class="course-content">
@@ -518,7 +541,7 @@
           <div class="course-meta">
             <div class="course-rating">
               <span>⭐</span>
-              <span style="color: #1a202c; font-weight: 500;">4.9 (1.8k)</span>
+              <span>4.9 (1.8k)</span>
             </div>
             <div class="course-price">Rp 399.000</div>
           </div>
@@ -528,7 +551,7 @@
     
     <div class="col-lg-4 col-md-6">
       <div class="popular-course">
-        <div class="course-image" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+        <div class="course-image">
           📱
         </div>
         <div class="course-content">
@@ -537,7 +560,7 @@
           <div class="course-meta">
             <div class="course-rating">
               <span>⭐</span>
-              <span style="color: #1a202c; font-weight: 500;">4.7 (1.5k)</span>
+              <span>4.7 (1.5k)</span>
             </div>
             <div class="course-price">Rp 249.000</div>
           </div>
@@ -552,7 +575,7 @@
   <div class="promo-content">
     <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Promo Spesial Akhir Tahun!</h2>
     <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">Dapatkan diskon hingga 50% untuk semua kelas Bootcamp dan sertifikasi gratis</p>
-    <button class="btn btn-light" style="padding: 16px 32px; border-radius: 12px; font-weight: 600; color: #7494ec; font-size: 1.125rem;">
+    <button class="btn btn-light" style="padding: 16px 32px; border-radius: 12px; font-weight: 600; color: var(--primary-dark); font-size: 1.125rem;">
       Claim Promo Sekarang
     </button>
   </div>
@@ -562,7 +585,7 @@
 <section class="container" style="margin-bottom: 80px;">
   <div class="text-center" style="margin-bottom: 50px;">
     <h2 class="section-title">Testimoni Student</h2>
-    <p class="section-subtitle">Apa kata mereka yang sudah bergabung dengan EduPlatform</p>
+    <p class="section-subtitle">Apa kata mereka yang sudah bergabung dengan LearnServe</p>
   </div>
 
   <div class="row g-4">
