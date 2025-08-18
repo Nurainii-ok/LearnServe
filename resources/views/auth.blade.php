@@ -252,7 +252,6 @@
                 <div class="social-icons">
                     <a href="#" class='bx bxl-google'></a>
                     <a href="#" class='bx bxl-facebook'></a>
-                    <a href="#" class='bx bxl-github'></a>
                 </div>
             </form>
         </div>
@@ -276,7 +275,6 @@
                 <div class="social-icons">
                     <a href="#"><i class='bx bxl-google'></i></a>
                     <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-github'></i></a>
                 </div>
             </form>
         </div>
