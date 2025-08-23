@@ -13,19 +13,19 @@
             <li>
                 <a href="{{ route('admin.members') }}" class="{{ request()->routeIs('admin.members*') ? 'active' : '' }}">
                     <span class="las la-users"></span>
-                    <span>Data member</span>
+                    <span>Member</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.tutors') }}" class="{{ request()->routeIs('admin.tutors*') ? 'active' : '' }}">
                     <span class="las la-clipboard-list"></span>
-                    <span>Data Tutor</span>
+                    <span>Tutor</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.classes') }}" class="{{ request()->routeIs('admin.classes*') ? 'active' : '' }}">
                     <span class="las la-shopping-bag"></span>
-                    <span>Data kelas</span>
+                    <span>Kelas</span>
                 </a>
             </li>
             <li>
@@ -44,6 +44,12 @@
                 <a href="{{ route('admin.account') }}" class="{{ request()->routeIs('admin.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
                     <span>Account</span>
+                </a>
+            </li>   
+            <li>
+                <a href="{{ route('admin.account') }}" class="{{ request()->routeIs('admin.account*') ? 'active' : '' }}">
+                    <span class="las la-sign-out-alt"></span>
+                    <span>Logout</span>
                 </a>
             </li>   
         </ul>

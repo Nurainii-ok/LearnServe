@@ -20,49 +20,24 @@
     --light-gray: #e2e8f0;
   }
 
-  .hero-section {
-    background: var(--primary);
-    border-radius: 24px;
-    padding: 80px 40px;
-    margin: 40px auto;
-    max-width: 1200px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.2)"/></svg>') repeat;
-    pointer-events: none;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-section h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-  }
-
-  .hero-section p {
-    font-size: 1.25rem;
-    color: #ffffff;
-    opacity: 0.9;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* Hero Section */
+    .hero {
+      background: linear-gradient(90deg, #5a67d8, #805ad5);
+      border-radius: 12px;
+      padding: 60px 40px;
+      color: white;
+    }
+    .hero h1 {
+      font-weight: bold;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-top: 15px;
+    }
+    .hero img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
 
   .user-count {
     background: rgba(255, 255, 255, 0.3);
@@ -228,6 +203,31 @@
     pointer-events: none;
   }
 
+  /* Kenapa Memilih LearnServe */
+    .why-section {
+      margin-top: 80px;
+    }
+    .why-section h2 {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .card-custom {
+      border-radius: 12px;
+      padding: 25px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .card-custom:hover {
+      transform: translateY(-5px);
+    }
+    .card-custom h5 {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
   .testimonial-card {
     background: #ffffff;
     border-radius: 16px;
@@ -388,24 +388,16 @@
 </script>
 
 <!-- Hero Section -->
-<section class="hero-section text-center">
-  <div class="hero-content">
-    <div class="user-count">
-      <div class="user-avatars">
-        <div class="user-avatar"></div>
-        <div class="user-avatar"></div>
-        <div class="user-avatar"></div>
+    <section class="hero row align-items-center">
+      <div class="col-md-6">
+        <h1>Belajar dan Berkembang Bersama <br> <span style="color: #ffeb3b;">LearnServe</span></h1>
+        <p>Platform pembelajaran online dengan bootcamp dan e-learning terbaik untuk meningkatkan skill digitalmu.</p>
+        <a href="#" class="btn btn-light btn-lg mt-3">Mulai Sekarang</a>
       </div>
-      <span>Join 3 million users</span>
-    </div>
-    <h1>Build Future <span style="font-weight: 800;">Career.</span></h1>
-    <p>LearnServe provides high quality online courses for you to grow your skills and build outstanding portfolio to tackle job interviews</p>
-    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-      <button class="btn btn-primary-custom">Explore Courses</button>
-      <button class="btn btn-outline-light">Career Guidance</button>
-    </div>
-  </div>
-</section>
+      <div class="col-md-6 text-center">
+        <img src="" alt="Ilustrasi Belajar">
+      </div>
+    </section>
 
 <!-- Categories Section -->
 <section class="container" style="margin-bottom: 80px;">
@@ -570,16 +562,33 @@
   </div>
 </section>
 
-<!-- Promo Section -->
-<section class="promo-section">
-  <div class="promo-content">
-    <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Promo Spesial Akhir Tahun!</h2>
-    <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">Dapatkan diskon hingga 50% untuk semua kelas Bootcamp dan sertifikasi gratis</p>
-    <button class="btn btn-light" style="padding: 16px 32px; border-radius: 12px; font-weight: 600; color: var(--primary-dark); font-size: 1.125rem;">
-      Claim Promo Sekarang
-    </button>
-  </div>
-</section>
+{{-- Kenapa Memilih LearnServe --}}
+    <section class="why-section">
+      <h2>Kenapa Memilih LearnServe?</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card-custom">
+            <img src="https://img.icons8.com/color/96/learning.png" alt="Materi Lengkap">
+            <h5>Materi Lengkap</h5>
+            <p>Kami menyediakan materi terbaru dan terupdate sesuai kebutuhan industri saat ini.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom">
+            <img src="https://img.icons8.com/color/96/training.png" alt="Mentor Berpengalaman">
+            <h5>Mentor Berpengalaman</h5>
+            <p>Dibimbing langsung oleh para praktisi profesional di bidangnya masing-masing.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom">
+            <img src="https://img.icons8.com/color/96/certificate.png" alt="Sertifikat Resmi">
+            <h5>Sertifikat Resmi</h5>
+            <p>Dapatkan sertifikat yang dapat meningkatkan portofolio dan peluang kariermu.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
 <!-- Testimonials Section -->
 <section class="container" style="margin-bottom: 80px;">

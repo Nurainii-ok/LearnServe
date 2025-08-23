@@ -8,6 +8,14 @@ Route::get('/', function () {
     return view('home'); // otomatis ke home saat buka website
 })->name('home');
 
+Route::get('/learning', function () {
+    return view('learning'); // bikin file resources/views/learning.blade.php
+})->name('learning');
+
+Route::get('/bootcamp', function () {
+    return view('bootcamp'); // bikin file resources/views/learning.blade.php
+})->name('bootcamp');
+
 // Halaman Auth (Login & Register)
 Route::get('/auth', function () {
     return view('auth');

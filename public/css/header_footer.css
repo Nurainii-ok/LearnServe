@@ -1,0 +1,33 @@
+/* Background gradasi navbar */
+.custom-navbar {
+    background: linear-gradient(90deg, #5a67d8, #805ad5);
+    padding: 15px 0;
+}
+
+/* Menu nav */
+.custom-navbar .nav-link {
+    margin: 0 12px;
+    font-size: 16px;
+}
+.custom-navbar .nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Tombol Login */
+.custom-login-btn {
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+/* Tombol Register */
+.custom-register-btn {
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-weight: 600;
+    background-color: #ffd600;
+    border: none;
+}
+.custom-register-btn:hover {
+    background-color: #facc15;
+}
