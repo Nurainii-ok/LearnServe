@@ -47,7 +47,7 @@
                 </a>
             </li>   
             <li>
-                <a href="{{ route('admin.account') }}" class="{{ request()->routeIs('admin.account*') ? 'active' : '' }}">
+                <a href="{{ route('admin.logout') }}" class="{{ request()->routeIs('admin.logout*') ? 'active' : '' }}">
                     <span class="las la-sign-out-alt"></span>
                     <span>Logout</span>
                 </a>

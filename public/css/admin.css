@@ -743,3 +743,118 @@ tr td:last-child {
     background: rgba(116, 148, 236, 0.1);
     transform: translateY(-1px);
 }
+
+/* HALAMAN ADMIN : KELAS */
+    .main-container {
+        display: flex;
+        gap: 30px;
+        margin: 30px auto;
+        max-width: 1400px;
+    }
+    .left-section {
+        flex: 3;
+    }
+    .right-section {
+        flex: 1;
+        background: #fff;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Filter bar */
+    .filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .filter-bar label {
+        font-weight: bold;
+    }
+    .filter-bar select {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
+
+    /* Courses List */
+    .courses-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .course-card {
+        background: #f8f9ff;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: transform .2s;
+    }
+    .course-card:hover {
+        transform: translateY(-5px);
+    }
+    .course-card h3 {
+        margin-bottom: 10px;
+    }
+    .course-card p {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+    .course-card small .author {
+        color: #6c63ff;
+        font-weight: bold;
+    }
+    .purple { border-left: 6px solid #6c63ff; }
+    .pink { border-left: 6px solid #ff6f91; }
+    .orange { border-left: 6px solid #ff9f43; }
+
+    /* Calendar */
+    .calendar h4 {
+        margin-bottom: 10px;
+    }
+    .calendar table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .calendar td, .calendar th {
+        padding: 6px;
+        font-size: 12px;
+    }
+    .calendar .active {
+        background: #6c63ff;
+        color: #fff;
+        border-radius: 50%;
+    }
+
+    /* Online Users */
+    .online-users ul {
+        list-style: none;
+        padding: 0;
+        margin: 15px 0 0 0;
+    }
+    .online-users li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+    .online-users img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: auto;
+    }
+    .green { background: #4caf50; }
+
+
