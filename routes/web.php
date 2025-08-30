@@ -16,6 +16,10 @@ Route::get('/bootcamp', function () {
     return view('bootcamp'); // bikin file resources/views/learning.blade.php
 })->name('bootcamp');
 
+Route::get('/form_payments', function () {
+    return view('form_payments'); // bikin file resources/views/learning.blade.php
+})->name('fomr_payments');
+
 // Halaman Auth (Login & Register)
 Route::get('/auth', function () {
     return view('auth');

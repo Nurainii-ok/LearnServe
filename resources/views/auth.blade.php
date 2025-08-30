@@ -4,11 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Auth</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    
 </head>
 <body>
+    <!-- Logo di pojok -->
+    <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">
+
     <div class="container">
         <div class="form-box login">
             <form action="">
@@ -32,6 +36,7 @@
                 </div>
             </form>
         </div>
+
         <div class="form-box register">
             <form action="">
                 <h1>Registration</h1>
@@ -55,6 +60,7 @@
                 </div>
             </form>
         </div>
+
         <div class="toggle-box">
             <div class="toggle-panel toggle-left">
                 <h1>Hello, Welcome!</h1>
@@ -68,6 +74,7 @@
             </div>
         </div>
     </div>
+
     <script>
         const container = document.querySelector('.container');
         const registerBtn = document.querySelector('.register-btn');

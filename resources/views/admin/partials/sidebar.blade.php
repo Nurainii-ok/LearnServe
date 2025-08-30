@@ -1,7 +1,9 @@
 <div class="sidebar">
     <div class="sidebar-brand">
-        <h1><span class="la la-graduation-cap"></span><span>LearnServe</span></h1>
-    </div>
+    <img src="{{ asset('assets/Logo2.png') }}" alt="Logo" style="height:40px; margin-right:10px;">
+    <span>LearnServe</span>
+</div>
+
     <div class="sidebar-menu">
         <ul>
             <li>

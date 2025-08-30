@@ -17,22 +17,7 @@
             </div>
         </div>
         <div class="hero-img">
-            <img src="{{ asset('assets/tuktuk.jpg') }}" alt="Hero Image">
-        </div>
-    </section>
-
-    {{-- Testimoni Alumni --}}
-    <section class="section">
-        <h2 class="section-title">💬 Testimoni Alumni</h2>
-        <div class="grid">
-            @for ($i = 1; $i <= 6; $i++)
-                <div class="card">
-                    <img src="{{ asset('assets/tuktuk.jpg') }}" alt="Testimoni {{ $i }}">
-                    <h3>Alumni {{ $i }}</h3>
-                    <p>"Belajar di MySkill membantu saya meningkatkan skill praktis dan portfolio!"</p>
-                    <a href="#" class="btn btn-blue full">Baca Cerita</a>
-                </div>
-            @endfor
+            <img src="{{ asset('assets/Bootcamp.jpg') }}" alt="Hero Image">
         </div>
     </section>
 
@@ -42,7 +27,7 @@
         <div class="grid">
             @for ($i = 1; $i <= 12; $i++)
                 <div class="card">
-                    <img src="{{ asset('assets/tuktuk.jpg') }}" alt="Program {{ $i }}">
+                    <img src="{{ asset('assets/Digital Marketing.png') }}" alt="Program {{ $i }}">
                     <h3>Bootcamp {{ $i }}</h3>
                     <p>Deskripsi singkat program bootcamp LearnServe ke-{{ $i }}.</p>
                     <div class="card-footer">

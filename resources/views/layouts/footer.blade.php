@@ -9,8 +9,8 @@
         <h5>Navigasi</h5>
         <ul class="list-unstyled">
           <li><a href="{{ route('home') }}" class="text-white text-decoration-none">Home</a></li>
-          <li><a href="#" class="text-white text-decoration-none">E-Learning</a></li>
-          <li><a href="#" class="text-white text-decoration-none">Bootcamp</a></li>
+          <li><a href="{{ route('bootcamp') }}" class="text-white text-decoration-none">E-Learning</a></li>
+          <li><a href="{{ route('learning') }}" class="text-white text-decoration-none">Bootcamp</a></li>
         </ul>
       </div>
       <div class="col-md-3 mb-3">

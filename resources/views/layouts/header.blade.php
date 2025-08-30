@@ -10,11 +10,13 @@
 <body>
   <nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center text-white fw-bold" href="#">
-      <img src="https://img.icons8.com/ios-filled/30/ffffff/graduation-cap.png" alt="Logo" class="me-2"/>
-      LearnServe
+    <!-- Logo + teks -->
+    <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
+      <img src="{{ asset('assets/Logo.jpg') }}" alt="LearnServe" 
+          style="height: 80px; width: auto; margin-right: 8px;">
+      <span style="color: #944e25;"></span>
     </a>
+
 
     <!-- Toggle button (mobile) -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

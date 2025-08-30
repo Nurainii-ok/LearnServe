@@ -65,7 +65,14 @@
         <div class="card">
             <div class="card-header">
                 <h2>Kelas</h2>
-                <button>Lihat semua <span class="las la-arrow-right"></span></button>
+                <a href="{{ route('admin.classes') }}" 
+                    class="{{ request()->routeIs('admin.classes*') ? 'active' : '' }}">
+                    <button>
+                        Lihat semua 
+                        <span class="las la-arrow-right"></span>
+                    </button>
+                </a>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -126,7 +133,14 @@
         <div class="card">
             <div class="card-header">
                 <h3>Tutor</h3>
-                <button>Lihat semua <span class="las la-arrow-right"></span></button>
+                <a href="{{ route('admin.tutors') }}" 
+   class="{{ request()->routeIs('admin.tutors*') ? 'active' : '' }}">
+    <button>
+        Lihat semua 
+        <span class="las la-arrow-right"></span>
+    </button>
+</a>
+
             </div>
             <div class="card-body">
                 <div class="tutor">

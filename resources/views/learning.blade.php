@@ -1,167 +1,14 @@
 @extends('layouts.app')
-
-@section('title', 'Home - LearnServe')
+@section('title', 'Bootcamp & Program')
 
 @section('content')
-    <div class="hero-section">
-        <div class="container">
-            <div class="header">
-                <h1>Ratusan Skill Impian Kini Dalam Genggamanmu</h1>
-                <p>Lihat contoh beberapa materi terpopuler rancangan experts berikut. Materi baru setiap bulan tanpa tambahan biaya.</p>
-            </div>
-
-            <!-- Filter kategori -->
-            <div class="categories">
-                <button class="category-tag active" data-category="all">Semua</button>
-                <button class="category-tag" data-category="programming">Programming</button>
-                <button class="category-tag" data-category="design">Design</button>
-                <button class="category-tag" data-category="business">Business</button>
-                <button class="category-tag" data-category="data">Data Science</button>
-            </div>
-
-            <!-- Grid Course -->
-            <div class="courses-grid">
-                <!-- Card 1 -->
-                <div class="course-card" data-category="programming">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/200?random=1" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Mastering Laravel 11 Belajar Toko</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <small class="students-count">0 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=5" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">Anne Belle</p>
-                                <p class="tutor-role">Designer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="course-card" data-category="business">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/201?random=2" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Manage Designer Passive Income</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐</span>
-                            <small class="students-count">2 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=8" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">Rasiva</p>
-                                <p class="tutor-role">Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="course-card" data-category="design">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/202?random=3" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">UI UX Design Psychology</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <small class="students-count">2 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=11" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">Alfrina</p>
-                                <p class="tutor-role">Designer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 - Additional for better showcase -->
-                <div class="course-card" data-category="data">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/203?random=4" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Python Data Analysis Mastery</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <small class="students-count">15 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=15" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">Data Smith</p>
-                                <p class="tutor-role">Data Scientist</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="course-card" data-category="programming">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/204?random=5" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">React JS Modern Development</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐</span>
-                            <small class="students-count">8 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=20" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">John React</p>
-                                <p class="tutor-role">Frontend Developer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="course-card" data-category="design">
-                    <div class="course-image">
-                        <img src="https://picsum.photos/400/205?random=6" alt="Course Image">
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Figma to Code Workflow</h3>
-                        <div class="course-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <small class="students-count">12 students</small>
-                        </div>
-                        <div class="course-footer">
-                            <img class="tutor-img" src="https://i.pravatar.cc/40?img=25" alt="Tutor">
-                            <div class="tutor-info">
-                                <p class="tutor-name">Sarah Design</p>
-                                <p class="tutor-role">UI/UX Designer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="actions">
-                <a href="#" class="btn btn-primary">
-                    <span>Mulai Berlangganan</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-                <a href="#" class="btn btn-secondary">Lihat Semua Materi</a>
-            </div>
-        </div>
-    </div>
-@endsection
-
-@push('styles')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnServe - Bootcamp & Program</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -170,124 +17,266 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #2c2c2c;
             line-height: 1.6;
-            color: #1e293b;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .hero-section {
-            min-height: 100vh;
-            padding: 80px 20px 40px;
-            display: flex;
-            align-items: center;
+        /* Color Variables */
+        :root {
+            --primary-gold: #ecac57;
+            --primary-brown: #944e25;
+            --light-cream: #f3efec;
+            --deep-brown: #6b3419;
+            --soft-gold: #f4d084;
+            --text-primary: #2c2c2c;
+            --text-secondary: #666666;
+            --text-light: #8a8a8a;
+            --bg-light: #ffffff;
+            --bg-section: #f8f8f8;
+            --success-green: #4a7c59;
+            --info-blue: #5b7c8a;
+            --alert-orange: #d97435;
+            --border-light: #e8e8e8;
+            --shadow-light: rgba(0, 0, 0, 0.06);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --gradient-gold: linear-gradient(135deg, var(--primary-gold), var(--soft-gold));
+            --gradient-brown: linear-gradient(135deg, var(--primary-brown), var(--deep-brown));
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 32px;
-            padding: 60px 50px;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .header h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .header p {
-            font-size: 1.25rem;
-            color: #64748b;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-
-        .category-tag {
-            padding: 12px 24px;
-            border: 2px solid #e2e8f0;
-            background: white;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 100px;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #ffffff 50%, var(--bg-section) 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .category-tag::before {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: var(--gradient-gold);
+            opacity: 0.03;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            font-weight: 400;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-brown);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-custom {
+            background: var(--gradient-gold);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--gradient-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(236, 172, 87, 0.4);
+            color: white;
+        }
+
+        .btn-secondary-custom {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary-gold);
+            color: var(--primary-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-hover);
+        }
+
+        /* Popular Classes Section */
+        .popular-section {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-tab::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--gradient-gold);
             transition: left 0.3s ease;
-            z-index: -1;
+            z-index: 1;
         }
 
-        .category-tag:hover,
-        .category-tag.active {
+        .filter-tab span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
             color: white;
-            border-color: transparent;
+            border-color: var(--primary-gold);
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .category-tag:hover::before,
-        .category-tag.active::before {
+        .filter-tab.active::before,
+        .filter-tab:hover::before {
             left: 0;
         }
 
+        /* Course Cards */
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         .course-card {
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 6px 30px var(--shadow-light);
+            transition: all 0.4s ease;
             position: relative;
-            display: flex;
-            flex-direction: column;
+            border: 1px solid var(--border-light);
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .course-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px var(--shadow-hover);
+        }
+
+        .course-card:hover::before {
+            transform: scaleX(1);
         }
 
         .course-image {
@@ -304,310 +293,584 @@
         }
 
         .course-card:hover .course-image img {
-            transform: scale(1.05);
+            transform: scale(1.1);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--gradient-gold);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
         }
 
         .course-content {
-            padding: 24px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .course-category {
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
         }
 
         .course-title {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 16px;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
             line-height: 1.4;
-            flex: 1;
         }
 
-        .course-rating {
+        .course-instructor {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .course-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #f1f5f9;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-light);
         }
 
-        .course-rating .stars {
+        .stat-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-small {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
             font-size: 0.9rem;
-            letter-spacing: 1px;
+            color: var(--text-light);
         }
 
-        .students-count {
-            font-size: 0.85rem;
-            color: #64748b;
-            font-weight: 500;
+        .course-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-brown);
         }
 
-        .course-footer {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .tutor-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #e2e8f0;
-            object-fit: cover;
-        }
-
-        .tutor-info {
-            flex: 1;
-        }
-
-        .tutor-name {
-            margin: 0;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #1e293b;
-        }
-
-        .tutor-role {
-            margin: 0;
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: var(--gradient-brown);
+            color: white;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-100px, -100px) rotate(360deg); }
         }
 
-        .btn-secondary {
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
             background: white;
-            color: #667eea;
-            border-color: #667eea;
+            color: var(--primary-brown);
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
         }
 
-        .btn-secondary:hover {
-            background: #667eea;
-            color: white;
+        .btn-cta:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            color: var(--primary-brown);
         }
 
-        .btn svg {
-            transition: transform 0.3s ease;
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
         }
 
-        .btn:hover svg {
-            transform: translateX(3px);
+        .fade-in-up.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero-section {
-                padding: 40px 15px;
-            }
-
-            .container {
-                padding: 40px 25px;
-                border-radius: 20px;
-            }
-
-            .header h1 {
+            .hero h1 {
                 font-size: 2.5rem;
             }
 
-            .header p {
+            .hero-subtitle {
                 font-size: 1.1rem;
             }
 
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
             .courses-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 1.5rem;
             }
 
-            .category-tag {
-                font-size: 0.85rem;
-                padding: 10px 18px;
+            .filter-tabs {
+                gap: 0.3rem;
             }
 
-            .actions {
-                flex-direction: column;
-                gap: 15px;
+            .filter-tab {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
             }
 
-            .btn {
-                width: 100%;
-                justify-content: center;
-                max-width: 300px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .courses-grid {
-                grid-template-columns: 1fr;
+            .section-title {
+                font-size: 2rem;
             }
 
-            .course-card {
-                margin: 0 auto;
-                max-width: 100%;
+            .cta-title {
+                font-size: 2rem;
             }
 
-            .categories {
+            .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .category-tag {
-                width: 100%;
-                max-width: 300px;
-                text-align: center;
-            }
-        }
-
-        /* Smooth animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .course-card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .course-card:nth-child(1) { animation-delay: 0.1s; }
-        .course-card:nth-child(2) { animation-delay: 0.2s; }
-        .course-card:nth-child(3) { animation-delay: 0.3s; }
-        .course-card:nth-child(4) { animation-delay: 0.4s; }
-        .course-card:nth-child(5) { animation-delay: 0.5s; }
-        .course-card:nth-child(6) { animation-delay: 0.6s; }
-
-        /* Loading state */
-        .course-card {
-            opacity: 0;
         }
     </style>
-@endpush
+</head>
+<body>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <h1 class="fade-in-up">Kuasai Skill Digital<br>dengan <span style="color: var(--primary-gold);">Expert</span></h1>
+                        <p class="hero-subtitle fade-in-up">Bergabunglah dengan ribuan profesional yang telah mengembangkan karir mereka melalui bootcamp dan kursus berkualitas tinggi dari para ahli industri.</p>
+                        
+                        <div class="hero-stats fade-in-up">
+                            <div class="stat-item">
+                                <span class="stat-number">50K+</span>
+                                <span class="stat-label">Alumni</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">95%</span>
+                                <span class="stat-label">Job Placement</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">200+</span>
+                                <span class="stat-label">Kursus</span>
+                            </div>
+                        </div>
 
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Category filter functionality
-            const filterButtons = document.querySelectorAll(".category-tag");
-            const cards = document.querySelectorAll(".course-card");
+                        <div class="hero-buttons fade-in-up">
+                            <a href="#courses" class="btn-primary-custom">
+                                <i class="fas fa-play"></i>
+                                Mulai Belajar
+                            </a>
+                            <a href="#" class="btn-secondary-custom">
+                                <i class="fas fa-info-circle"></i>
+                                Pelajari Lebih Lanjut
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            filterButtons.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    // Remove active class from all buttons
-                    filterButtons.forEach(b => b.classList.remove("active"));
-                    btn.classList.add("active");
-
-                    const category = btn.dataset.category;
-                    
-                    cards.forEach(card => {
-                        if (category === "all" || card.dataset.category === category) {
-                            card.style.display = "flex";
-                            card.style.animation = "fadeInUp 0.6s ease forwards";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
-                });
-            });
-
-            // Smooth scroll for buttons
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Add ripple effect
-                    const ripple = document.createElement('span');
-                    ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(255,255,255,0.5);
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        pointer-events: none;
-                        left: ${e.offsetX}px;
-                        top: ${e.offsetY}px;
-                        width: 20px;
-                        height: 20px;
-                        margin-left: -10px;
-                        margin-top: -10px;
-                    `;
-                    
-                    this.appendChild(ripple);
-                    setTimeout(() => ripple.remove(), 600);
-                    
-                    // Your navigation logic here
-                    console.log('Button clicked:', this.textContent);
-                });
-            });
-
-            // Course card hover effects
-            const courseCards = document.querySelectorAll('.course-card');
+    <!-- Popular Classes Section -->
+    <section id="courses" class="popular-section">
+        <div class="container">
             
-            courseCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.zIndex = '10';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.zIndex = '1';
-                });
-            });
 
-            // Intersection Observer for animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
+            <!-- Filter Tabs -->
+            <div class="filter-tabs fade-in-up">
+                <div class="filter-tab active" data-category="all">
+                    <span>Semua Kelas</span>
+                </div>
+                <div class="filter-tab" data-category="programming">
+                    <span>Programming</span>
+                </div>
+                <div class="filter-tab" data-category="design">
+                    <span>Design</span>
+                </div>
+                <div class="filter-tab" data-category="business">
+                    <span>Business</span>
+                </div>
+                <div class="filter-tab" data-category="data">
+                    <span>Data Science</span>
+                </div>
+            </div>
 
-            courseCards.forEach(card => observer.observe(card));
+            <!-- Courses Grid -->
+            <div class="courses-grid fade-in-up">
+                <!-- Course 1 -->
+                <div class="course-card" data-category="programming">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop" alt="Full Stack Development">
+                        <div class="course-badge">Trending</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Programming</div>
+                        <h3 class="course-title">Full Stack Web Development</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Ahmad Rizki, Senior Developer</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>15,240</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 2,500K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card" data-category="design">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=400&h=200&fit=crop" alt="UI/UX Design">
+                        <div class="course-badge">Popular</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Design</div>
+                        <h3 class="course-title">UI/UX Design Mastery</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Sarah Designer, Design Lead</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>12,890</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 2,200K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card" data-category="data">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop" alt="Data Science">
+                        <div class="course-badge">Hot</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Data Science</div>
+                        <h3 class="course-title">Data Science & Analytics</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Dr. Budi Santoso, Data Scientist</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>9,560</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 3,000K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card" data-category="business">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" alt="Digital Marketing">
+                        <div class="course-badge">New</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Business</div>
+                        <h3 class="course-title">Digital Marketing Pro</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Lisa Marketing, CMO</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>11,200</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 1,800K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="course-card" data-category="programming">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop" alt="Mobile Development">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Programming</div>
+                        <h3 class="course-title">Mobile App Development</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Andi Mobile, Tech Lead</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>8,430</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 2,800K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="course-card" data-category="design">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=200&fit=crop" alt="Graphic Design">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">Design</div>
+                        <h3 class="course-title">Professional Graphic Design</h3>
+                        <div class="course-instructor">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Maya Creative, Art Director</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat-group">
+                                <div class="stat-small">
+                                    <i class="fas fa-users"></i>
+                                    <span>7,890</span>
+                                </div>
+                                <div class="stat-small">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6</span>
+                                </div>
+                            </div>
+                            <div class="course-price">Rp 1,900K</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content fade-in-up">
+                <h2 class="cta-title">Siap Memulai Perjalanan Karirmu?</h2>
+                <p class="cta-subtitle">Bergabunglah dengan komunitas pembelajar terbesar di Indonesia dan raih impianmu bersama mentor terbaik!</p>
+                <a href="#" class="btn-cta">
+                    <i class="fas fa-rocket"></i>
+                    Mulai Sekarang
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
 
-        // Add ripple animation CSS
+        // Filter functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                const category = this.getAttribute('data-category');
+                const cards = document.querySelectorAll('.course-card');
+
+                cards.forEach((card, index) => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in-up elements
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Course card hover effects
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Initialize animations on page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('animate');
+                    }, index * 200);
+                });
+            }, 100);
+        });
+
+        // Add click ripple effect to buttons
+        document.querySelectorAll('.btn-primary-custom, .btn-secondary-custom, .btn-nav, .btn-cta').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation
         const style = document.createElement('style');
         style.textContent = `
             @keyframes ripple {
@@ -619,4 +882,5 @@
         `;
         document.head.appendChild(style);
     </script>
-@endpush
+</body>
+</html>

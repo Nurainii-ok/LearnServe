@@ -1,33 +1,86 @@
-/* Background gradasi navbar */
+/* Navbar */
 .custom-navbar {
-    background: linear-gradient(90deg, #5a67d8, #805ad5);
-    padding: 15px 0;
+    background: #f3efec;           
+    min-height: 70px;              
+    padding: 0 20px;              
+    display: flex;                
+    align-items: center;          
+    justify-content: space-between;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; 
+    font-size: 16px;               
+    line-height: 1;                
+
+    position: fixed;   
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;    
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* body offset */
+body {
+    padding-top: 70px;
+}
+
+/* Brand / Logo */
+.custom-navbar .navbar-brand {
+    font-size: 18px;
+    font-weight: bold;
+    color: #944e25 !important; /* pakai coklat tua */
+    text-decoration: none;
 }
 
 /* Menu nav */
 .custom-navbar .nav-link {
     margin: 0 12px;
-    font-size: 16px;
+    font-size: 16px;               
+    line-height: 1;                
+    color: #944e25 !important;     /* coklat tua */
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    height: 40px;                  
 }
 .custom-navbar .nav-link:hover {
+    color: #ecac57 !important;     /* hover keemasan */
     text-decoration: underline;
 }
 
-/* Tombol Login */
-.custom-login-btn {
+/* Tombol dasar */
+.custom-navbar .btn {
     border-radius: 30px;
-    padding: 8px 22px;
+    padding: 0 22px;
     font-weight: 600;
+    height: 40px;                 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 15px;              
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
 }
+
+/* Tombol Login */
+.custom-navbar .custom-login-btn {
+    background: transparent !important;
+    border: 2px solid #944e25 !important;
+    color: #944e25 !important;
+}
+.custom-navbar .custom-login-btn:hover {
+    background: #944e25 !important;
+    color: #fff !important;
+}
+
 
 /* Tombol Register */
 .custom-register-btn {
-    border-radius: 30px;
-    padding: 8px 22px;
-    font-weight: 600;
-    background-color: #ffd600;
+    background-color: #ecac57;     /* keemasan */
     border: none;
+    color: #000;                   /* biar kontras */
 }
 .custom-register-btn:hover {
-    background-color: #facc15;
+    background-color: #d9963d;     /* versi lebih gelap dari emas */
 }
