@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('css/header_footer.css') }}">
 <footer class="bg-dark text-white mt-5 pt-4 pb-3">
   <div class="container">
     <div class="row">

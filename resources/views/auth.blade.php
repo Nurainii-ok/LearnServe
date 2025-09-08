@@ -7,60 +7,58 @@
     <title>Auth</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    
 </head>
 <body>
     <!-- Logo di pojok -->
     <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">
 
     <div class="container">
+        <!-- Login -->
         <div class="form-box login">
-            <form action="">
+            <form method="POST" action="{{ route('login.post') }}">
+                @csrf
                 <h1>Login</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username / Email" required>
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                <div class="forgot-link">
-                    <a href="#">Forgot password?</a>
-                </div>
+                @if(session('error'))
+                    <p style="color:red">{{ session('error') }}</p>
+                @endif
                 <button type="submit" class="btn">Login</button>
-                <p>or login with social platforms</p>
-                <div class="social-icons">
-                    <a href="#" class='bx bxl-google'></a>
-                    <a href="#" class='bx bxl-facebook'></a>
-                </div>
             </form>
         </div>
 
+        <!-- Register -->
         <div class="form-box register">
-            <form action="">
+            <form method="POST" action="{{ route('register.post') }}">
+                @csrf
                 <h1>Registration</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" required>
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="email" placeholder="Email" required>
-                    <i class='bx bxs-envelope'></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                <button type="submit" class="btn">Register</button>
-                <p>or register with social platforms</p>
-                <div class="social-icons">
-                    <a href="#"><i class='bx bxl-google'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                <div class="input-box">
+                    <label>Pilih Role:</label><br>
+                    <select name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="tutor">Tutor</option>
+                        <option value="member">Member</option>
+                    </select>
                 </div>
+                <button type="submit" class="btn">Register</button>
             </form>
         </div>
 
+        <!-- Toggle Box -->
         <div class="toggle-box">
             <div class="toggle-panel toggle-left">
                 <h1>Hello, Welcome!</h1>
@@ -83,7 +81,6 @@
         registerBtn.addEventListener('click', () => {
             container.classList.add('active');
         });
-
         loginBtn.addEventListener('click', () => {
             container.classList.remove('active');
         });

@@ -402,10 +402,11 @@
                 <a href="#" class="btn btn-primary-custom">Mulai Perjalananmu</a>
             </div>
             <div class="col-lg-6 text-center">
-                <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--light-cream), white); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-gold);">
-                    📚✨
-                </div>
+                <img src="{{ asset('assets/Bootcamp2.jpg') }}" 
+                    alt="Bootcamp Illustration" 
+                    style="width: 100%; height: 400px; object-fit: cover; border-radius: 20px;">
             </div>
+
         </section>
 
         <!-- Clean Categories Section -->
