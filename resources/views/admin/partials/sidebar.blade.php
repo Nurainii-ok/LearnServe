@@ -49,11 +49,15 @@
                 </a>
             </li>   
             <li>
-                <a href="{{ route('admin.logout') }}" class="{{ request()->routeIs('admin.logout*') ? 'active' : '' }}">
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="las la-sign-out-alt"></span>
                     <span>Logout</span>
                 </a>
-            </li>   
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+            </li>
         </ul>
     </div>
 </div>

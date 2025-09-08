@@ -19,6 +19,10 @@ Route::get('/bootcamp', function () {
     return view('bootcamp');
 })->name('bootcamp');
 
+Route::get('/deskripsi_kelas', function () {
+    return view('deskripsi_kelas');
+})->name('deskripsi_kelas');
+
 Route::get('/form_payments', function () {
     return view('form_payments');
 })->name('form_payments');
@@ -51,12 +55,14 @@ Route::get('/profile', function () {
     return view('profile', compact('member'));
 })->name('profile');
 
-
-// ✅ Tambahan untuk Logout (POST)
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect()->route('home')->with('success', 'Berhasil logout.');
+    session()->invalidate();
+    session()->regenerateToken();
+
+    return redirect()->route('auth')->with('success', 'Berhasil logout.');
 })->name('logout');
+
 
 // Halaman Admin
 Route::prefix('admin')->name('admin.')->group(function () {
