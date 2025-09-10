@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title', 'LearnServe')</title>
   
+  
   {{-- Bootstrap CDN --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   
@@ -19,6 +20,8 @@
   @yield('styles')
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
   @include('layouts.header')
 
   <main class="container py-5">
@@ -31,5 +34,6 @@
 
   {{-- Script khusus halaman --}}
   @yield('scripts')
+  
 </body>
 </html>

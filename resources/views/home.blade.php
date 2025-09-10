@@ -186,6 +186,9 @@
 
         /* Clean Course Cards */
         .popular-course {
+            display: flex;                  /* jadikan flex container */
+            flex-direction: column;         /* isi disusun vertikal */
+            justify-content: space-between; /* isi atas-bawah merata */
             background: white;
             border-radius: 20px;
             overflow: hidden;
@@ -193,6 +196,7 @@
             cursor: pointer;
             border: 1px solid var(--border-light);
             position: relative;
+            height: 100%;                   /* ✅ sama tinggi dengan card lain */
         }
 
         .popular-course:hover {
@@ -201,16 +205,20 @@
         }
 
         .course-image {
-            height: 220px;
+            height: 220px; /* ✅ tinggi seragam */
             background: linear-gradient(135deg, var(--primary-gold), var(--soft-gold));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 3rem;
+            flex-shrink: 0; /* jangan mengecil */
         }
 
         .course-content {
+            flex: 1;                /* ✅ isi menyesuaikan */
+            display: flex;
+            flex-direction: column; /* konten tersusun vertikal */
             padding: 28px;
         }
 
@@ -226,6 +234,7 @@
             margin-bottom: 20px;
             font-size: 0.95rem;
             line-height: 1.6;
+            flex-grow: 1; /* ✅ isi deskripsi bisa mengisi ruang kosong */
         }
 
         .course-meta {
@@ -234,6 +243,7 @@
             align-items: center;
             padding-top: 16px;
             border-top: 1px solid var(--border-light);
+            margin-top: auto; /* dorong ke bawah */
         }
 
         .course-rating {

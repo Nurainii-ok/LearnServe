@@ -1,15 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Bootcamp & Program')
 
-{{-- CSS masuk ke section styles --}}
+{{-- CSS --}}
 @section('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
         --primary-gold: #ecac57;
         --primary-brown: #944e25;
@@ -35,41 +32,160 @@
         background-color: var(--background-light);
     }
     .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-    .hero { background: linear-gradient(135deg, var(--light-cream) 0%, #f9f6f3 100%); padding: 80px 0; margin-bottom: 80px; }
-    .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .hero-text h1 { font-size: clamp(32px, 4vw, 48px); font-weight: 700; margin-bottom: 24px; }
-    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-    .hero-img img { width: 100%; max-width: 500px; border-radius: 20px; box-shadow: var(--shadow-medium); }
-    .section { margin-bottom: 80px; }
-    .section-header { text-align: center; margin-bottom: 48px; }
-    .program-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; }
-    .program-card { background: var(--background-light); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-light); border: 1px solid var(--border-light); transition: all 0.3s ease; position: relative; overflow: hidden; }
-    .program-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary-gold), var(--primary-brown)); }
-    .program-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
-    .program-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; }
-    .program-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-light); }
-    .corporate-section { background: var(--background-section); padding: 80px 0; border-radius: 32px; text-align: center; margin: 80px 0; }
-    .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 32px; margin: 40px 0; }
-    .partner-logo { height: 60px; background: var(--background-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--text-secondary); box-shadow: var(--shadow-light); transition: all 0.3s ease; }
-    .partner-logo:hover { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 15px; transition: all 0.3s ease; border: none; cursor: pointer; }
-    .btn-primary { background: var(--primary-gold); color: var(--text-primary); }
-    .btn-primary:hover { background: var(--alert-orange); transform: translateY(-2px); box-shadow: var(--shadow-medium); }
-    .btn-secondary { background: var(--primary-brown); color: white; }
-    .btn-secondary:hover { background: var(--deep-brown); transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+
+/* ✅ Hero full width */
+.hero { 
+    background: linear-gradient(135deg, var(--light-cream) 0%, #f9f6f3 100%); 
+    padding: 80px 0; 
+    margin-bottom: 80px; 
+    width: 100%;
+}
+
+.hero-content { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 60px; 
+    align-items: center; 
+}
+
+.hero-text h1 { 
+    font-size: clamp(32px, 4vw, 48px); 
+    font-weight: 700; 
+    margin-bottom: 24px; 
+}
+
+.hero-text p { 
+    font-size: 1.2rem; 
+    margin-bottom: 30px; 
+    color: #555; 
+}
+
+.hero-buttons { 
+    display: flex; 
+    gap: 16px; 
+    flex-wrap: wrap; 
+}
+
+.hero-img img { 
+    width: 100%; 
+    max-width: 500px; 
+    border-radius: 20px; 
+    box-shadow: var(--shadow-medium); 
+}
+
+/* Section & Card Styles */
+.section { margin-bottom: 80px; }
+.section-header { text-align: center; margin-bottom: 48px; }
+
+.program-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+    gap: 32px; 
+}
+
+.program-card { 
+    background: var(--background-light); 
+    border-radius: 20px; 
+    padding: 24px; 
+    box-shadow: var(--shadow-light); 
+    border: 1px solid var(--border-light); 
+    transition: all 0.3s ease; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.program-card::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    height: 4px; 
+    background: linear-gradient(90deg, var(--primary-gold), var(--primary-brown)); 
+}
+
+.program-card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: var(--shadow-hover); 
+}
+
+.program-card img { 
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 16px; 
+    margin-bottom: 20px; 
+}
+
+.program-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: auto; 
+    padding-top: 20px; 
+    border-top: 1px solid var(--border-light); 
+}
+
+/* Corporate Section */
+.corporate-section { 
+    background: var(--background-section); 
+    padding: 80px 0; 
+    border-radius: 32px; 
+    text-align: center; 
+    margin: 80px 0; 
+}
+
+.partners-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+    gap: 32px; 
+    margin: 40px 0; 
+}
+
+.partner-logo { 
+    height: 60px; 
+    background: var(--background-light); 
+    border-radius: 12px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 600; 
+    color: var(--text-secondary); 
+    box-shadow: var(--shadow-light); 
+    transition: all 0.3s ease; 
+}
+
+.partner-logo:hover { 
+    transform: translateY(-4px); 
+    box-shadow: var(--shadow-medium); 
+}
+
+
+    /* ✅ Tombol */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 15px; transition: all 0.3s ease; border: none !important; cursor: pointer; }
+    .btn-primary { background: var(--primary-gold) !important; color: var(--primary-brown) !important; }
+    .btn-primary:hover { background: #d89a45 !important; color: var(--primary-brown) !important; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+    .btn-secondary { background: var(--primary-brown) !important; color: #fff !important; }
+    .btn-secondary:hover { background: var(--deep-brown) !important; color: #fff !important; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+
     .stats-section { background: linear-gradient(135deg, var(--primary-brown) 0%, var(--deep-brown) 100%); padding: 60px 0; margin: 80px 0; border-radius: 24px; color: white; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; text-align: center; }
-    @media (max-width: 768px) { .hero-content { grid-template-columns: 1fr; text-align: center; } .program-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    @media (max-width: 768px) { 
+        .hero-content { grid-template-columns: 1fr; text-align: center; } 
+        .program-grid { grid-template-columns: 1fr; } 
+        .stats-grid { grid-template-columns: repeat(2, 1fr); } 
+    }
     @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
 </style>
 @endsection
 
-{{-- Konten masuk ke section content --}}
+
+
 @section('content')
-<div class="container">
-    <!-- Hero Section -->
+    <!-- Hero Section (FULL WIDTH) -->
     <section class="hero">
-        <div class="hero-content">
+        <div class="container hero-content">
             <div class="hero-text">
                 <h1>Bootcamp yang Memberi Hasil. Fokus Praktik & Portfolio.</h1>
                 <p>Full Online dan Dipandu oleh Praktisi Senior. Fokus bantu kembangkan skill dan portfolio ribuan alumni.</p>
@@ -86,40 +202,41 @@
 
     <!-- Stats Section -->
     <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-item"><h3>5000+</h3><p>Alumni Tersertifikasi</p></div>
-            <div class="stat-item"><h3>95%</h3><p>Tingkat Kepuasan</p></div>
-            <div class="stat-item"><h3>50+</h3><p>Program Tersedia</p></div>
-            <div class="stat-item"><h3>24/7</h3><p>Dukungan Mentor</p></div>
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item"><h3>5000+</h3><p>Alumni Tersertifikasi</p></div>
+                <div class="stat-item"><h3>95%</h3><p>Tingkat Kepuasan</p></div>
+                <div class="stat-item"><h3>50+</h3><p>Program Tersedia</p></div>
+                <div class="stat-item"><h3>24/7</h3><p>Dukungan Mentor</p></div>
+            </div>
         </div>
     </section>
 
     <!-- Program Section -->
     <section class="section" id="programs">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-rocket"></i> Program Bootcamp & Kelas</h2>
-            <p class="section-subtitle">Pilih program yang sesuai dengan kebutuhan karir Anda.</p>
-        </div>
-        <div class="program-grid">
-            <!-- contoh 1 -->
-            <div class="program-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center" alt="Digital Marketing">
-                <h3>Digital Marketing Mastery</h3>
-                <p>Pelajari strategi digital marketing terkini termasuk SEO, SEM, Social Media Marketing, dan Analytics.</p>
-                <div class="program-footer">
-                    <span class="program-date"><i class="fas fa-calendar"></i> Mulai: 15 Sep 2025</span>
-                    <a href="{{ route('form_pendaftaran') }}" class="btn btn-primary btn-small">Daftar</a>
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-rocket"></i> Program Bootcamp & Kelas</h2>
+                <p class="section-subtitle">Pilih program yang sesuai dengan kebutuhan karir Anda.</p>
             </div>
-            <!-- tambahkan program lain sama seperti di kode kamu -->
-            <!-- contoh 1 -->
-            <div class="program-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center" alt="Digital Marketing">
-                <h3>Digital Marketing Mastery</h3>
-                <p>Pelajari strategi digital marketing terkini termasuk SEO, SEM, Social Media Marketing, dan Analytics.</p>
-                <div class="program-footer">
-                    <span class="program-date"><i class="fas fa-calendar"></i> Mulai: 15 Sep 2025</span>
-                    <a href="#" class="btn btn-primary btn-small">Daftar</a>
+            <div class="program-grid">
+                <div class="program-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center" alt="Digital Marketing">
+                    <h3>Digital Marketing Mastery</h3>
+                    <p>Pelajari strategi digital marketing terkini termasuk SEO, SEM, Social Media Marketing, dan Analytics.</p>
+                    <div class="program-footer">
+                        <span class="program-date"><i class="fas fa-calendar"></i> Mulai: 15 Sep 2025</span>
+                        <a href="{{ route('deskripsi_kelas') }}" class="btn btn-primary btn-small">Daftar</a>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center" alt="Digital Marketing">
+                    <h3>Digital Marketing Mastery</h3>
+                    <p>Pelajari strategi digital marketing terkini termasuk SEO, SEM, Social Media Marketing, dan Analytics.</p>
+                    <div class="program-footer">
+                        <span class="program-date"><i class="fas fa-calendar"></i> Mulai: 15 Sep 2025</span>
+                        <a href="{{ route('deskripsi_kelas') }}" class="btn btn-primary btn-small">Daftar</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +244,7 @@
 
     <!-- Corporate Section -->
     <section class="corporate-section">
-        <div class="corporate-content">
+        <div class="container corporate-content">
             <h2><i class="fas fa-building"></i> E-learning & Training Untuk Perusahaan</h2>
             <p>Miliki akses ratusan konten e-learning LearnServe serta dukungan corporate training untuk perusahaan.</p>
             <div class="partners-grid">
@@ -141,10 +258,8 @@
             <a href="#" class="btn btn-primary"><i class="fas fa-phone"></i> Hubungi Tim LearnServe</a>
         </div>
     </section>
-</div>
 @endsection
 
-{{-- Script taruh di section scripts kalau ada --}}
 @section('scripts')
 <script>
     // Scroll animation
