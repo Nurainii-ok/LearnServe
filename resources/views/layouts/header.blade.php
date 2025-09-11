@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="{{ asset('css/header_footer.css') }}">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/header_footer.css') }}">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg custom-navbar">
@@ -36,9 +36,9 @@
           <li class="nav-item">
             <a class="nav-link text-white fw-semibold" href="{{ route('bootcamp') }}">Bootcamp</a>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link text-white fw-semibold" href="{{ route('webinar') }}">Webinar</a>
-          </li>
+          </li>-->
         </ul>
 
         <!-- Jika belum login -->

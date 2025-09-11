@@ -243,9 +243,30 @@
         /* Clean Course Cards */
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* selalu 4 kolom di layar besar */
             gap: 2rem;
             margin-bottom: 3rem;
+        }
+
+        /* Tablet (max-width 1200px) jadi 3 kolom */
+        @media (max-width: 1200px) {
+            .courses-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile landscape (max-width 992px) jadi 2 kolom */
+        @media (max-width: 992px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile kecil (max-width 576px) jadi 1 kolom */
+        @media (max-width: 576px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .course-card {
@@ -550,57 +571,52 @@
             <!-- Courses Grid -->
             <div class="courses-grid fade-in-up">
                 <!-- Course 1 -->
-                <div class="course-card" data-category="programming">
-                    <div class="course-image">
-                        🌐
-                        <!--<div class="course-badge">Trending</div>-->
-                    </div>
-                    <div class="course-content">
-                        <div class="course-category">Programming</div>
-                        <div class="course-title">Full Stack Web Development</div>
-                        <div class="course-desc">Belajar membuat website modern dengan teknologi terbaru dari frontend hingga backend secara komprehensif</div>
-                        <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Ahmad Rizki, Senior Developer</span>-->
+                <a href="{{ route('detail_kursus', ['id' => 1]) }}" class="text-decoration-none text-dark">
+                    <div class="course-card" data-category="programming">
+                        <div class="course-image position-relative">
+                            <img src="{{ asset('assets/icons/web.png') }}" alt="Web Development" style="width:80px; height:80px; object-fit:contain;">
                         </div>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <span>⭐</span>
-                                <span>4.9 (2.1k)</span>
+                        <div class="course-content">
+                            <div class="course-category">Programming</div>
+                            <div class="course-title">Full Stack Web Development</div>
+                            <div class="course-desc">Belajar membuat website modern ...</div>
+                            <div class="course-meta">
+                                <div class="course-rating">
+                                    <span>⭐</span>
+                                    <span>4.9 (2.1k)</span>
+                                </div>
+                                <div class="course-price">Rp 299.000</div>
                             </div>
-                            <div class="course-price">Rp 299.000</div>
                         </div>
                     </div>
-                </div>
+                </a>
+
 
                 <!-- Course 2 -->
-                <div class="course-card" data-category="design">
-                    <div class="course-image">
-                        🎨
-                        <div class="course-badge">Popular</div>
-                    </div>
-                    <div class="course-content">
-                        <div class="course-category">Design</div>
-                        <div class="course-title">UI/UX Design Mastery</div>
-                        <div class="course-desc">Membuat desain aplikasi yang menarik dan user-friendly dengan tools professional terkini</div>
-                        <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Sarah Designer, Design Lead</span>-->
+                <a href="{{ route('detail_kursus', ['id' => 1]) }}" class="text-decoration-none text-dark">
+                    <div class="course-card" data-category="programming">
+                        <div class="course-image position-relative">
+                            <img src="{{ asset('assets/icons/web.png') }}" alt="Web Development" style="width:80px; height:80px; object-fit:contain;">
                         </div>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <span>⭐</span>
-                                <span>4.8 (1.8k)</span>
+                        <div class="course-content">
+                            <div class="course-category">Programming</div>
+                            <div class="course-title">UI/UX Design Mastery</div>
+                            <div class="course-desc">Belajar membuat website modern ...</div>
+                            <div class="course-meta">
+                                <div class="course-rating">
+                                    <span>⭐</span>
+                                    <span>4.9 (2.1k)</span>
+                                </div>
+                                <div class="course-price">Rp 299.000</div>
                             </div>
-                            <div class="course-price">Rp 399.000</div>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- Course 3 -->
                 <div class="course-card" data-category="data">
-                    <div class="course-image">
-                        📊
+                    <div class="course-image position-relative">
+                        <img src="{{ asset('assets/icons/data.png') }}" alt="Data Science" style="width:80px; height:80px; object-fit:contain;">
                         <div class="course-badge">Hot</div>
                     </div>
                     <div class="course-content">
@@ -608,8 +624,8 @@
                         <div class="course-title">Data Science & Analytics</div>
                         <div class="course-desc">Optimasi bisnis melalui internet dengan strategi marketing digital yang efektif dan terukur</div>
                         <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Dr. Budi Santoso, Data Scientist</span>-->
+                            <!--<img src="{{ asset('assets/instructors/budi.png') }}" alt="Dr. Budi Santoso" class="rounded-circle" width="24">-->
+                            <!--<span>Dr. Budi Santoso, Data Scientist</span>-->
                         </div>
                         <div class="course-meta">
                             <div class="course-rating">
@@ -623,8 +639,8 @@
 
                 <!-- Course 4 -->
                 <div class="course-card" data-category="business">
-                    <div class="course-image">
-                        📱
+                    <div class="course-image position-relative">
+                        <img src="{{ asset('assets/icons/marketing.png') }}" alt="Digital Marketing" style="width:80px; height:80px; object-fit:contain;">
                         <div class="course-badge">New</div>
                     </div>
                     <div class="course-content">
@@ -632,8 +648,8 @@
                         <div class="course-title">Digital Marketing Pro</div>
                         <div class="course-desc">Optimasi bisnis melalui internet dengan strategi marketing digital yang efektif dan terukur</div>
                         <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Lisa Marketing, CMO</span>-->
+                            <!--<img src="{{ asset('assets/instructors/lisa.png') }}" alt="Lisa Marketing" class="rounded-circle" width="24">-->
+                            <!--<span>Lisa Marketing, CMO</span>-->
                         </div>
                         <div class="course-meta">
                             <div class="course-rating">
@@ -647,14 +663,16 @@
 
                 <!-- Course 5 -->
                 <div class="course-card" data-category="programming">
-                    <div class="course-image">📱</div>
+                    <div class="course-image position-relative">
+                        <img src="{{ asset('assets/icons/mobile.png') }}" alt="Mobile Development" style="width:80px; height:80px; object-fit:contain;">
+                    </div>
                     <div class="course-content">
                         <div class="course-category">Programming</div>
                         <div class="course-title">Mobile App Development</div>
                         <div class="course-desc">Belajar membuat aplikasi mobile native dan cross-platform dengan framework modern seperti React Native</div>
                         <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Andi Mobile, Tech Lead</span>-->
+                            <!--<img src="{{ asset('assets/instructors/andi.png') }}" alt="Andi Mobile" class="rounded-circle" width="24">-->
+                            <!--<span>Andi Mobile, Tech Lead</span>-->
                         </div>
                         <div class="course-meta">
                             <div class="course-rating">
@@ -668,14 +686,16 @@
 
                 <!-- Course 6 -->
                 <div class="course-card" data-category="design">
-                    <div class="course-image">🖼️</div>
+                    <div class="course-image position-relative">
+                        <img src="{{ asset('assets/icons/graphic.png') }}" alt="Graphic Design" style="width:80px; height:80px; object-fit:contain;">
+                    </div>
                     <div class="course-content">
                         <div class="course-category">Design</div>
                         <div class="course-title">Professional Graphic Design</div>
                         <div class="course-desc">Menguasai desain grafis professional dengan Adobe Creative Suite untuk berbagai kebutuhan branding</div>
                         <div class="course-instructor">
-                            <!--<i class="fas fa-user-circle"></i>
-                            <span>Maya Creative, Art Director</span>-->
+                            <!--<img src="{{ asset('assets/instructors/maya.png') }}" alt="Maya Creative" class="rounded-circle" width="24">-->
+                            <!--<span>Maya Creative, Art Director</span>-->
                         </div>
                         <div class="course-meta">
                             <div class="course-rating">
@@ -687,6 +707,7 @@
                     </div>
                 </div>
             </div>
+
 
         </div>
     </section>

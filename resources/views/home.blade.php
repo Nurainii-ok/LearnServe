@@ -3,7 +3,6 @@
 
 @section('content')
 
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - LearnServe</title>
@@ -185,24 +184,20 @@
         }
 
         /* Clean Course Cards */
-        .popular-course {
-            display: flex;                  /* jadikan flex container */
-            flex-direction: column;         /* isi disusun vertikal */
-            justify-content: space-between; /* isi atas-bawah merata */
-            background: white;
-            border-radius: 20px;
+        .popular-course .course-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
             overflow: hidden;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            border: 1px solid var(--border-light);
-            position: relative;
-            height: 100%;                   /* ✅ sama tinggi dengan card lain */
+            margin-bottom: 15px;
         }
 
-        .popular-course:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        .popular-course .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* bisa diganti contain kalau mau full terlihat */
         }
+
 
         .course-image {
             height: 220px; /* ✅ tinggi seragam */
@@ -300,44 +295,52 @@
             line-height: 1.6;
         }
 
-        /* Clean Testimonials */
+        /* =========================
+        Clean Testimonials
+        ========================= */
         .testimonial-card {
-            background: white;
+            background: #fff;
             border-radius: 20px;
-            padding: 40px;
+            padding: 40px 30px;
             text-align: center;
-            transition: all 0.4s ease;
+            transition: all 0.35s ease;
             border: 1px solid var(--border-light);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
+        /* Quote icon */
         .testimonial-card::before {
             content: '"';
             position: absolute;
-            top: 20px;
-            left: 30px;
+            top: 15px;
+            left: 25px;
             font-size: 4rem;
             color: var(--light-cream);
             font-family: Georgia, serif;
             z-index: 1;
+            opacity: 0.7;
+            pointer-events: none;
         }
 
         .testimonial-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
         }
 
+        /* Testimonial Text */
         .testimonial-text {
-            font-size: 1.125rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
             font-style: italic;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             line-height: 1.7;
             position: relative;
             z-index: 2;
         }
 
+        /* Avatar (foto atau inisial) */
         .author-avatar {
             width: 64px;
             height: 64px;
@@ -346,17 +349,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #fff;
             font-weight: 600;
-            font-size: 1.5rem;
-            margin: 0 auto 16px;
+            font-size: 1.4rem;
+            margin: 0 auto 14px;
+            overflow: hidden;
         }
 
+        /* Jika pakai gambar avatar */
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Nama & Role */
         .author-name {
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 6px;
-            font-size: 1.125rem;
+            font-size: 1.1rem;
         }
 
         .author-role {
@@ -364,10 +377,20 @@
             color: var(--text-secondary);
         }
 
-        /* Clean Spacing */
+        /* Section Spacing */
         .section-spacing {
-            margin: 100px 0;
+            margin: 80px 0;
         }
+
+        @media (max-width: 768px) {
+            .testimonial-card {
+                padding: 30px 20px;
+            }
+            .testimonial-text {
+                font-size: 1rem;
+            }
+        }
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -401,8 +424,7 @@
             animation: fadeInUp 0.8s ease forwards;
         }
     </style>
-</head>
-<body>
+
     <div class="container-fluid px-4">
         <!-- Clean Hero Section -->
         <section class="hero row align-items-center">
@@ -507,56 +529,79 @@
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="popular-course">
-                        <div class="course-image">🌐</div>
-                        <div class="course-content">
-                            <div class="course-title">Full Stack Web Development</div>
-                            <div class="course-desc">Belajar membuat website modern dengan teknologi terbaru dari frontend hingga backend secara komprehensif</div>
-                            <div class="course-meta">
-                                <div class="course-rating">
-                                    <span>⭐</span>
-                                    <span>4.8 (2.1k)</span>
-                                </div>
-                                <div class="course-price">Rp 299.000</div>
-                            </div>
+    <div class="col-lg-4 col-md-6">
+        <a href="{{ route('detail_kursus', ['slug' => 'data-science-analytics']) }}" class="text-decoration-none text-dark">
+            <div class="popular-course">
+                <div class="course-image">
+                    <img src="{{ asset('assets/UIUX.jpg') }}" alt="Data Science & Analytics">
+                </div>
+                <div class="course-content">
+                    <div class="course-title">Data Science & Analytics</div>
+                    <div class="course-desc">
+                        Optimasi bisnis melalui internet dengan strategi marketing digital yang efektif dan terukur
+                    </div>
+                    <div class="course-meta">
+                        <div class="course-rating">
+                            <span>⭐</span>
+                            <span>4.7 (1.5k)</span>
                         </div>
+                        <div class="course-price">Rp 249.000</div>
                     </div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="popular-course">
-                        <div class="course-image">🎨</div>
-                        <div class="course-content">
-                            <div class="course-title">UI/UX Design Mastery</div>
-                            <div class="course-desc">Membuat desain aplikasi yang menarik dan user-friendly dengan tools professional terkini</div>
-                            <div class="course-meta">
-                                <div class="course-rating">
-                                    <span>⭐</span>
-                                    <span>4.9 (1.8k)</span>
-                                </div>
-                                <div class="course-price">Rp 399.000</div>
-                            </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <a href="{{ route('detail_kursus', ['slug' => 'web-development']) }}" class="text-decoration-none text-dark">
+            <div class="popular-course">
+                <div class="course-image">
+                    <img src="{{ asset('assets/UIUX.jpg') }}" alt="Web Development">
+                </div>
+                <div class="course-content">
+                    <div class="course-title">Full Stack Web Development</div>
+                    <div class="course-desc">
+                        Belajar membangun aplikasi web dari frontend sampai backend dengan teknologi modern
+                    </div>
+                    <div class="course-meta">
+                        <div class="course-rating">
+                            <span>⭐</span>
+                            <span>4.9 (2.1k)</span>
                         </div>
+                        <div class="course-price">Rp 299.000</div>
                     </div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="popular-course">
-                        <div class="course-image">📱</div>
-                        <div class="course-content">
-                            <div class="course-title">Digital Marketing Pro</div>
-                            <div class="course-desc">Optimasi bisnis melalui internet dengan strategi marketing digital yang efektif dan terukur</div>
-                            <div class="course-meta">
-                                <div class="course-rating">
-                                    <span>⭐</span>
-                                    <span>4.7 (1.5k)</span>
-                                </div>
-                                <div class="course-price">Rp 249.000</div>
-                            </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <a href="{{ route('detail_kursus', ['slug' => 'digital-marketing']) }}" class="text-decoration-none text-dark">
+            <div class="popular-course">
+                <div class="course-image">
+                    <img src="{{ asset('assets/digitalmarketing.jpg') }}" alt="Digital Marketing">
+                </div>
+                <div class="course-content">
+                    <div class="course-title">Digital Marketing Pro</div>
+                    <div class="course-desc">
+                        Kuasai strategi digital marketing untuk bisnis online dan brand building
+                    </div>
+                    <div class="course-meta">
+                        <div class="course-rating">
+                            <span>⭐</span>
+                            <span>4.7 (1.5k)</span>
                         </div>
+                        <div class="course-price">Rp 249.000</div>
                     </div>
                 </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+            </div>
+
             </div>
         </section>
 
@@ -570,21 +615,21 @@
                 <div class="row g-4">
                     <div class="col-lg-4 col-md-6">
                         <div class="card-custom">
-                            <img src="https://img.icons8.com/color/96/learning.png" alt="Materi Lengkap">
+                            <!--<img src="https://img.icons8.com/color/96/learning.png" alt="Materi Lengkap">-->
                             <h5>Materi Terlengkap</h5>
                             <p>Kurikulum yang selalu update sesuai kebutuhan industri terkini dengan materi yang komprehensif dan praktis</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="card-custom">
-                            <img src="https://img.icons8.com/color/96/training.png" alt="Mentor Berpengalaman">
+                            <!--<img src="https://img.icons8.com/color/96/training.png" alt="Mentor Berpengalaman">-->
                             <h5>Mentor Ahli</h5>
                             <p>Dibimbing langsung oleh para praktisi profesional dengan pengalaman bertahun-tahun di industri</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="card-custom">
-                            <img src="https://img.icons8.com/color/96/certificate.png" alt="Sertifikat Resmi">
+                            <!--<img src="https://img.icons8.com/color/96/certificate.png" alt="Sertifikat Resmi">-->
                             <h5>Sertifikat Berstandar</h5>
                             <p>Raih sertifikat yang diakui industri untuk meningkatkan portofolio dan peluang karir yang cemerlang</p>
                         </div>
@@ -595,52 +640,69 @@
 
         <!-- Clean Testimonials Section -->
         <section class="section-spacing">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Testimoni Siswa</h2>
-                <p class="section-subtitle">Dengarkan cerita sukses mereka yang telah bergabung bersama LearnServe</p>
-            </div>
+  <div class="text-center mb-5">
+    <h2 class="section-title">Lihat pencapaian orang lain</h2>
+  </div>
 
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            Platform ini benar-benar mengubah hidup saya. Materinya sangat lengkap dan mudah dipahami. Sekarang saya sudah bekerja sebagai Full Stack Developer di startup unicorn!
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">A</div>
-                            <div class="author-name">Andi Pratama</div>
-                            <div class="author-role">Full Stack Developer</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            Instrukturnya sangat berpengalaman dan sabar dalam mengajar. Saya yang awalnya tidak tahu apa-apa tentang design, sekarang bisa freelance UI/UX dengan income yang stabil.
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">S</div>
-                            <div class="author-name">Siti Nurhaliza</div>
-                            <div class="author-role">UI/UX Designer</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            Bootcamp digital marketing di LearnServe sangat worth it! Bisnis online saya sekarang berkembang pesat dan omzet naik 300% berkat ilmu yang saya dapat.
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">B</div>
-                            <div class="author-name">Budi Santoso</div>
-                            <div class="author-role">Digital Entrepreneur</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <div class="row g-4">
+    <!-- Testimoni 1 -->
+    <div class="col-lg-3 col-md-6 col-12">
+      <div class="testimonial-card h-100">
+        <div class="testimonial-text">
+          Platform ini benar-benar mengubah hidup saya. Sekarang saya sudah bekerja sebagai Full Stack Developer di startup unicorn!
+        </div>
+        <div class="author-avatar">
+          <img src="{{ asset('assets/avatars/andi.jpg') }}" alt="Andi">
+        </div>
+        <div class="author-name">Andi Pratama</div>
+        <div class="author-role">Full Stack Developer</div>
+      </div>
+    </div>
+
+    <!-- Testimoni 2 -->
+    <div class="col-lg-3 col-md-6 col-12">
+      <div class="testimonial-card h-100">
+        <div class="testimonial-text">
+          Instrukturnya sabar dan jelas. Saya yang awalnya awam sekarang bisa freelance UI/UX dengan income stabil.
+        </div>
+        <div class="author-avatar">
+          <img src="{{ asset('assets/avatars/siti.jpg') }}" alt="Siti">
+        </div>
+        <div class="author-name">Siti Nurhaliza</div>
+        <div class="author-role">UI/UX Designer</div>
+      </div>
+    </div>
+
+    <!-- Testimoni 3 -->
+    <div class="col-lg-3 col-md-6 col-12">
+      <div class="testimonial-card h-100">
+        <div class="testimonial-text">
+          Bootcamp Digital Marketing di LearnServe sangat worth it! Omzet bisnis saya naik 300% berkat ilmunya.
+        </div>
+        <div class="author-avatar">
+          <img src="{{ asset('assets/avatars/budi.jpg') }}" alt="Budi">
+        </div>
+        <div class="author-name">Budi Santoso</div>
+        <div class="author-role">Digital Entrepreneur</div>
+      </div>
+    </div>
+
+    <!-- Testimoni 4 -->
+    <div class="col-lg-3 col-md-6 col-12">
+      <div class="testimonial-card h-100">
+        <div class="testimonial-text">
+          Belajar di LearnServe menyenangkan. Materinya lengkap, aplikatif, dan sangat membantu karir saya.
+        </div>
+        <div class="author-avatar">
+          <img src="{{ asset('assets/avatars/dina.jpg') }}" alt="Dina">
+        </div>
+        <div class="author-name">Dina Rahma</div>
+        <div class="author-role">Data Analyst</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
                 <!-- FAQ Section -->
         <section class="section-spacing">

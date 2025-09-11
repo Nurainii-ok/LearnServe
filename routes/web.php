@@ -27,6 +27,10 @@ Route::get('/deskripsi_kelas', function () {
     return view('deskripsi_kelas');
 })->name('deskripsi_kelas');
 
+Route::get('/detail_kursus', function () {
+    return view('detail_kursus');
+})->name('detail_kursus');
+
 Route::get('/form_payments', function () {
     return view('form_payments');
 })->name('form_payments');
