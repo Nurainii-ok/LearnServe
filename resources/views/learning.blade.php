@@ -509,8 +509,8 @@
                                 Mulai Belajar
                             </a>
                             <a href="#" class="btn-secondary-custom">
-                                <i class="fas fa-info-circle"></i>
-                                Pelajari Lebih Lanjut
+                                {{--<i class="fas fa-info-circle"></i>--}}
+                                Berlangganan Sekarang
                             </a>
                         </div>
                     </div>

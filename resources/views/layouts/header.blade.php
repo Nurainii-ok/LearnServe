@@ -36,6 +36,9 @@
           <li class="nav-item">
             <a class="nav-link text-white fw-semibold" href="{{ route('bootcamp') }}">Bootcamp</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" href="{{ route('webinar') }}">Webinar</a>
+          </li>
         </ul>
 
         <!-- Jika belum login -->

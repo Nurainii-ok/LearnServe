@@ -641,6 +641,157 @@
                 </div>
             </div>
         </section>
+
+                <!-- FAQ Section -->
+        <section class="section-spacing">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
+                <p class="section-subtitle">Temukan jawaban dari pertanyaan umum tentang LearnServe</p>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                <!-- FAQ 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true">
+                            Apa itu LearnServe?
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            LearnServe adalah platform bootcamp dan pembelajaran online yang memudahkan Anda belajar dengan materi terstruktur, tugas interaktif, serta komunikasi langsung dengan tutor.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                            Apakah saya harus membuat akun untuk bisa ikut kelas?
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya. Anda bisa melihat daftar kelas tanpa login, tetapi untuk mendaftar, membayar, dan mengikuti kelas Anda perlu membuat akun terlebih dahulu.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                            Bagaimana cara mendaftar kelas?
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Cari kelas yang diinginkan → Klik <strong>Daftar</strong> → Lakukan pembayaran → Setelah pembayaran berhasil, Anda bisa langsung mengakses materi di dashboard member.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                            Metode pembayaran apa saja yang tersedia?
+                        </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            LearnServe mendukung berbagai metode pembayaran melalui Midtrans/Xendit, termasuk transfer bank, e-wallet, dan kartu kredit/debit.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                            Apakah saya bisa belajar lewat HP?
+                        </button>
+                    </h2>
+                    <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya. Website LearnServe sudah responsif sehingga bisa diakses melalui laptop, tablet, maupun smartphone.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                            Bagaimana cara melacak progress belajar saya?
+                        </button>
+                    </h2>
+                    <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Progress belajar ditampilkan di dashboard member. Progress akan otomatis bertambah setiap kali Anda menyelesaikan materi atau mengumpulkan tugas.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq7">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
+                            Apakah saya mendapat sertifikat setelah menyelesaikan kelas?
+                        </button>
+                    </h2>
+                    <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya. Sertifikat digital akan otomatis dibuat dan bisa diunduh setelah Anda menyelesaikan semua materi dan tugas sesuai ketentuan kelas.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 8 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
+                            Bagaimana jika saya mengalami kendala (akses materi, pembayaran, atau tugas)?
+                        </button>
+                    </h2>
+                    <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Anda dapat menghubungi <strong>Support Center</strong> melalui menu bantuan di dashboard atau mengirim pesan langsung ke tim customer service.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 9 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq9">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9">
+                            Apakah ada kelas gratis di LearnServe?
+                        </button>
+                    </h2>
+                    <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya. Beberapa kelas tersedia secara gratis, Anda bisa menemukannya melalui menu pencarian dan filter.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 10 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10">
+                            Apakah saya bisa berinteraksi dengan tutor atau peserta lain?
+                        </button>
+                    </h2>
+                    <div id="collapse10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya. Ada fitur <strong>chat real-time</strong> dan <strong>forum diskusi</strong> yang bisa digunakan untuk komunikasi dengan tutor maupun sesama member.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

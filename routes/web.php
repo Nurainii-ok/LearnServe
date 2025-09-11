@@ -19,6 +19,10 @@ Route::get('/bootcamp', function () {
     return view('bootcamp');
 })->name('bootcamp');
 
+Route::get('/webinar', function () {
+    return view('webinar');
+})->name('webinar');
+
 Route::get('/deskripsi_kelas', function () {
     return view('deskripsi_kelas');
 })->name('deskripsi_kelas');
