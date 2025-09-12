@@ -35,6 +35,10 @@ Route::get('/form_payments', function () {
     return view('form_payments');
 })->name('form_payments');
 
+Route::get('/beli_sekarang', function () {
+    return view('beli_sekarang');
+})->name('beli_sekarang');
+
 Route::get('/form_pendaftaran', function () {
     return view('form_pendaftaran');
 })->name('form_pendaftaran');

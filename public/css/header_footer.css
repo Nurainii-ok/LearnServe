@@ -2,7 +2,7 @@
 .custom-navbar {
     background: #f3efec;           
     min-height: 70px;              
-    padding: 0 10px;              
+    padding: 0px;              
     display: flex;                
     align-items: center;          
     justify-content: space-between;
@@ -17,6 +17,12 @@
     width: 100%;
     z-index: 10000;    
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link.active {
+  color: #ffc107 !important;   /* kuning */
+  font-weight: bold;
+  border-bottom: 2px solid #ffc107; 
 }
 
 /* body offset */
