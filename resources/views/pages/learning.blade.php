@@ -82,7 +82,7 @@
     </style>
 
     <!-- Hero Section -->
-    <!--<section class="hero-section text-dark">
+    <section class="hero-section text-dark">
         <div class="hero-content">
             <h1 class="display-4 fw-bold mb-3">
                 Kuasai Skill Digital <br>
@@ -111,16 +111,16 @@
                 <i class="fas fa-play"></i> Mulai Belajar
             </a>
         </div>
-    </section>-->
+    </section>
 
     <!-- Kelas Populer -->
     <section id="courses" class="py-5">
         <div class="container">
 
-            <div class="text-center mb-5">
+            <!--<div class="text-center mb-5">
                 <h2 class="fw-bold">Kelas Populer</h2>
                 <p class="text-muted">Kelas terpopuler yang banyak diminati dan terbukti mengantarkan siswa meraih kesuksesan</p>
-            </div>
+            </div>-->
 
             <!-- Filter -->
             <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">

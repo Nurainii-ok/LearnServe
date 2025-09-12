@@ -64,7 +64,7 @@
         @if(!session()->has('role'))
         <div class="d-flex">
           <a href="{{ route('auth') }}" class="btn btn-outline-light me-2 custom-login-btn">Login</a>
-          <a href="{{ route('auth') }}" class="btn btn-warning fw-semibold custom-register-btn">Register</a>
+          <a href="{{ route('auth') }}?tab=register" class="btn btn-warning fw-semibold custom-register-btn">Register</a>
         </div>
         @endif
 
@@ -104,9 +104,3 @@
 
   </div>
 </nav>
-
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

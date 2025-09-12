@@ -1,104 +1,61 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TutorController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProfileController;
 
-// Halaman Member
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
-Route::get('/learning', function () {
-    return view('learning');
-})->name('learning');
-
-Route::get('/bootcamp', function () {
-    return view('bootcamp');
-})->name('bootcamp');
-
-Route::get('/webinar', function () {
-    return view('webinar');
-})->name('webinar');
-
-Route::get('/deskripsi_kelas', function () {
-    return view('deskripsi_kelas');
-})->name('deskripsi_kelas');
-
-Route::get('/detail_kursus', function () {
-    return view('detail_kursus');
-})->name('detail_kursus');
-
-Route::get('/form_payments', function () {
-    return view('form_payments');
-})->name('form_payments');
-
-Route::get('/beli_sekarang', function () {
-    return view('beli_sekarang');
-})->name('beli_sekarang');
-
-Route::get('/form_pendaftaran', function () {
-    return view('form_pendaftaran');
-})->name('form_pendaftaran');
-
-Route::get('/kelas', function () {
-    return view('kelas');
-})->name('kelas');
-
-// Halaman Auth (Login & Register)
+// Halaman Auth (Login & Register dalam 1 file)
 Route::get('/auth', function () {
     return view('auth');
 })->name('auth');
 
 // Login
-Route::get('/login', function () {
-    return view('auth'); // bisa arahkan ke view 'auth'
-})->name('login');
-Route::post('/login', [AuthController::class, 'prosesLogin'])->name('login.post');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 // Register
-Route::get('/register', [AuthController::class, 'formregister'])->name('register');
-Route::post('/register',[AuthController::class, 'prosesRegister'])->name('register.post');
+Route::post('/register',[AuthController::class, 'register'])->name('register.post');
 
-Route::get('/profile', function () {
-    $member = \App\Models\Member::find(1); // ambil member ID 1
-    return view('profile', compact('member'));
-})->name('profile');
-
-Route::post('/logout', function () {
-    Auth::logout();
-    session()->invalidate();
-    session()->regenerateToken();
-
-    return redirect()->route('auth')->with('success', 'Berhasil logout.');
-})->name('logout');
+// Logout
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-
-
-// Halaman Admin
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/members', [AdminController::class, 'members'])->name('members');
-    Route::get('/members/create', [AdminController::class, 'createMember'])->name('members.create');
-    Route::get('/tutors', [AdminController::class, 'tutors'])->name('tutors');
-    Route::get('/classes', [AdminController::class, 'classes'])->name('classes');
-    Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
-    Route::get('/tasks', [AdminController::class, 'tasks'])->name('tasks');
-    Route::get('/account', [AdminController::class, 'account'])->name('account');
-    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+// Halaman Umum
+Route::prefix('/')->middleware(['prevent-back'])->group(function () {
+    Route::get('/', [PagesController::class, 'home'])->name('home');
+    Route::get('/learning', [PagesController::class, 'learning'])->name('learning');
+    Route::get('/bootcamp', [PagesController::class, 'bootcamp'])->name('bootcamp');
+    Route::get('/webinar', [PagesController::class, 'webinar'])->name('webinar');
+    Route::get('/deskripsi_kelas', [PagesController::class, 'deskripsiKelas'])->name('deskripsi_kelas');
+    Route::get('/detail_kursus', [PagesController::class, 'detailKursus'])->name('detail_kursus');
+    Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
+    Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');
+    Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');
+    Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
 });
 
-// Halaman Tutor
-Route::prefix('tutor')->name('tutor.')->group(function () {
+
+
+// Member
+Route::middleware(['role:member','prevent-back'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Admin
+Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/members', [AdminController::class, 'members'])->name('members');
-    Route::get('/members/create', [AdminController::class, 'createMember'])->name('members.create');
-    Route::get('/tutors', [AdminController::class, 'tutors'])->name('tutors');
-    Route::get('/classes', [AdminController::class, 'classes'])->name('classes');
-    Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
-    Route::get('/tasks', [AdminController::class, 'tasks'])->name('tasks');
-    Route::get('/account', [AdminController::class, 'account'])->name('account');
+});
+
+// Tutor
+Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
+    Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
+    Route::get('/classes', [TutorController::class, 'classes'])->name('classes');
+    Route::get('/tasks', [TutorController::class, 'tasks'])->name('tasks');
+    Route::get('/account', [TutorController::class, 'account'])->name('account');
 });

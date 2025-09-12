@@ -10,7 +10,7 @@
 </head>
 <body>
     <!-- Logo di pojok -->
-    <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">
+    <!--<img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">-->
 
     <div class="container">
         <!-- Login -->
@@ -74,16 +74,23 @@
     </div>
 
     <script>
-        const container = document.querySelector('.container');
-        const registerBtn = document.querySelector('.register-btn');
-        const loginBtn = document.querySelector('.login-btn');
+    const container = document.querySelector('.container');
+    const registerBtn = document.querySelector('.register-btn');
+    const loginBtn = document.querySelector('.login-btn');
 
-        registerBtn.addEventListener('click', () => {
-            container.classList.add('active');
-        });
-        loginBtn.addEventListener('click', () => {
-            container.classList.remove('active');
-        });
-    </script>
+    registerBtn.addEventListener('click', () => {
+        container.classList.add('active');
+    });
+    loginBtn.addEventListener('click', () => {
+        container.classList.remove('active');
+    });
+
+    // Cek apakah ada query ?tab=register
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'register') {
+        container.classList.add('active'); // langsung buka form register
+    }
+</script>
+
 </body>
 </html>

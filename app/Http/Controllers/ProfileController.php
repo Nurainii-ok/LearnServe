@@ -2,19 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function show($id)
+    public function index()
     {
-        $member = Member::findOrFail($id);
-        return view('profile', compact('member'));
+        $user = User::find(session('user_id'));
+
+        // view diarahkan ke folder member
+        return view('member.profile', compact('user'));
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $member = Member::findOrFail($id);
-        return view('profile-edit', compact('member'));
+        $user = User::find(session('user_id'));
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'nullable|min:4',
+        ]);
+
+        $user->name = $request->name;
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil berhasil diperbarui.');
     }
 }

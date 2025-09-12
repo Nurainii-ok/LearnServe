@@ -3,22 +3,34 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Admin;
-use App\Models\Tutor;
-use App\Models\Member;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
-        // akun tetap
-        Admin::factory()->dataadmin1()->create(); // admin: admin/admin
-        Tutor::factory()->defaultTutor()->create(); // tutor: tutor/tutor
-        Member::factory()->defaultMember()->create(); // member: member/member
+        User::create([
+            'name' => 'Admin Utama',
+            'email' => 'admin@learnserve.com',
+            'password' => Hash::make('admin'),
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Tutor Satu',
+            'email' => 'tutor@learnserve.com',
+            'password' => Hash::make('tutor'),
+            'role' => 'tutor',
+        ]);
+        User::create([
+            'name' => 'Member Satu',
+            'email' => 'member@learnserve.com',
+            'password' => Hash::make('member'),
+            'role' => 'member',
+        ]);
 
-        // dummy
-        Admin::factory()->count(2)->create();
-        Tutor::factory()->count(5)->create();
-        Member::factory()->count(20)->create();
     }
 }
