@@ -1,85 +1,11 @@
 @extends('layouts.app')
 @section('title', 'E-Learning')
 
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/learning.css') }}">
+@endsection
+
 @section('content')
-<div class="container-fluid px-0">
-
-    <style>
-    /* ===== Hero Section ===== */
-    .hero-section {
-        width: 100%;
-        min-height: 80vh; /* biar luas */
-        background: linear-gradient(135deg, #f8f9fa 0%, #fff4e0 100%);
-        border-bottom: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0; 
-        margin: 0;
-    }
-
-    .hero-content {
-        max-width: 1200px;   /* biar teks tidak terlalu melebar */
-        width: 100%;
-        padding: 0 15px;     /* kalau mau mepet kiri kanan hapus baris ini */
-    }
-
-    /* ===== Course Card ===== */
-    .course-card {
-        border-radius: 12px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        background: #fff;
-    }
-
-    .course-card img {
-        border-radius: 8px;
-        max-height: 180px;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .course-card .card-body {
-        text-align: left;
-        padding: 1.2rem;
-    }
-
-    .course-card h5 {
-        font-size: 1rem;
-        line-height: 1.4;
-        min-height: 45px;
-    }
-
-    .course-card p {
-        font-size: 0.85rem;
-        min-height: 40px;
-    }
-
-    /* Hover Effect */
-    .course-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Rating */
-    .course-card .text-warning {
-        font-size: 0.85rem;
-    }
-
-    /* Harga */
-    .course-card .fw-bold.text-brown {
-        color: #3d2b1f;
-        font-size: 0.95rem;
-    }
-
-    /* Harga Diskon */
-    .course-price-discount {
-        text-decoration: line-through;
-        color: #999;
-        font-size: 0.8rem;
-        margin-left: 5px;
-    }
-    </style>
 
     <!-- Hero Section -->
     <section class="hero-section text-dark">

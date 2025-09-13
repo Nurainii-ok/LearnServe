@@ -1,71 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Excel for Accounting Course')
+@section('title', 'Deskripsi Kelas')
 
 @push('styles')
-<style>
-:root {
-    --color-primary: #944e25;
-    --color-secondary: #ecac57;
-    --color-bg: #f3efec;
-}
-
-/* Hero */
-.hero-section {
-    background-color: #e6f7ff; /* biru muda segar */
-}
-.hero-section h1 {
-    color: #222;
-    font-weight: 700;
-}
-
-/* Card di Hero */
-.hero-section .card {
-    border: none;
-    border-radius: 12px;
-    max-width: 500px;
-}
-
-/* Button */
-.btn-warning {
-    background-color: var(--color-secondary);
-    border: none;
-    color: #000;
-    font-weight: 600;
-}
-.btn-warning:hover {
-    background-color: #d89628;
-    color: #000;
-}
-
-.btn-info {
-    background-color: #00c4ff;
-    border: none;
-    color: #fff;
-    font-weight: 600;
-}
-.btn-info:hover {
-    background-color: #009ec9;
-    color: #fff;
-}
-
-/* Alumni text */
-.alumni-text {
-    color: red;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-/* Sidebar */
-#sidebar-nav .nav-link {
-    color: #444;
-    transition: 0.3s;
-}
-#sidebar-nav .nav-link.active {
-    color: var(--color-primary) !important;
-    font-weight: bold;
-}
-</style>
+    <link rel="stylesheet" href="{{ asset('css/deskripsi_kelas.css') }}">
 @endpush
 
 @section('content')
