@@ -12,7 +12,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li>
+             <li>
                 <a href="{{ route('admin.members') }}" class="{{ request()->routeIs('admin.members*') ? 'active' : '' }}">
                     <span class="las la-users"></span>
                     <span>Member</span>

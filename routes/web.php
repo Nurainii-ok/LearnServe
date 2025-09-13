@@ -55,7 +55,4 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
 // Tutor
 Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
     Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
-    Route::get('/classes', [TutorController::class, 'classes'])->name('classes');
-    Route::get('/tasks', [TutorController::class, 'tasks'])->name('tasks');
-    Route::get('/account', [TutorController::class, 'account'])->name('account');
 });
