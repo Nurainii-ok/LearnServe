@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Bootcamp & Program')
+@section('title', 'E-Learning')
 
 @section('content')
 <div class="container-fluid px-0">

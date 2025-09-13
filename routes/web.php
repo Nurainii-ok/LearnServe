@@ -97,6 +97,7 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
 // Tutor
 Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
     Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
+<<<<<<< HEAD
     
     // Classes CRUD
     Route::get('/classes', [TutorController::class, 'classes'])->name('classes');
@@ -123,4 +124,6 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::delete('/grades/{id}', [TutorController::class, 'gradesDestroy'])->name('grades.destroy');
     
     Route::get('/account', [TutorController::class, 'account'])->name('account');
+=======
+>>>>>>> c5c21c3ab5881b3608e1331b6d1ebd1821c9caf6
 });
