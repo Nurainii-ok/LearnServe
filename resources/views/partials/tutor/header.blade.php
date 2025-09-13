@@ -1,32 +1,25 @@
 <header>
-
     <h1>
         <label for="nav-toggle">
             <span class="las la-bars"></span>
         </label>
 
-        @if(request()->routeIs('admin.dashboard'))
-            Admin Dashboard
-        @elseif(request()->routeIs('admin.members*'))
-            Member Management
-        @elseif(request()->routeIs('admin.tutors*'))
-            Tutor Management
-        @elseif(request()->routeIs('admin.classes*'))
-            Class Management
-        @elseif(request()->routeIs('admin.payments*'))
-            Payment Management
-        @elseif(request()->routeIs('admin.tasks*'))
-            Task Management
-        @elseif(request()->routeIs('admin.account*'))
-            Account Settings
+        @if(request()->routeIs('tutor.dashboard'))
+            Tutor Dashboard
+        @elseif(request()->routeIs('tutor.classes*'))
+            My Classes
+        @elseif(request()->routeIs('tutor.tasks*'))
+            Tasks & Assignments
+        @elseif(request()->routeIs('tutor.account*'))
+            Profile & Settings
         @else
-            {{ __('Admin Panel') }}
+            {{ __('Tutor Panel') }}
         @endif
     </h1>
 
     <div class="search-wrapper">
         <span class="las la-search"></span>
-        <input type="search" placeholder="Search members, tutors, classes..." />
+        <input type="search" placeholder="Search students, classes..." />
     </div>
 
     <div class="user-wrapper">
@@ -46,40 +39,39 @@
                     width:40px; 
                     height:40px; 
                     border-radius:50%; 
-                    background: var(--primary-brown); 
+                    background: var(--primary-gold); 
                     color:#fff; 
                     display:flex; 
                     align-items:center; 
                     justify-content:center; 
                     font-weight:bold;
                 ">
-                    {{ strtoupper(substr(session('username', 'A'), 0, 1)) }}
+                    {{ strtoupper(substr(session('username', 'T'), 0, 1)) }}
                 </div>
             @endif
 
             <div class="user-info">
-                <h4>{{ session('username', 'Administrator') }}</h4>
-                <small>{{ ucfirst(session('role', 'admin')) }}</small>
+                <h4>{{ session('username', 'Tutor') }}</h4>
+                <small>{{ ucfirst(session('role', 'tutor')) }}</small>
             </div>
         @else
             <div style="
                 width:40px; 
                 height:40px; 
                 border-radius:50%; 
-                background: var(--primary-brown); 
+                background: var(--primary-gold); 
                 color:#fff; 
                 display:flex; 
                 align-items:center; 
                 justify-content:center; 
                 font-weight:bold;
             ">
-                A
+                T
             </div>
             <div class="user-info">
-                <h4>Administrator</h4>
-                <small>Super Admin</small>
+                <h4>Tutor</h4>
+                <small>Instructor</small>
             </div>
         @endif
     </div>
-
 </header>

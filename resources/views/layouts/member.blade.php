@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-  <title>@yield('title', 'Dashboard') - LearnServe Tutor</title>
+  <title>@yield('title', 'Profile') - LearnServe Member</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
@@ -45,30 +45,32 @@
     <div class="layout-container">
 
       {{-- Sidebar --}}
-      @include('partials.tutor.sidebar')
+      @include('partials.member.sidebar')
 
       <!-- Layout page -->
       <div class="layout-page">
-
-        {{-- Navbar --}}
-        @include('partials.tutor.header')
+        {{-- Header --}}
+        @include('partials.member.header')
 
         <!-- Content wrapper -->
         <div class="content-wrapper">
+          <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             @yield('content')
           </div>
+          <!-- / Content -->
 
           {{-- Footer --}}
-          {{--@include('partials.tutor.footer')--}}
+          @include('partials.member.footer')
 
           <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Content wrapper -->
+        <!-- Content wrapper -->
       </div>
       <!-- / Layout page -->
     </div>
 
+    <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->

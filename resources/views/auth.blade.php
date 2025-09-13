@@ -39,21 +39,40 @@
                 @csrf
                 <h1>Registration</h1>
                 <div class="input-box">
-                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" value="{{ old('username') }}" required>
                     <i class='bx bxs-user'></i>
                 </div>
+                @error('username')
+                    <p style="color:red; font-size: 0.8rem; margin: -5px 0 10px 0;">{{ $message }}</p>
+                @enderror
+                
                 <div class="input-box">
                     <input type="password" name="password" placeholder="Password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
+                @error('password')
+                    <p style="color:red; font-size: 0.8rem; margin: -5px 0 10px 0;">{{ $message }}</p>
+                @enderror
+                
                 <div class="input-box">
                     <label>Pilih Role:</label><br>
                     <select name="role" required>
-                        <option value="admin">Admin</option>
-                        <option value="tutor">Tutor</option>
-                        <option value="member">Member</option>
+                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="tutor" {{ old('role') == 'tutor' ? 'selected' : '' }}>Tutor</option>
+                        <option value="member" {{ old('role') == 'member' ? 'selected' : '' }}>Member</option>
                     </select>
                 </div>
+                @error('role')
+                    <p style="color:red; font-size: 0.8rem; margin: -5px 0 10px 0;">{{ $message }}</p>
+                @enderror
+                
+                @if(session('error'))
+                    <p style="color:red; font-size: 0.9rem; margin: 10px 0;">{{ session('error') }}</p>
+                @endif
+                @if(session('success'))
+                    <p style="color:green; font-size: 0.9rem; margin: 10px 0;">{{ session('success') }}</p>
+                @endif
+                
                 <button type="submit" class="btn">Register</button>
             </form>
         </div>

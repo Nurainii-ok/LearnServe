@@ -50,12 +50,77 @@ Route::middleware(['role:member','prevent-back'])->group(function () {
 // Admin
 Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Members CRUD
+    Route::get('/members', [AdminController::class, 'members'])->name('members');
+    Route::get('/members/create', [AdminController::class, 'membersCreate'])->name('members.create');
+    Route::post('/members', [AdminController::class, 'membersStore'])->name('members.store');
+    Route::get('/members/{id}/edit', [AdminController::class, 'membersEdit'])->name('members.edit');
+    Route::put('/members/{id}', [AdminController::class, 'membersUpdate'])->name('members.update');
+    Route::delete('/members/{id}', [AdminController::class, 'membersDestroy'])->name('members.destroy');
+    
+    // Tutors CRUD
+    Route::get('/tutors', [AdminController::class, 'tutors'])->name('tutors');
+    Route::get('/tutors/create', [AdminController::class, 'tutorsCreate'])->name('tutors.create');
+    Route::post('/tutors', [AdminController::class, 'tutorsStore'])->name('tutors.store');
+    Route::get('/tutors/{id}/edit', [AdminController::class, 'tutorsEdit'])->name('tutors.edit');
+    Route::put('/tutors/{id}', [AdminController::class, 'tutorsUpdate'])->name('tutors.update');
+    Route::delete('/tutors/{id}', [AdminController::class, 'tutorsDestroy'])->name('tutors.destroy');
+    
+    // Classes CRUD
+    Route::get('/classes', [AdminController::class, 'classes'])->name('classes');
+    Route::get('/classes/create', [AdminController::class, 'classesCreate'])->name('classes.create');
+    Route::post('/classes', [AdminController::class, 'classesStore'])->name('classes.store');
+    Route::get('/classes/{id}/edit', [AdminController::class, 'classesEdit'])->name('classes.edit');
+    Route::put('/classes/{id}', [AdminController::class, 'classesUpdate'])->name('classes.update');
+    Route::delete('/classes/{id}', [AdminController::class, 'classesDestroy'])->name('classes.destroy');
+    
+    // Payments CRUD
+    Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
+    Route::get('/payments/create', [AdminController::class, 'paymentsCreate'])->name('payments.create');
+    Route::post('/payments', [AdminController::class, 'paymentsStore'])->name('payments.store');
+    Route::get('/payments/{id}/edit', [AdminController::class, 'paymentsEdit'])->name('payments.edit');
+    Route::put('/payments/{id}', [AdminController::class, 'paymentsUpdate'])->name('payments.update');
+    Route::delete('/payments/{id}', [AdminController::class, 'paymentsDestroy'])->name('payments.destroy');
+    
+    // Tasks CRUD
+    Route::get('/tasks', [AdminController::class, 'tasks'])->name('tasks');
+    Route::get('/tasks/create', [AdminController::class, 'tasksCreate'])->name('tasks.create');
+    Route::post('/tasks', [AdminController::class, 'tasksStore'])->name('tasks.store');
+    Route::get('/tasks/{id}/edit', [AdminController::class, 'tasksEdit'])->name('tasks.edit');
+    Route::put('/tasks/{id}', [AdminController::class, 'tasksUpdate'])->name('tasks.update');
+    Route::delete('/tasks/{id}', [AdminController::class, 'tasksDestroy'])->name('tasks.destroy');
+    
+    Route::get('/account', [AdminController::class, 'account'])->name('account');
 });
 
 // Tutor
 Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
     Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
+    
+    // Classes CRUD
     Route::get('/classes', [TutorController::class, 'classes'])->name('classes');
+    Route::get('/classes/create', [TutorController::class, 'classesCreate'])->name('classes.create');
+    Route::post('/classes', [TutorController::class, 'classesStore'])->name('classes.store');
+    Route::get('/classes/{id}/edit', [TutorController::class, 'classesEdit'])->name('classes.edit');
+    Route::put('/classes/{id}', [TutorController::class, 'classesUpdate'])->name('classes.update');
+    Route::delete('/classes/{id}', [TutorController::class, 'classesDestroy'])->name('classes.destroy');
+    
+    // Tasks CRUD
     Route::get('/tasks', [TutorController::class, 'tasks'])->name('tasks');
+    Route::get('/tasks/create', [TutorController::class, 'tasksCreate'])->name('tasks.create');
+    Route::post('/tasks', [TutorController::class, 'tasksStore'])->name('tasks.store');
+    Route::get('/tasks/{id}/edit', [TutorController::class, 'tasksEdit'])->name('tasks.edit');
+    Route::put('/tasks/{id}', [TutorController::class, 'tasksUpdate'])->name('tasks.update');
+    Route::delete('/tasks/{id}', [TutorController::class, 'tasksDestroy'])->name('tasks.destroy');
+    
+    // Grades CRUD
+    Route::get('/grades', [TutorController::class, 'grades'])->name('grades');
+    Route::get('/grades/create', [TutorController::class, 'gradesCreate'])->name('grades.create');
+    Route::post('/grades', [TutorController::class, 'gradesStore'])->name('grades.store');
+    Route::get('/grades/{id}/edit', [TutorController::class, 'gradesEdit'])->name('grades.edit');
+    Route::put('/grades/{id}', [TutorController::class, 'gradesUpdate'])->name('grades.update');
+    Route::delete('/grades/{id}', [TutorController::class, 'gradesDestroy'])->name('grades.destroy');
+    
     Route::get('/account', [TutorController::class, 'account'])->name('account');
 });

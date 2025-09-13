@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -56,34 +57,58 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:100',
-            'password' => 'required|string|min:4',
-            'role'     => 'required|in:admin,tutor,member',
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required|string|max:100|unique:users,name',
+                'password' => 'required|string|min:4',
+                'role'     => 'required|in:admin,tutor,member',
+            ], [
+                'username.unique' => 'Username sudah digunakan, silakan pilih username lain.',
+                'username.required' => 'Username wajib diisi.',
+                'password.min' => 'Password minimal 4 karakter.',
+                'role.required' => 'Role wajib dipilih.',
+                'role.in' => 'Role yang dipilih tidak valid.'
+            ]);
 
-        // buat user baru
-        $user = User::create([
-            'name'     => $request->username,
-            'email'    => strtolower($request->username).'@learnserve.com', // opsional
-            'password' => Hash::make($request->password),
-            'role'     => $request->role,
-        ]);
+            // Generate unique email
+            $baseEmail = strtolower($request->username);
+            $email = $baseEmail . '@learnserve.com';
+            
+            // Check if email already exists and make it unique
+            $counter = 1;
+            while (User::where('email', $email)->exists()) {
+                $email = $baseEmail . $counter . '@learnserve.com';
+                $counter++;
+            }
 
-        // auto login
-        session([
-            'user_id'  => $user->id,
-            'username' => $user->name,
-            'role'     => $user->role,
-        ]);
+            // buat user baru
+            $user = User::create([
+                'name'     => $request->username,
+                'email'    => $email,
+                'password' => Hash::make($request->password),
+                'role'     => $request->role,
+            ]);
 
-        // redirect sesuai role
-        return match ($user->role) {
-            'admin'  => redirect()->route('admin.dashboard'),
-            'tutor'  => redirect()->route('tutor.dashboard'),
-            'member' => redirect()->route('home'),
-            default  => redirect()->route('auth')->with('error', 'Role tidak dikenali.'),
-        };
+            // auto login
+            session([
+                'user_id'  => $user->id,
+                'username' => $user->name,
+                'role'     => $user->role,
+            ]);
+
+            // redirect sesuai role
+            return match ($user->role) {
+                'admin'  => redirect()->route('admin.dashboard'),
+                'tutor'  => redirect()->route('tutor.dashboard'),
+                'member' => redirect()->route('home'),
+                default  => redirect()->route('auth')->with('error', 'Role tidak dikenali.'),
+            };
+            
+        } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
+            \Log::error('Registration stack trace: ' . $e->getTraceAsString());
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat mendaftar: ' . $e->getMessage());
+        }
     }
 
     /**
