@@ -5,78 +5,7 @@
 @section('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    :root {
-        --primary-gold: #ecac57;
-        --primary-brown: #944e25;
-        --light-cream: #f3efec;
-        --deep-brown: #6b3419;
-        --shadow-hover: 0 8px 32px rgba(107, 52, 25, 0.15);
-    }
-
-    .hero {
-        background: linear-gradient(135deg, var(--light-cream) 0%, #f9f6f3 100%);
-        padding: 80px 0;
-        margin-bottom: 60px;
-    }
-
-    .hero h1 { font-weight: 700; }
-    .hero p { font-size: 1.2rem; color: #555; }
-
-    .card {
-        border: none;
-        border-radius: 16px;
-        overflow: hidden;
-        transition: 0.3s;
-    }
-
-    .card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-hover);
-    }
-
-    .card img {
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .course-card {
-    border-radius: 16px;
-    overflow: hidden;
-    transition: 0.3s;
-    border: 1px solid #eee;
-    }
-
-    .course-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    }
-
-    .course-card img {
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .course-card .card-body {
-        padding: 16px;
-    }
-
-    .stats-section {
-        background: linear-gradient(135deg, var(--primary-brown) 0%, var(--deep-brown) 100%);
-        padding: 60px 0;
-        border-radius: 24px;
-        color: white;
-        margin: 60px 0;
-    }
-
-    .partner-logo {
-        padding: 20px;
-        background: white;
-        border-radius: 12px;
-        font-weight: 600;
-        color: #666;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/bootcamp.css') }}">
 @endsection
 
 @section('content')
