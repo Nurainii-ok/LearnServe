@@ -17,22 +17,11 @@
     --text-secondary: #6b7280;
 }
 
-.dashboard-content {
-    padding: 0;
+.page-container {
+    padding: 2rem;
     margin: 0;
-    padding-top: 1rem;
-}
-
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .form-container {
@@ -202,7 +191,7 @@ textarea.form-control {
 @endsection
 
 @section('content')
-<div class="dashboard-content">
+<div class="page-container">
     <div class="form-container">
         <div class="form-header">
             <h2>Add Student Grade</h2>

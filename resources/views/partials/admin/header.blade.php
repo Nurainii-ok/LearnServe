@@ -1,5 +1,4 @@
 <header>
-
     <h1>
         <label for="nav-toggle">
             <span class="las la-bars"></span>
@@ -34,9 +33,9 @@
             @php
                 $currentUser = \App\Models\User::find(session('user_id'));
             @endphp
-            @if($currentUser && $currentUser->photo ?? false)
+            @if($currentUser && $currentUser->profile_photo)
                 <img 
-                    src="{{ asset('assets/tuktuk/' . $currentUser->photo) }}" 
+                    src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
                     width="40" 
                     height="40" 
                     alt="User Avatar"
@@ -81,5 +80,4 @@
             </div>
         @endif
     </div>
-
 </header>

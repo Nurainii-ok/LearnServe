@@ -21,9 +21,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register',[AuthController::class, 'register'])->name('register.post');
 
 // Logout
-// Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 // Halaman Umum
 Route::prefix('/')->middleware(['prevent-back'])->group(function () {
@@ -38,8 +36,6 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');
     Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
 });
-
-
 
 // Member
 Route::middleware(['role:member','prevent-back'])->group(function () {
@@ -91,13 +87,16 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/tasks/{id}', [AdminController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [AdminController::class, 'tasksDestroy'])->name('tasks.destroy');
     
+    // Account Management
     Route::get('/account', [AdminController::class, 'account'])->name('account');
+    Route::get('/account/edit', [AdminController::class, 'accountEdit'])->name('account.edit');
+    Route::put('/account', [AdminController::class, 'accountUpdate'])->name('account.update');
+    Route::put('/account/password', [AdminController::class, 'accountPasswordUpdate'])->name('account.password.update');
 });
 
 // Tutor
 Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
     Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
-<<<<<<< HEAD
     
     // Classes CRUD
     Route::get('/classes', [TutorController::class, 'classes'])->name('classes');
@@ -123,7 +122,9 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::put('/grades/{id}', [TutorController::class, 'gradesUpdate'])->name('grades.update');
     Route::delete('/grades/{id}', [TutorController::class, 'gradesDestroy'])->name('grades.destroy');
     
+    // Account Management
     Route::get('/account', [TutorController::class, 'account'])->name('account');
-=======
->>>>>>> c5c21c3ab5881b3608e1331b6d1ebd1821c9caf6
+    Route::get('/account/edit', [TutorController::class, 'accountEdit'])->name('account.edit');
+    Route::put('/account', [TutorController::class, 'accountUpdate'])->name('account.update');
+    Route::put('/account/password', [TutorController::class, 'accountPasswordUpdate'])->name('account.password.update');
 });

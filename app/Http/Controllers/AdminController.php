@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Payment;
 use App\Models\Task;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
@@ -381,7 +382,122 @@ class AdminController extends Controller
 
     public function account()
     {
-        return view('admin.account');
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            \Log::error('AdminController@account: No user_id in session');
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get admin user from database
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            \Log::error('AdminController@account: User not found or not admin', ['user_id' => $userId]);
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        return view('admin.account', compact('admin'));
+    }
+
+    public function accountEdit()
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get admin user from database
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        return view('admin.account-edit', compact('admin'));
+    }
+
+    public function accountUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        $request->validate([
+            'name' => ['required', 'string', 'max:100', Rule::unique('users')->ignore($admin->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($admin->id)],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($admin->profile_photo && file_exists(public_path('storage/profile_photos/' . $admin->profile_photo))) {
+                unlink(public_path('storage/profile_photos/' . $admin->profile_photo));
+            }
+            
+            // Store new photo
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $admin->id . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/profile_photos'), $filename);
+            $updateData['profile_photo'] = $filename;
+        }
+
+        $admin->update($updateData);
+        
+        // Update session data with new username
+        session(['username' => $request->name]);
+
+        return redirect()->route('admin.account')->with('success', 'Profile updated successfully!');
+    }
+
+    public function accountPasswordUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+
+        // Verify current password
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        $admin->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.account')->with('success', 'Password updated successfully!');
     }
 
     public function createMember()

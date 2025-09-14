@@ -5,19 +5,6 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <style>
-/* Override conflicting CSS from admin.css */
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
-
 .page-container {
     padding: 1rem 0;
 }

@@ -3,24 +3,9 @@
 @section('title', 'Members Management')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <style>
-/* Override conflicting CSS from admin.css */
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
-
 .page-container {
-    padding: 0;
+    padding: 2rem;
     margin: 0;
 }
 
@@ -29,6 +14,8 @@ header {
     padding: 2rem;
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
 .page-header h1 {
@@ -48,7 +35,6 @@ header {
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
-    margin: 0 2rem;
 }
 
 .card-header {
@@ -146,7 +132,7 @@ header {
 
 .alert {
     padding: 1rem;
-    margin: 1rem 2rem;
+    margin-bottom: 2rem;
     border-radius: 8px;
     font-weight: 500;
 }
