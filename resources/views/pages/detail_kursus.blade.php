@@ -171,13 +171,10 @@
               style="background-color:#944e25; color:white; border:none;">
         Tambahkan ke Keranjang
       </button>-->
-      <a href="{{ route('checkout') }}"></a>
-
-      <a href="{{ route('beli_sekarang') }}" >
-
-        class="btn w-100 fw-bold mb-3" 
-        style="background-color:#944e25; color:white; border:none;">
-          Beli Sekarang
+      <a href="{{ route('checkout') }}" 
+         class="btn w-100 fw-bold mb-3" 
+         style="background-color:#944e25; color:white; border:none;">
+          <i class="fas fa-credit-card me-2"></i>Beli Sekarang
       </a>
 
 

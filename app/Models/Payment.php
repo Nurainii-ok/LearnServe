@@ -20,15 +20,21 @@ class Payment extends Model
         'whatsapp',
         'amount',
         'payment_method',
+        'payment_type',
         'transaction_id',
+        'snap_token',
+        'midtrans_response',
         'status',
         'payment_date',
+        'midtrans_paid_at',
         'notes'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'payment_date' => 'datetime'
+        'payment_date' => 'datetime',
+        'midtrans_paid_at' => 'datetime',
+        'midtrans_response' => 'array'
     ];
 
     // Relationships

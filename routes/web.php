@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PagesController;
@@ -39,6 +40,18 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');
     Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
     Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout-test', function() { return view('pages.checkout_test'); })->name('checkout.test');
+});
+
+// Payment Routes (Midtrans)
+Route::prefix('payment')->name('payment.')->group(function () {
+    Route::post('/create-transaction', [PaymentController::class, 'createTransaction'])->name('create');
+    Route::post('/notification', [PaymentController::class, 'handleNotification'])->name('notification');
+    Route::get('/finish', [PaymentController::class, 'paymentFinish'])->name('finish');
+    Route::get('/success', [PaymentController::class, 'paymentSuccess'])->name('success');
+    Route::get('/failed', [PaymentController::class, 'paymentFailed'])->name('failed');
+    Route::get('/status/{orderId}', [PaymentController::class, 'checkStatus'])->name('status');
+    Route::get('/test', [PaymentController::class, 'testMidtrans'])->name('test');
 });
 
 // Member
