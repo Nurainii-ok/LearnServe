@@ -165,13 +165,9 @@
       <p style="color:#d9534f;"><i class="bi bi-alarm"></i> 14 jam lagi dengan harga ini!</p>
 
       <!-- Tombol -->
-      <button class="btn w-100 fw-bold mb-2" 
-              style="background-color:#944e25; color:white; border:none;">
-        Tambahkan ke Keranjang
-      </button>
       <a href="{{ route('beli_sekarang') }}" 
         class="btn w-100 fw-bold mb-3" 
-        style="border:2px solid #944e25; color:#944e25;">
+        style="background-color:#944e25; color:white; border:none;">
           Beli Sekarang
       </a>
 

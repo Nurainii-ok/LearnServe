@@ -332,6 +332,16 @@
         
         <div class="stat-card">
             <div class="stat-info">
+                <h3>{{ $totalBootcamps }}</h3>
+                <p>Active Bootcamps</p>
+            </div>
+            <div class="stat-icon">
+                <i class="las la-rocket"></i>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-info">
                 <h3>Rp{{ number_format($totalRevenue, 0, ',', '.') }}</h3>
                 <p>Monthly Revenue</p>
             </div>

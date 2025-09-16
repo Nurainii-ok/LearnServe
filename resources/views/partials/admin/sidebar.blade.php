@@ -32,6 +32,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.bootcamps') }}" class="{{ request()->routeIs('admin.bootcamps*') ? 'active' : '' }}">
+                    <span class="las la-rocket"></span>
+                    <span>Bootcamp</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.payments') }}" class="{{ request()->routeIs('admin.payments*') ? 'active' : '' }}">
                     <span class="las la-credit-card"></span>
                     <span>Payments</span>

@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Create New Class')
+@extends('layouts.admin')
+
+@section('title', 'Create New Bootcamp')
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
@@ -177,17 +179,17 @@ textarea.form-control {
 <div class="page-container">
     <div class="form-container">
         <div class="form-header">
-            <h2>Create New Class</h2>
-            <a href="{{ route('admin.classes') }}" class="back-btn">
-                <i class="las la-arrow-left"></i> Back to Classes
+            <h2>Create New Bootcamp</h2>
+            <a href="{{ route('admin.bootcamps') }}" class="back-btn">
+                <i class="las la-arrow-left"></i> Back to Bootcamps
             </a>
         </div>
 
-        <form action="{{ route('admin.classes.store') }}" method="POST" class="form-body">
+        <form action="{{ route('admin.bootcamps.store') }}" method="POST" class="form-body">
             @csrf
             
             <div class="form-group">
-                <label for="title">Class Title *</label>
+                <label for="title">Bootcamp Title *</label>
                 <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}" required>
                 @error('title')
                     <div class="error-message">{{ $message }}</div>
@@ -204,7 +206,7 @@ textarea.form-control {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="tutor_id">Tutor *</label>
+                    <label for="tutor_id">Assigned Tutor *</label>
                     <select id="tutor_id" name="tutor_id" class="form-control" required>
                         <option value="">Select a tutor</option>
                         @foreach($tutors as $tutor)
@@ -219,9 +221,14 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category') }}" placeholder="e.g., Web Development, Programming">
-                    @error('category')
+                    <label for="level">Level *</label>
+                    <select id="level" name="level" class="form-control" required>
+                        <option value="">Select level</option>
+                        <option value="beginner" {{ old('level') == 'beginner' ? 'selected' : '' }}>Beginner</option>
+                        <option value="intermediate" {{ old('level') == 'intermediate' ? 'selected' : '' }}>Intermediate</option>
+                        <option value="advanced" {{ old('level') == 'advanced' ? 'selected' : '' }}>Advanced</option>
+                    </select>
+                    @error('level')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
@@ -245,41 +252,55 @@ textarea.form-control {
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="start_date">Start Date *</label>
+                    <input type="datetime-local" id="start_date" name="start_date" class="form-control" value="{{ old('start_date') }}" required>
+                    @error('start_date')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="end_date">End Date *</label>
+                    <input type="datetime-local" id="end_date" name="end_date" class="form-control" value="{{ old('end_date') }}" required>
+                    @error('end_date')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration">Duration *</label>
+                    <input type="text" id="duration" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="e.g., 12 weeks, 3 months" required>
+                    @error('duration')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category') }}" placeholder="e.g., Programming, Design">
+                    @error('category')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
             <div class="form-group">
-                <label for="schedule">Schedule</label>
-                <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Self-paced learning, Available 24/7">
-                @error('schedule')
+                <label for="requirements">Requirements</label>
+                <textarea id="requirements" name="requirements" class="form-control" placeholder="Prerequisites and requirements for this bootcamp">{{ old('requirements') }}</textarea>
+                @error('requirements')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-actions">
-                <a href="{{ route('admin.classes') }}" class="btn-secondary">Cancel</a>
-                <button type="submit" class="btn-primary">Create Class</button>
+                <a href="{{ route('admin.bootcamps') }}" class="btn-secondary">Cancel</a>
+                <button type="submit" class="btn-primary">Create Bootcamp</button>
             </div>
         </form>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-focus first input
-    document.getElementById('title').focus();
-    
-    // Add form validation
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        const startDate = new Date(document.getElementById('start_date').value);
-        const endDate = new Date(document.getElementById('end_date').value);
-        
-        if (endDate <= startDate) {
-            e.preventDefault();
-            alert('End date must be after start date');
-            return false;
-        }
-    });
-});
-</script>
 @endsection

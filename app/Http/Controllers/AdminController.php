@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Classes;
+use App\Models\Bootcamp;
 use App\Models\Payment;
 use App\Models\Task;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +19,7 @@ class AdminController extends Controller
         $totalMembers = User::where('role', 'member')->count();
         $totalTutors = User::where('role', 'tutor')->count();
         $totalClasses = Classes::count();
+        $totalBootcamps = Bootcamp::count();
         $totalRevenue = Payment::where('status', 'completed')->sum('amount');
         
         // Get recent members
@@ -36,6 +38,7 @@ class AdminController extends Controller
             'totalMembers', 
             'totalTutors', 
             'totalClasses', 
+            'totalBootcamps',
             'totalRevenue', 
             'recentMembers', 
             'recentTutors'
@@ -244,6 +247,78 @@ class AdminController extends Controller
         $class->delete();
 
         return redirect()->route('admin.classes')->with('success', 'Class deleted successfully!');
+    }
+
+    // Bootcamps CRUD
+    public function bootcamps()
+    {
+        $bootcamps = Bootcamp::with('tutor')->latest()->paginate(10);
+        return view('admin.bootcamps.index', compact('bootcamps'));
+    }
+
+    public function bootcampsCreate()
+    {
+        $tutors = User::where('role', 'tutor')->get();
+        return view('admin.bootcamps.create', compact('tutors'));
+    }
+
+    public function bootcampsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tutor_id' => 'required|exists:users,id',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'duration' => 'required|string',
+            'category' => 'nullable|string',
+            'level' => 'required|in:beginner,intermediate,advanced',
+            'requirements' => 'nullable|string',
+        ]);
+
+        Bootcamp::create($request->all());
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp created successfully!');
+    }
+
+    public function bootcampsEdit($id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        $tutors = User::where('role', 'tutor')->get();
+        return view('admin.bootcamps.edit', compact('bootcamp', 'tutors'));
+    }
+
+    public function bootcampsUpdate(Request $request, $id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tutor_id' => 'required|exists:users,id',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'duration' => 'required|string',
+            'category' => 'nullable|string',
+            'level' => 'required|in:beginner,intermediate,advanced',
+            'requirements' => 'nullable|string',
+        ]);
+
+        $bootcamp->update($request->all());
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp updated successfully!');
+    }
+
+    public function bootcampsDestroy($id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        $bootcamp->delete();
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp deleted successfully!');
     }
 
     // Payments CRUD

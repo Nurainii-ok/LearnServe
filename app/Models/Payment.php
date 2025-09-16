@@ -14,6 +14,10 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'class_id',
+        'full_name',
+        'email',
+        'phone',
+        'whatsapp',
         'amount',
         'payment_method',
         'transaction_id',
@@ -36,6 +40,12 @@ class Payment extends Model
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    // Helper method to get customer name
+    public function getCustomerNameAttribute()
+    {
+        return $this->full_name ?: ($this->user ? $this->user->name : 'Guest');
     }
 
     // Scopes
