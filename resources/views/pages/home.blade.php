@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Bootcamp & Program')
+@section('title', 'Home')
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/home.css') }}">
@@ -24,187 +24,137 @@
 
     </section>
 
-    <!-- Clean Categories Section -->
-    <section class="section-spacing py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="section-badge">⭐ Kategori Terpopuler</span>
-                <h2 class="section-title">Jelajahi Kursus</h2>
-                <p class="section-subtitle">
-                    Kembangkan skill yang paling dibutuhkan industri dan raih karir impianmu
-                </p>
-            </div>
+    <section class="popular-category-section py-5" style="background-color:#f9f9f9;">
+  <div class="container">
 
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">💻</div>
-                        <div class="category-title">Software Development</div>
-                        <div class="category-desc">
-                            Pelajari bahasa pemrograman modern dan framework terbaru untuk membangun aplikasi canggih
-                        </div>
-                    </div>
-                </div>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h4 class="fw-bold mb-1">Popular category</h4>
+        <p class="text-muted small mb-0">2020 jobs live – 293 added today.</p>
+      </div>
+      <a href="#" class="text-success fw-semibold">View all categories</a>
+    </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">📱</div>
-                        <div class="category-title">Digital Marketing</div>
-                        <div class="category-desc">
-                            Kuasai strategi pemasaran digital dan tools terbaru untuk mengembangkan bisnis
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">📊</div>
-                        <div class="category-title">Business Intelligence</div>
-                        <div class="category-desc">
-                            Analisis data untuk membuat keputusan bisnis yang tepat dan strategis
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">🚀</div>
-                        <div class="category-title">Freelancing Journey</div>
-                        <div class="category-desc">
-                            Bangun karir freelance yang sukses dan mandiri dari nol hingga profesional
-                        </div>
-                    </div>
-                    </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">📈</div>
-                        <div class="category-title">Data Analytics</div>
-                        <div class="category-desc">
-                            Pahami perilaku pelanggan melalui analisis data yang mendalam
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">🎨</div>
-                        <div class="category-title">UX Design</div>
-                        <div class="category-desc">
-                            Ciptakan pengalaman pengguna yang menarik dan konten yang engaging
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">🔍</div>
-                        <div class="category-title">Quality Assurance</div>
-                        <div class="category-desc">
-                            Pastikan kualitas software melalui testing yang comprehensive
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <div class="category-icon">💼</div>
-                        <div class="category-title">Business Skills</div>
-                        <div class="category-desc">
-                            Kembangkan kemampuan bisnis dan kepemimpinan yang esensial
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Categories Row -->
+    <div class="row g-3">
+      <!-- Category Card -->
+      <div class="col-6 col-md-3">
+        <div class="category-card h-100 shadow-sm">
+          <div class="icon-box">
+            <i class="bi bi-code-slash"></i>
+          </div>
+          <h6 class="fw-semibold">Development & IT</h6>
+          <p class="small text-muted mb-1">16 jobs</p>
+          <p class="small text-muted">Frontend, backend, web and app developer jobs.</p>
         </div>
-    </section>
+      </div>
 
-
-    <!-- Clean Popular Courses Section -->
-    <section class="section-spacing py-5">
-        <div class="container">
-            <div class="row align-items-center mb-5">
-                <div class="col">
-                    <h2 class="section-title mb-2">Kelas Populer</h2>
-                    <!--<p class="section-subtitle mb-0">Kelas terpopuler yang banyak diminati dan terbukti mengantarkan siswa meraih kesuksesan</p>-->
-                </div>
-               <div class="col-auto">
-                    <a href="{{ route('learning') }}" style="color: var(--primary-brown); font-weight: 600; text-decoration: none; font-size: 1.1rem;">Lihat Semua →</a>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <a href="{{ route('detail_kursus', ['slug' => 'data-science-analytics']) }}" class="text-decoration-none text-dark">
-                        <div class="popular-course">
-                            <div class="course-image">
-                                <img src="{{ asset('assets/Data Analytics.jpg') }}" alt="Data Science & Analytics">
-                            </div>
-                            <div class="course-content">
-                                <div class="course-title">Data Science & Analytics</div>
-                                <div class="course-desc">
-                                    Optimasi bisnis melalui internet dengan strategi marketing digital yang efektif dan terukur
-                                </div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span>⭐</span>
-                                        <span>4.7 (1.5k)</span>
-                                    </div>
-                                    <div class="course-price">Rp 249.000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <a href="{{ route('detail_kursus', ['slug' => 'web-development']) }}" class="text-decoration-none text-dark">
-                        <div class="popular-course">
-                            <div class="course-image">
-                                <img src="{{ asset('assets/Full Stack.jpg') }}" alt="Web Development">
-                            </div>
-                            <div class="course-content">
-                                <div class="course-title">Full Stack Web Development</div>
-                                <div class="course-desc">
-                                    Belajar membangun aplikasi web dari frontend sampai backend dengan teknologi modern
-                                </div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span>⭐</span>
-                                        <span>4.9 (2.1k)</span>
-                                    </div>
-                                    <div class="course-price">Rp 299.000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <a href="{{ route('detail_kursus', ['slug' => 'digital-marketing']) }}" class="text-decoration-none text-dark">
-                        <div class="popular-course">
-                            <div class="course-image">
-                                <img src="{{ asset('assets/Digital marketing.jpg') }}" alt="Digital Marketing">
-                            </div>
-                            <div class="course-content">
-                                <div class="course-title">Digital Marketing</div>
-                                    <div class="course-desc">
-                                        Kuasai strategi digital marketing untuk bisnis online dan brand building
-                                    </div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span>⭐</span>
-                                        <span>4.7 (1.5k)</span>
-                                    </div>
-                                    <div class="course-price">Rp 249.000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+      <div class="col-6 col-md-3">
+        <div class="category-card h-100 shadow-sm">
+          <div class="icon-box">
+            <i class="bi bi-bullseye"></i>
+          </div>
+          <h6 class="fw-semibold">Marketing & Sales</h6>
+          <p class="small text-muted mb-1">8 jobs</p>
+          <p class="small text-muted">Advertising, digital marketing and brand...</p>
         </div>
-    </section>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="category-card h-100 shadow-sm">
+          <div class="icon-box">
+            <i class="bi bi-palette"></i>
+          </div>
+          <h6 class="fw-semibold">Design & Creative</h6>
+          <p class="small text-muted mb-1">13 jobs</p>
+          <p class="small text-muted">Graphic, digital, web, and product design jobs.</p>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="category-card h-100 shadow-sm">
+          <div class="icon-box">
+            <i class="bi bi-people"></i>
+          </div>
+          <h6 class="fw-semibold">Customer Service</h6>
+          <p class="small text-muted mb-1">8 jobs</p>
+          <p class="small text-muted">Customer experience and account management jobs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="all-courses-section py-5" style="background-color: #f3efec;">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold mb-3 mb-md-0">
+        All <span style="color: #4caf50;">Courses</span> of Edule
+      </h2>
+      <div class="search-box">
+        <input type="text" class="form-control" placeholder="Search your course">
+        <button class="btn btn-link p-0">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="d-flex flex-wrap gap-2 mb-5">
+      <button class="btn btn-light active">UI/UX Design</button>
+      <button class="btn btn-light">Development</button>
+      <button class="btn btn-light">Data Science</button>
+      <button class="btn btn-light">Business</button>
+      <button class="btn btn-light">Financial</button>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="row g-4">
+      <!-- Course Card -->
+      <div class="col-lg-4 col-md-6">
+        <div class="course-card shadow-sm h-100">
+          <div class="course-img">
+            <img src="assets/Data Analytics.jpg" alt="Course">
+          </div>
+          <div class="course-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="assets/avatar1.jpg" class="avatar">
+              <div class="ms-2 small">
+                <div class="fw-semibold">Jason Williams</div>
+                <div class="badge bg-success-subtle text-success">Science</div>
+              </div>
+            </div>
+            <h5 class="fw-semibold mb-2">Data Science and Machine Learning with Python - Hands On!</h5>
+            <div class="d-flex justify-content-between small text-muted mb-3">
+              <span><i class="bi bi-clock"></i> 08 hr 15 mins</span>
+              <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="price">
+                <span class="text-success fw-bold">$385.00</span>
+                <span class="text-decoration-line-through text-muted small">$440.00</span>
+              </div>
+              <div class="rating text-warning fw-semibold">4.9 ★</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copy 5x lagi untuk course lain -->
+      <!-- ... -->
+    </div>
+
+    <!-- Button -->
+    <div class="text-center mt-5">
+  <a href="{{ route('learning') }}" class="btn btn-outline-success px-4">
+    Other Course
+  </a>
+</div>
+
+</section>
   
 
     <!-- Clean Why Choose Section -->
@@ -306,7 +256,7 @@
 
     <!-- FAQ Section -->
     <section class="section-spacing bg-light">
-        <div class="container"><!-- ✅ Tambahin container di sini -->
+        <div class="container">
             <div class="text-center mb-5">
                 <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
                 <p class="section-subtitle">Temukan jawaban dari pertanyaan umum tentang LearnServe</p>
@@ -458,7 +408,7 @@
     </section>         
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>-->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Smooth scroll animation

@@ -57,8 +57,10 @@ class PagesController extends Controller
         // Get bootcamp/intensive classes
         $bootcampClasses = Classes::with(['tutor', 'payments'])
             ->where('status', 'active')
-            ->where('category', 'like', '%bootcamp%')
-            ->orWhere('category', 'like', '%intensive%')
+            ->where(function ($q) {
+                $q->where('category', 'like', '%bootcamp%')
+                  ->orWhere('category', 'like', '%intensive%');
+            })
             ->latest()
             ->get();
             
@@ -77,9 +79,9 @@ class PagesController extends Controller
         return view('pages.webinar', compact('webinarClasses'));
     }
 
-    public function deskripsiKelas()
+    public function deskripsibootcamp()
     {
-        return view('pages.deskripsi_kelas');
+        return view('pages.deskripsi_bootcamp');
     }
 
     public function detailKursus()
@@ -149,5 +151,11 @@ class PagesController extends Controller
             ->pluck('category');
             
         return view('pages.kelas', compact('classes', 'categories'));
+    }
+
+    public function checkout()
+    {
+        // kalau nanti checkout butuh data kelas/pembayaran, bisa dioper dari sini
+        return view('pages.checkout');
     }
 }

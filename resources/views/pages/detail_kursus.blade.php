@@ -141,7 +141,7 @@
       <div class="mb-4">
         <h5 class="fw-bold mb-3">Instruktur</h5>
         <div class="d-flex align-items-center">
-          <img src="{{ asset('assets/instructors/mentor2.jpg') }}" alt="Instruktur" class="rounded-circle me-3" style="width:60px; height:60px; object-fit:cover;">
+          <img src="{{ asset('assets/L1.jpg') }}" alt="Instruktur" class="rounded-circle me-3" style="width:60px; height:60px; object-fit:cover;">
           <div>
             <h6 class="mb-0">Ahmad Rizki</h6>
             <small class="text-muted">Senior Full Stack Developer</small>
@@ -162,14 +162,14 @@
         <small class="text-muted text-decoration-line-through fs-6">Rp169.000</small>
       </h3>
       <p style="color:#944e25; font-weight:600;">Diskon 18%</p>
-      <p style="color:#d9534f;"><i class="bi bi-alarm"></i> 14 jam lagi dengan harga ini!</p>
+      <!--<p style="color:#d9534f;"><i class="bi bi-alarm"></i> 14 jam lagi dengan harga ini!</p>-->
 
       <!-- Tombol -->
-      <button class="btn w-100 fw-bold mb-2" 
+      <!--<button class="btn w-100 fw-bold mb-2" 
               style="background-color:#944e25; color:white; border:none;">
         Tambahkan ke Keranjang
-      </button>
-      <a href="{{ route('beli_sekarang') }}" 
+      </button>-->
+      <a href="{{ route('checkout') }}" 
         class="btn w-100 fw-bold mb-3" 
         style="border:2px solid #944e25; color:#944e25;">
           Beli Sekarang

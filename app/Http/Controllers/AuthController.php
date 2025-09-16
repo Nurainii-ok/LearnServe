@@ -105,8 +105,8 @@ class AuthController extends Controller
             };
             
         } catch (\Exception $e) {
-            \Log::error('Registration error: ' . $e->getMessage());
-            \Log::error('Registration stack trace: ' . $e->getTraceAsString());
+            Log::error('Registration error: ' . $e->getMessage());
+            Log::error('Registration stack trace: ' . $e->getTraceAsString());
             return back()->withInput()->with('error', 'Terjadi kesalahan saat mendaftar: ' . $e->getMessage());
         }
     }

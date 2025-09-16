@@ -38,10 +38,16 @@
                             <input type="text" class="form-control" id="hp" placeholder="0812xxxxxxx" required>
                         </div>
 
-                        <!-- Catatan -->
+                        <!-- Nama Bootcamp -->
                         <div class="mb-3">
-                            <label for="catatan" class="form-label">Catatan Tambahan</label>
-                            <textarea id="catatan" class="form-control" rows="3" placeholder="Tuliskan catatan atau pertanyaan..."></textarea>
+                            <label for="bootcamp" class="form-label">Pilih Bootcamp</label>
+                            <select id="bootcamp" class="form-select" required>
+                                <option value="" selected disabled>-- Pilih Bootcamp --</option>
+                                <option value="laravel" data-price="169000">Laravel: Pemula sampai Mahir (Rp169.000)</option>
+                                <option value="uiux" data-price="149000">UI/UX Design Fundamentals (Rp149.000)</option>
+                                <option value="digital_marketing" data-price="0">Digital Marketing (Gratis)</option>
+                                <option value="data_science" data-price="199000">Data Science dengan Python (Rp199.000)</option>
+                            </select>
                         </div>
 
                         <!-- Tombol -->
@@ -63,14 +69,20 @@
 document.getElementById('bootcampForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Tampilkan alert sukses
-    document.getElementById('successAlert').classList.remove('d-none');
+    // Ambil data harga dari opsi bootcamp
+    const bootcampSelect = document.getElementById('bootcamp');
+    const selectedOption = bootcampSelect.options[bootcampSelect.selectedIndex];
+    const price = parseInt(selectedOption.getAttribute('data-price'));
 
-    // Reset form
-    this.reset();
-
-    // Scroll ke alert
-    document.getElementById('successAlert').scrollIntoView({ behavior: 'smooth' });
+    if (price === 0) {
+        // Gratis → tampilkan alert sukses
+        document.getElementById('successAlert').classList.remove('d-none');
+        this.reset();
+        document.getElementById('successAlert').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        // Berbayar → pindah ke halaman checkout
+        window.location.href = "/checkout?bootcamp=" + selectedOption.value;
+    }
 });
 </script>
 @endsection
