@@ -1,5 +1,10 @@
 @extends('layouts.app')
+
 @section('title', 'Home')
+
+
+@section('title', 'Bootcamp & Program')
+
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/home.css') }}">

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title', 'Bootcamp & Program')
 
 {{-- CSS --}}
