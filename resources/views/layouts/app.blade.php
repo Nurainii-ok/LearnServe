@@ -7,7 +7,8 @@
   
   
   {{-- Bootstrap CDN --}}
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/header_footer.css') }}">
   
   {{-- Global CSS --}}
   <style>
@@ -20,8 +21,6 @@
   @yield('styles')
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
   @include('partials.header')
 
   <main {{--class="container py-5"--}}>
@@ -30,7 +29,21 @@
 
   @include('partials.footer')
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (REQUIRED for dropdown & navbar toggle) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Simple and reliable dropdown initialization -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simple initialization without complex configuration
+      const dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+      const dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl);
+      });
+      
+      console.log('Dropdowns initialized:', dropdownList.length);
+    });
+  </script>
 
   {{-- Script khusus halaman --}}
   @yield('scripts')

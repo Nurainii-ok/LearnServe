@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-@extends('layouts.admin')
-
 @section('title', 'Edit Bootcamp')
 
 @section('styles')

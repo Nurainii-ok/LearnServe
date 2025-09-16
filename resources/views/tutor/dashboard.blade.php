@@ -6,19 +6,6 @@
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <style>
 .dashboard-content { padding: 0; margin: 0; padding-top: 1rem; }
-
-/* Override conflicting CSS from admin.css */
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
 .stat-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease; position: relative; }
 .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--primary-brown); }

@@ -222,6 +222,17 @@ textarea.form-control {
             @csrf
             @method('PUT')
             
+            @if ($errors->any())
+                <div class="alert alert-danger" style="background: #fee; border: 1px solid #f88; color: #c33; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; font-weight: 600;">Please fix the following errors:</h4>
+                    <ul style="margin: 0; padding-left: 1.2rem;">
+                        @foreach ($errors->all() as $error)
+                            <li style="font-size: 0.875rem;">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <div class="status-badge status-{{ $class->status }}">
                 Status: {{ ucfirst($class->status) }}
             </div>
@@ -320,6 +331,20 @@ textarea.form-control {
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Auto-focus first input
+    document.getElementById('title').focus();
+    
+    // Set minimum date to current date/time for future classes
+    const now = new Date();
+    const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+    
+    // Only set min date if class is not already completed
+    const status = document.getElementById('status').value;
+    if (status !== 'completed') {
+        document.getElementById('start_date').min = minDate;
+        document.getElementById('end_date').min = minDate;
+    }
+    
     // Add form validation
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
@@ -330,6 +355,14 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             alert('End date must be after start date');
             return false;
+        }
+    });
+    
+    // Update end date minimum when start date changes
+    document.getElementById('start_date').addEventListener('change', function() {
+        const startDate = this.value;
+        if (startDate) {
+            document.getElementById('end_date').min = startDate;
         }
     });
 });

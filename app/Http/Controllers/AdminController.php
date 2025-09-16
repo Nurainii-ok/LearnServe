@@ -59,20 +59,46 @@ class AdminController extends Controller
 
     public function membersStore(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:100|unique:users,name',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:4',
+        // Debug logging
+        Log::info('Member store method called', [
+            'request_data' => $request->all(),
+            'session_data' => [
+                'user_id' => session('user_id'),
+                'role' => session('role'),
+                'username' => session('username')
+            ]
         ]);
+        
+        try {
+            $request->validate([
+                'name' => 'required|string|max:100|unique:users,name',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:4',
+            ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'member',
-        ]);
+            $member = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'member',
+            ]);
+            
+            Log::info('Member created successfully', ['member_id' => $member->id]);
 
-        return redirect()->route('admin.members')->with('success', 'Member created successfully!');
+            return redirect()->route('admin.members')->with('success', 'Member created successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed in membersStore', [
+                'errors' => $e->errors(),
+                'input' => $request->all()
+            ]);
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Exception in membersStore', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->withInput()->with('error', 'An error occurred while creating the member: ' . $e->getMessage());
+        }
     }
 
     public function membersEdit($id)

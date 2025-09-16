@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
 <body>
+    <!-- Back to Website Button -->
+    <div class="back-to-website-auth">
+        <a href="{{ route('home') }}" class="btn-back-to-website-auth" title="Back to Website">
+            <i class='bx bx-globe'></i>
+            <span>Back to Website</span>
+        </a>
+    </div>
+    
     <!-- Logo di pojok -->
     <!--<img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">-->
 

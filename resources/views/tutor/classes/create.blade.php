@@ -197,6 +197,17 @@ textarea.form-control {
         <form action="{{ route('tutor.classes.store') }}" method="POST" class="form-body">
             @csrf
             
+            @if ($errors->any())
+                <div class="alert alert-danger" style="background: #fee; border: 1px solid #f88; color: #c33; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; font-weight: 600;">Please fix the following errors:</h4>
+                    <ul style="margin: 0; padding-left: 1.2rem;">
+                        @foreach ($errors->all() as $error)
+                            <li style="font-size: 0.875rem;">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <div class="form-group">
                 <label for="title">Class Title *</label>
                 <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}" required>
@@ -282,16 +293,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-focus first input
     document.getElementById('title').focus();
     
+    // Set minimum date to current date/time
+    const now = new Date();
+    const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+    document.getElementById('start_date').min = minDate;
+    document.getElementById('end_date').min = minDate;
+    
     // Add form validation
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
         const startDate = new Date(document.getElementById('start_date').value);
         const endDate = new Date(document.getElementById('end_date').value);
+        const currentDate = new Date();
+        
+        if (startDate <= currentDate) {
+            e.preventDefault();
+            alert('Start date must be in the future');
+            return false;
+        }
         
         if (endDate <= startDate) {
             e.preventDefault();
             alert('End date must be after start date');
             return false;
+        }
+    });
+    
+    // Update end date minimum when start date changes
+    document.getElementById('start_date').addEventListener('change', function() {
+        const startDate = this.value;
+        if (startDate) {
+            document.getElementById('end_date').min = startDate;
         }
     });
 });

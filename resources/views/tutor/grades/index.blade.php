@@ -23,18 +23,6 @@
     padding-top: 1rem;
 }
 
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
-
 .data-table-container {
     background: white;
     border-radius: 12px;

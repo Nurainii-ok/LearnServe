@@ -278,3 +278,58 @@ form {
     height: auto;
     z-index: 1000;        /* supaya di atas elemen lain */
 }
+
+/* Back to Website Button for Auth Page */
+.back-to-website-auth {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.btn-back-to-website-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: #944e25;
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(148, 78, 37, 0.2);
+}
+
+.btn-back-to-website-auth:hover {
+    background: #ecac57;
+    color: #944e25;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(148, 78, 37, 0.3);
+    text-decoration: none;
+}
+
+.btn-back-to-website-auth i {
+    font-size: 1.1rem;
+}
+
+/* Responsive for auth button */
+@media only screen and (max-width: 768px) {
+    .btn-back-to-website-auth span {
+        display: none;
+    }
+    
+    .btn-back-to-website-auth {
+        padding: 0.75rem;
+        min-width: 45px;
+        justify-content: center;
+    }
+    
+    .back-to-website-auth {
+        top: 15px;
+        right: 15px;
+    }
+}

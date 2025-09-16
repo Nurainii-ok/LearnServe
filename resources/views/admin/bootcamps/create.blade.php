@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-@extends('layouts.admin')
-
 @section('title', 'Create New Bootcamp')
 
 @section('styles')
@@ -187,6 +185,17 @@ textarea.form-control {
 
         <form action="{{ route('admin.bootcamps.store') }}" method="POST" class="form-body">
             @csrf
+            
+            @if ($errors->any())
+                <div class="alert alert-danger" style="background: #fee; border: 1px solid #f88; color: #c33; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; font-weight: 600;">Please fix the following errors:</h4>
+                    <ul style="margin: 0; padding-left: 1.2rem;">
+                        @foreach ($errors->all() as $error)
+                            <li style="font-size: 0.875rem;">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             
             <div class="form-group">
                 <label for="title">Bootcamp Title *</label>

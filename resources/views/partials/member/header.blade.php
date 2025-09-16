@@ -16,6 +16,14 @@
       </div>
     </div>
     <!-- /Search -->
+    
+    <!-- Back to Website Button -->
+    <div class="me-3">
+      <a href="{{ route('home') }}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" title="Back to Website">
+        <i class="bx bx-globe"></i>
+        <span class="d-none d-md-inline">Back to Website</span>
+      </a>
+    </div>
 
     <ul class="navbar-nav flex-row align-items-center ms-auto">
 

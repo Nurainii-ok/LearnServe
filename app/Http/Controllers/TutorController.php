@@ -162,26 +162,52 @@ class TutorController extends Controller
     
     public function tasksStore(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'class_id' => 'required|exists:classes,id',
-            'due_date' => 'required|date|after:now',
-            'priority' => 'required|in:low,medium,high',
-            'instructions' => 'nullable|string',
+        // Debug logging
+        Log::info('Tasks store method called', [
+            'request_data' => $request->all(),
+            'session_data' => [
+                'user_id' => session('user_id'),
+                'role' => session('role'),
+                'username' => session('username')
+            ]
         ]);
         
-        // Verify the class belongs to this tutor
-        $class = Classes::where('id', $request->class_id)
-            ->where('tutor_id', session('user_id'))
-            ->firstOrFail();
+        try {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'class_id' => 'required|exists:classes,id',
+                'due_date' => 'required|date|after:now',
+                'priority' => 'required|in:low,medium,high',
+                'instructions' => 'nullable|string',
+            ]);
+            
+            // Verify the class belongs to this tutor
+            $class = Classes::where('id', $request->class_id)
+                ->where('tutor_id', session('user_id'))
+                ->firstOrFail();
 
-        Task::create(array_merge($request->all(), [
-            'assigned_by' => session('user_id'),
-            'status' => 'pending'
-        ]));
+            $task = Task::create(array_merge($request->all(), [
+                'assigned_by' => session('user_id'),
+                'status' => 'pending'
+            ]));
+            
+            Log::info('Task created successfully', ['task_id' => $task->id]);
 
-        return redirect()->route('tutor.tasks')->with('success', 'Task created successfully!');
+            return redirect()->route('tutor.tasks')->with('success', 'Task created successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed in tasksStore', [
+                'errors' => $e->errors(),
+                'input' => $request->all()
+            ]);
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Exception in tasksStore', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->withInput()->with('error', 'An error occurred while creating the task: ' . $e->getMessage());
+        }
     }
     
     public function tasksEdit($id)

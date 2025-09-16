@@ -93,4 +93,110 @@ body {
     background-color: #d9963d;     /* versi lebih gelap dari emas */
 }
 
+/* Dropdown styling fixes */
+.navbar .dropdown {
+    position: relative;
+    z-index: 1050;
+}
+
+.navbar .dropdown-toggle {
+    cursor: pointer !important;
+    text-decoration: none !important;
+    color: #944e25 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0.5rem !important;
+    transition: all 0.2s ease;
+}
+
+.navbar .dropdown-toggle:hover {
+    color: #ecac57 !important;
+    background: rgba(236, 172, 87, 0.1) !important;
+    border-radius: 8px;
+}
+
+.navbar .dropdown-toggle:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.navbar .dropdown-toggle::after {
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.navbar .dropdown-menu {
+    z-index: 1055 !important;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+    min-width: 200px;
+    margin-top: 0.5rem;
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.navbar .dropdown-item {
+    color: #212529;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    clear: both;
+    font-weight: 400;
+    border: 0;
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #16181b;
+}
+
+.navbar .dropdown-item.text-danger {
+    color: #dc3545 !important;
+}
+
+.navbar .dropdown-item.text-danger:hover {
+    background-color: #f8f9fa;
+    color: #dc3545 !important;
+}
+
+/* Make dropdown more responsive */
+.navbar .dropdown-toggle {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Remove button default styles */
+.navbar .dropdown-toggle.btn {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0.5rem !important;
+}
+
+.navbar .dropdown-toggle.btn:focus,
+.navbar .dropdown-toggle.btn:active {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
 

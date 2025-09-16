@@ -933,3 +933,53 @@ td .status {
         gap: 0.25rem;
     }
 }
+
+/* === BACK TO WEBSITE BUTTON === */
+.back-to-website {
+    margin: 0 1rem;
+}
+
+.btn-back-to-website {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--primary-gold);
+    color: var(--primary-brown);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    white-space: nowrap;
+}
+
+.btn-back-to-website:hover {
+    background: var(--soft-gold);
+    color: var(--deep-brown);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236, 172, 87, 0.3);
+    text-decoration: none;
+}
+
+.btn-back-to-website span.las {
+    font-size: 1.1rem;
+}
+
+.back-text {
+    display: inline;
+}
+
+/* Responsive adjustments for back button */
+@media only screen and (max-width: 768px) {
+    .back-text {
+        display: none;
+    }
+    
+    .btn-back-to-website {
+        padding: 0.75rem;
+        min-width: 45px;
+        justify-content: center;
+    }
+}
