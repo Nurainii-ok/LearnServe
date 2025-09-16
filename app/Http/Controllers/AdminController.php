@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Classes;
+use App\Models\Bootcamp;
 use App\Models\Payment;
 use App\Models\Task;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
@@ -17,6 +19,7 @@ class AdminController extends Controller
         $totalMembers = User::where('role', 'member')->count();
         $totalTutors = User::where('role', 'tutor')->count();
         $totalClasses = Classes::count();
+        $totalBootcamps = Bootcamp::count();
         $totalRevenue = Payment::where('status', 'completed')->sum('amount');
         
         // Get recent members
@@ -35,6 +38,7 @@ class AdminController extends Controller
             'totalMembers', 
             'totalTutors', 
             'totalClasses', 
+            'totalBootcamps',
             'totalRevenue', 
             'recentMembers', 
             'recentTutors'
@@ -245,6 +249,78 @@ class AdminController extends Controller
         return redirect()->route('admin.classes')->with('success', 'Class deleted successfully!');
     }
 
+    // Bootcamps CRUD
+    public function bootcamps()
+    {
+        $bootcamps = Bootcamp::with('tutor')->latest()->paginate(10);
+        return view('admin.bootcamps.index', compact('bootcamps'));
+    }
+
+    public function bootcampsCreate()
+    {
+        $tutors = User::where('role', 'tutor')->get();
+        return view('admin.bootcamps.create', compact('tutors'));
+    }
+
+    public function bootcampsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tutor_id' => 'required|exists:users,id',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'duration' => 'required|string',
+            'category' => 'nullable|string',
+            'level' => 'required|in:beginner,intermediate,advanced',
+            'requirements' => 'nullable|string',
+        ]);
+
+        Bootcamp::create($request->all());
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp created successfully!');
+    }
+
+    public function bootcampsEdit($id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        $tutors = User::where('role', 'tutor')->get();
+        return view('admin.bootcamps.edit', compact('bootcamp', 'tutors'));
+    }
+
+    public function bootcampsUpdate(Request $request, $id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tutor_id' => 'required|exists:users,id',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'duration' => 'required|string',
+            'category' => 'nullable|string',
+            'level' => 'required|in:beginner,intermediate,advanced',
+            'requirements' => 'nullable|string',
+        ]);
+
+        $bootcamp->update($request->all());
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp updated successfully!');
+    }
+
+    public function bootcampsDestroy($id)
+    {
+        $bootcamp = Bootcamp::findOrFail($id);
+        $bootcamp->delete();
+
+        return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp deleted successfully!');
+    }
+
     // Payments CRUD
     public function payments()
     {
@@ -381,7 +457,122 @@ class AdminController extends Controller
 
     public function account()
     {
-        return view('admin.account');
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            \Log::error('AdminController@account: No user_id in session');
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get admin user from database
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            \Log::error('AdminController@account: User not found or not admin', ['user_id' => $userId]);
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        return view('admin.account', compact('admin'));
+    }
+
+    public function accountEdit()
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get admin user from database
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        return view('admin.account-edit', compact('admin'));
+    }
+
+    public function accountUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        $request->validate([
+            'name' => ['required', 'string', 'max:100', Rule::unique('users')->ignore($admin->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($admin->id)],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($admin->profile_photo && file_exists(public_path('storage/profile_photos/' . $admin->profile_photo))) {
+                unlink(public_path('storage/profile_photos/' . $admin->profile_photo));
+            }
+            
+            // Store new photo
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $admin->id . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/profile_photos'), $filename);
+            $updateData['profile_photo'] = $filename;
+        }
+
+        $admin->update($updateData);
+        
+        // Update session data with new username
+        session(['username' => $request->name]);
+
+        return redirect()->route('admin.account')->with('success', 'Profile updated successfully!');
+    }
+
+    public function accountPasswordUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $admin = User::find($userId);
+        
+        if (!$admin || $admin->role !== 'admin') {
+            return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
+        }
+        
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+
+        // Verify current password
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        $admin->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.account')->with('success', 'Password updated successfully!');
     }
 
     public function createMember()

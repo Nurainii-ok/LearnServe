@@ -11,7 +11,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $fillable = ['name', 'email', 'password', 'role', 'profile_photo'];
 
     protected $hidden = ['password'];
 
@@ -45,5 +45,14 @@ class User extends Authenticatable
     public function scopeAdmins($query)
     {
         return $query->where('role', 'admin');
+    }
+    
+    // Helper method to get profile photo URL
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile_photo && file_exists(public_path('storage/profile_photos/' . $this->profile_photo))) {
+            return asset('storage/profile_photos/' . $this->profile_photo);
+        }
+        return null;
     }
 }

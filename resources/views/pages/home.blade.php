@@ -24,67 +24,63 @@
 
     </section>
 
-    <section class="popular-category-section py-5" style="background-color:#f9f9f9;">
-  <div class="container">
+    <!-- Popular Category Section -->
+<section class="popular-category my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-semibold mb-0">Popular Category</h5>
+    <a href="#" class="text-decoration-none fw-semibold">View all categories</a>
+  </div>
+  <p class="text-muted small mb-4">2020 jobs live – 293 added today.</p>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h4 class="fw-bold mb-1">Popular category</h4>
-        <p class="text-muted small mb-0">2020 jobs live – 293 added today.</p>
+  <!-- Categories Row -->
+  <div class="row g-3">
+    <!-- Category Card -->
+    <div class="col-6 col-md-3">
+      <div class="category-card h-100 shadow-sm">
+        <div class="icon-box">
+          <i class="bi bi-code-slash"></i>
+        </div>
+        <h6 class="fw-semibold">Development & IT</h6>
+        <p class="small text-muted mb-1">16 jobs</p>
+        <p class="small text-muted">Frontend, backend, web and app developer jobs.</p>
       </div>
-      <a href="#" class="text-success fw-semibold">View all categories</a>
     </div>
 
-    <!-- Categories Row -->
-    <div class="row g-3">
-      <!-- Category Card -->
-      <div class="col-6 col-md-3">
-        <div class="category-card h-100 shadow-sm">
-          <div class="icon-box">
-            <i class="bi bi-code-slash"></i>
-          </div>
-          <h6 class="fw-semibold">Development & IT</h6>
-          <p class="small text-muted mb-1">16 jobs</p>
-          <p class="small text-muted">Frontend, backend, web and app developer jobs.</p>
+    <div class="col-6 col-md-3">
+      <div class="category-card h-100 shadow-sm">
+        <div class="icon-box">
+          <i class="bi bi-bullseye"></i>
         </div>
+        <h6 class="fw-semibold">Marketing & Sales</h6>
+        <p class="small text-muted mb-1">8 jobs</p>
+        <p class="small text-muted">Advertising, digital marketing and brand...</p>
       </div>
+    </div>
 
-      <div class="col-6 col-md-3">
-        <div class="category-card h-100 shadow-sm">
-          <div class="icon-box">
-            <i class="bi bi-bullseye"></i>
-          </div>
-          <h6 class="fw-semibold">Marketing & Sales</h6>
-          <p class="small text-muted mb-1">8 jobs</p>
-          <p class="small text-muted">Advertising, digital marketing and brand...</p>
+    <div class="col-6 col-md-3">
+      <div class="category-card h-100 shadow-sm">
+        <div class="icon-box">
+          <i class="bi bi-palette"></i>
         </div>
+        <h6 class="fw-semibold">Design & Creative</h6>
+        <p class="small text-muted mb-1">13 jobs</p>
+        <p class="small text-muted">Graphic, digital, web, and product design jobs.</p>
       </div>
+    </div>
 
-      <div class="col-6 col-md-3">
-        <div class="category-card h-100 shadow-sm">
-          <div class="icon-box">
-            <i class="bi bi-palette"></i>
-          </div>
-          <h6 class="fw-semibold">Design & Creative</h6>
-          <p class="small text-muted mb-1">13 jobs</p>
-          <p class="small text-muted">Graphic, digital, web, and product design jobs.</p>
+    <div class="col-6 col-md-3">
+      <div class="category-card h-100 shadow-sm">
+        <div class="icon-box">
+          <i class="bi bi-people"></i>
         </div>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <div class="category-card h-100 shadow-sm">
-          <div class="icon-box">
-            <i class="bi bi-people"></i>
-          </div>
-          <h6 class="fw-semibold">Customer Service</h6>
-          <p class="small text-muted mb-1">8 jobs</p>
-          <p class="small text-muted">Customer experience and account management jobs.</p>
-        </div>
+        <h6 class="fw-semibold">Customer Service</h6>
+        <p class="small text-muted mb-1">8 jobs</p>
+        <p class="small text-muted">Customer experience and account management jobs.</p>
       </div>
     </div>
   </div>
 </section>
+
 
 <section class="all-courses-section py-5" style="background-color: #f3efec;">
   <div class="container">

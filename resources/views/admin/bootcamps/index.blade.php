@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Classes Management')
+@extends('layouts.admin')
+
+@section('title', 'Bootcamp Management')
 
 @section('styles')
 <style>
@@ -188,6 +190,28 @@
     color: #3730a3;
 }
 
+.level-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.level-beginner {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.level-intermediate {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.level-advanced {
+    background: #fecaca;
+    color: #dc2626;
+}
+
 .pagination-wrapper {
     padding: 1.5rem;
     border-top: 1px solid #e5e7eb;
@@ -210,66 +234,74 @@
 
     <!-- Page Header -->
     <div class="page-header">
-        <h1>Classes Management</h1>
-        <p>Manage all classes, schedules, and educational content.</p>
+        <h1>Bootcamp Management</h1>
+        <p>Manage intensive bootcamp programs and training courses.</p>
     </div>
 
     <!-- Main Content -->
     <div class="content-card">
         <div class="card-header">
-            <h2>All Classes ({{ $classes->total() }})</h2>
-            <a href="{{ route('admin.classes.create') }}" class="btn-primary">
+            <h2>All Bootcamps ({{ $bootcamps->total() }})</h2>
+            <a href="{{ route('admin.bootcamps.create') }}" class="btn-primary">
                 <i class="las la-plus-circle"></i>
-                Create New Class
+                Create New Bootcamp
             </a>
         </div>
         
-        @if($classes->count() > 0)
+        @if($bootcamps->count() > 0)
         <div class="table-responsive">
             <table class="data-table">
                 <thead>
                     <tr>
                         <th style="width: 60px;">ID</th>
-                        <th style="width: 250px;">Class Details</th>
+                        <th style="width: 250px;">Bootcamp Details</th>
                         <th style="width: 150px;">Tutor</th>
                         <th style="width: 100px;">Enrollment</th>
                         <th style="width: 120px;">Price</th>
+                        <th style="width: 100px;">Level</th>
                         <th style="width: 100px;">Status</th>
                         <th style="width: 120px;">Start Date</th>
                         <th style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($classes as $class)
+                    @foreach($bootcamps as $bootcamp)
                     <tr>
-                        <td><strong>#{{ $class->id }}</strong></td>
+                        <td><strong>#{{ $bootcamp->id }}</strong></td>
                         <td>
                             <div>
                                 <div style="font-weight: 600; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">
-                                    {{ $class->title }}
+                                    {{ $bootcamp->title }}
                                 </div>
                                 <div style="color: #6b7280; font-size: 0.875rem; line-height: 1.4;">
-                                    {{ Str::limit($class->description, 60) }}
+                                    {{ Str::limit($bootcamp->description, 60) }}
                                 </div>
-                                @if($class->category)
-                                <span style="display: inline-block; background: var(--light-cream); color: var(--primary-brown); padding: 0.125rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500; margin-top: 0.25rem;">
-                                    {{ $class->category }}
-                                </span>
-                                @endif
+                                <div style="margin-top: 0.25rem;">
+                                    @if($bootcamp->category)
+                                    <span style="display: inline-block; background: var(--light-cream); color: var(--primary-brown); padding: 0.125rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500; margin-right: 0.25rem;">
+                                        {{ $bootcamp->category }}
+                                    </span>
+                                    @endif
+                                    @if($bootcamp->duration)
+                                    <span style="display: inline-block; background: #e0e7ff; color: #3730a3; padding: 0.125rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500;">
+                                        {{ $bootcamp->duration }}
+                                    </span>
+                                    @endif
+                                </div>
                             </div>
                         </td>
                         <td>
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
                                 <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-gold); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">
-                                    {{ strtoupper(substr($class->tutor->name ?? 'N', 0, 1)) }}
+                                    {{ strtoupper(substr($bootcamp->tutor->name ?? 'N', 0, 1)) }}
                                 </div>
-                                <span style="font-weight: 500;">{{ $class->tutor->name ?? 'Not assigned' }}</span>
+                                <span style="font-weight: 500;">{{ $bootcamp->tutor->name ?? 'Not assigned' }}</span>
                             </div>
                         </td>
                         <td>
                             @php
-                                $enrolled = $class->enrolled ?? 0;
-                                $capacity = $class->capacity;
+                                $enrolled = $bootcamp->enrolled ?? 0;
+                                $capacity = $bootcamp->capacity;
                                 $percentage = $capacity > 0 ? ($enrolled / $capacity) * 100 : 0;
                                 $statusColor = $percentage >= 90 ? '#ef4444' : ($percentage >= 70 ? '#f59e0b' : '#10b981');
                             @endphp
@@ -282,11 +314,25 @@
                             </div>
                         </td>
                         <td>
-                            <div style="font-weight: 600; color: var(--primary-brown);">Rp{{ number_format($class->price, 0, ',', '.') }}</div>
+                            <div style="font-weight: 600; color: var(--primary-brown);">Rp{{ number_format($bootcamp->price, 0, ',', '.') }}</div>
                         </td>
                         <td>
                             @php
-                                $status = $class->status ?? 'active';
+                                $level = $bootcamp->level ?? 'beginner';
+                                $levelClass = match($level) {
+                                    'beginner' => 'level-beginner',
+                                    'intermediate' => 'level-intermediate', 
+                                    'advanced' => 'level-advanced',
+                                    default => 'level-beginner'
+                                };
+                            @endphp
+                            <span class="level-badge {{ $levelClass }}">
+                                {{ ucfirst($level) }}
+                            </span>
+                        </td>
+                        <td>
+                            @php
+                                $status = $bootcamp->status ?? 'active';
                                 $statusClass = match($status) {
                                     'active' => 'status-active',
                                     'inactive' => 'status-inactive', 
@@ -298,16 +344,16 @@
                                 {{ ucfirst($status) }}
                             </span>
                         </td>
-                        <td>{{ $class->start_date ? $class->start_date->format('M d, Y') : 'Not set' }}</td>
+                        <td>{{ $bootcamp->start_date ? $bootcamp->start_date->format('M d, Y') : 'Not set' }}</td>
                         <td>
                             <div style="display: flex; gap: 0.375rem; justify-content: center;">
-                                <a href="{{ route('admin.classes.edit', $class->id) }}" class="btn-edit" title="Edit Class">
+                                <a href="{{ route('admin.bootcamps.edit', $bootcamp->id) }}" class="btn-edit" title="Edit Bootcamp">
                                     <i class="las la-edit"></i>
                                 </a>
-                                <form action="{{ route('admin.classes.destroy', $class->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this class? This action cannot be undone.')">
+                                <form action="{{ route('admin.bootcamps.destroy', $bootcamp->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this bootcamp? This action cannot be undone.')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-delete" title="Delete Class">
+                                    <button type="submit" class="btn-delete" title="Delete Bootcamp">
                                         <i class="las la-trash"></i>
                                     </button>
                                 </form>
@@ -320,17 +366,17 @@
         </div>
         
         <!-- Pagination -->
-        @if($classes->hasPages())
+        @if($bootcamps->hasPages())
         <div class="pagination-wrapper">
-            {{ $classes->links() }}
+            {{ $bootcamps->links() }}
         </div>
         @endif
         
         @else
         <div style="padding: 3rem; text-align: center; color: #6b7280;">
-            <i class="las la-graduation-cap" style="font-size: 4rem; display: block; margin-bottom: 1rem; opacity: 0.6;"></i>
-            <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">No Classes Found</h3>
-            <p>No classes have been created yet. <a href="{{ route('admin.classes.create') }}" style="color: var(--primary-brown);">Create the first class</a></p>
+            <i class="las la-rocket" style="font-size: 4rem; display: block; margin-bottom: 1rem; opacity: 0.6;"></i>
+            <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">No Bootcamps Found</h3>
+            <p>No bootcamps have been created yet. <a href="{{ route('admin.bootcamps.create') }}" style="color: var(--primary-brown);">Create the first bootcamp</a></p>
         </div>
         @endif
     </div>

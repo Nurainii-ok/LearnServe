@@ -3,36 +3,10 @@
 @section('title', 'Tasks Management')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <style>
-:root {
-    --primary-brown: #944e25;
-    --primary-gold: #ecac57;
-    --light-cream: #f3efec;
-    --deep-brown: #6b3419;
-    --soft-gold: #f4d084;
-    --success-green: #10b981;
-    --error-red: #ef4444;
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-}
-
-.dashboard-content {
-    padding: 0;
+.page-container {
+    padding: 2rem;
     margin: 0;
-    padding-top: 1rem;
-}
-
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
 }
 
 .data-table-container {
@@ -213,6 +187,34 @@ header {
     color: #d1d5db;
 }
 
+.alert {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+</style>
+    background: #f9fafb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
 .due-date {
     font-size: 0.75rem;
     color: var(--text-secondary);
@@ -226,7 +228,13 @@ header {
 @endsection
 
 @section('content')
-<div class="dashboard-content">
+<div class="page-container">
+    @if(session('success'))
+        <div class="alert alert-success">
+            <i class="las la-check-circle"></i>
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="data-table-container">
         <div class="table-header">
             <h2>Tasks Management</h2>

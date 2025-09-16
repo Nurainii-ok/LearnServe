@@ -3,27 +3,10 @@
 @section('title', 'Admin Dashboard')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <style>
-/* Dashboard Layout Fixes */
 .dashboard-content {
-    padding: 0;
+    padding: 2rem;
     margin: 0;
-    padding-top: 1rem;
-}
-
-/* Override conflicting CSS from admin.css */
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
 }
 
 .stats-grid {
@@ -344,6 +327,16 @@ header {
             </div>
             <div class="stat-icon">
                 <i class="las la-graduation-cap"></i>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-info">
+                <h3>{{ $totalBootcamps }}</h3>
+                <p>Active Bootcamps</p>
+            </div>
+            <div class="stat-icon">
+                <i class="las la-rocket"></i>
             </div>
         </div>
         

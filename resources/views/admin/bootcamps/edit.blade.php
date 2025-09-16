@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Class')
+@extends('layouts.admin')
+
+@section('title', 'Edit Bootcamp')
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
@@ -161,30 +163,6 @@ textarea.form-control {
     gap: 1.5rem;
 }
 
-.status-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-}
-
-.status-active {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success-green);
-}
-
-.status-inactive {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-}
-
-.status-completed {
-    background: rgba(148, 78, 37, 0.1);
-    color: var(--primary-brown);
-}
-
 @media (max-width: 768px) {
     .form-row {
         grid-template-columns: 1fr;
@@ -201,23 +179,19 @@ textarea.form-control {
 <div class="page-container">
     <div class="form-container">
         <div class="form-header">
-            <h2>Edit Class: {{ $class->title }}</h2>
-            <a href="{{ route('admin.classes') }}" class="back-btn">
-                <i class="las la-arrow-left"></i> Back to Classes
+            <h2>Edit Bootcamp</h2>
+            <a href="{{ route('admin.bootcamps') }}" class="back-btn">
+                <i class="las la-arrow-left"></i> Back to Bootcamps
             </a>
         </div>
 
-        <form action="{{ route('admin.classes.update', $class->id) }}" method="POST" class="form-body">
+        <form action="{{ route('admin.bootcamps.update', $bootcamp->id) }}" method="POST" class="form-body">
             @csrf
             @method('PUT')
             
-            <div class="status-badge status-{{ $class->status }}">
-                Status: {{ ucfirst($class->status) }}
-            </div>
-            
             <div class="form-group">
-                <label for="title">Class Title *</label>
-                <input type="text" id="title" name="title" class="form-control" value="{{ old('title', $class->title) }}" required>
+                <label for="title">Bootcamp Title *</label>
+                <input type="text" id="title" name="title" class="form-control" value="{{ old('title', $bootcamp->title) }}" required>
                 @error('title')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -225,7 +199,7 @@ textarea.form-control {
 
             <div class="form-group">
                 <label for="description">Description *</label>
-                <textarea id="description" name="description" class="form-control" required>{{ old('description', $class->description) }}</textarea>
+                <textarea id="description" name="description" class="form-control" required>{{ old('description', $bootcamp->description) }}</textarea>
                 @error('description')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -233,11 +207,11 @@ textarea.form-control {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="tutor_id">Tutor *</label>
+                    <label for="tutor_id">Assigned Tutor *</label>
                     <select id="tutor_id" name="tutor_id" class="form-control" required>
                         <option value="">Select a tutor</option>
                         @foreach($tutors as $tutor)
-                            <option value="{{ $tutor->id }}" {{ old('tutor_id', $class->tutor_id) == $tutor->id ? 'selected' : '' }}>
+                            <option value="{{ $tutor->id }}" {{ old('tutor_id', $bootcamp->tutor_id) == $tutor->id ? 'selected' : '' }}>
                                 {{ $tutor->name }}
                             </option>
                         @endforeach
@@ -248,9 +222,14 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category', $class->category) }}" placeholder="e.g., Web Development, Programming">
-                    @error('category')
+                    <label for="level">Level *</label>
+                    <select id="level" name="level" class="form-control" required>
+                        <option value="">Select level</option>
+                        <option value="beginner" {{ old('level', $bootcamp->level) == 'beginner' ? 'selected' : '' }}>Beginner</option>
+                        <option value="intermediate" {{ old('level', $bootcamp->level) == 'intermediate' ? 'selected' : '' }}>Intermediate</option>
+                        <option value="advanced" {{ old('level', $bootcamp->level) == 'advanced' ? 'selected' : '' }}>Advanced</option>
+                    </select>
+                    @error('level')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
@@ -259,7 +238,7 @@ textarea.form-control {
             <div class="form-row">
                 <div class="form-group">
                     <label for="capacity">Capacity *</label>
-                    <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity', $class->capacity) }}" min="1" required>
+                    <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity', $bootcamp->capacity) }}" min="1" required>
                     @error('capacity')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
@@ -267,51 +246,84 @@ textarea.form-control {
 
                 <div class="form-group">
                     <label for="price">Price (Rp) *</label>
-                    <input type="number" id="price" name="price" class="form-control" value="{{ old('price', $class->price) }}" min="0" step="0.01" required>
+                    <input type="number" id="price" name="price" class="form-control" value="{{ old('price', $bootcamp->price) }}" min="0" step="0.01" required>
                     @error('price')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
 
-
-
             <div class="form-row">
                 <div class="form-group">
-                    <label for="schedule">Schedule</label>
-                    <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule', $class->schedule) }}" placeholder="e.g., Self-paced learning, Available 24/7">
-                    @error('schedule')
+                    <label for="start_date">Start Date *</label>
+                    <input type="datetime-local" id="start_date" name="start_date" class="form-control" 
+                           value="{{ old('start_date', $bootcamp->start_date ? $bootcamp->start_date->format('Y-m-d\TH:i') : '') }}" required>
+                    @error('start_date')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="status">Status *</label>
-                    <select id="status" name="status" class="form-control" required>
-                        <option value="active" {{ old('status', $class->status) == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ old('status', $class->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                        <option value="completed" {{ old('status', $class->status) == 'completed' ? 'selected' : '' }}>Completed</option>
+                    <label for="end_date">End Date *</label>
+                    <input type="datetime-local" id="end_date" name="end_date" class="form-control" 
+                           value="{{ old('end_date', $bootcamp->end_date ? $bootcamp->end_date->format('Y-m-d\TH:i') : '') }}" required>
+                    @error('end_date')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration">Duration *</label>
+                    <input type="text" id="duration" name="duration" class="form-control" value="{{ old('duration', $bootcamp->duration) }}" placeholder="e.g., 12 weeks, 3 months" required>
+                    @error('duration')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category', $bootcamp->category) }}" placeholder="e.g., Programming, Design">
+                    @error('category')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" class="form-control">
+                        <option value="active" {{ old('status', $bootcamp->status) == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ old('status', $bootcamp->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        <option value="completed" {{ old('status', $bootcamp->status) == 'completed' ? 'selected' : '' }}>Completed</option>
                     </select>
                     @error('status')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                    <label for="enrolled">Current Enrollment</label>
+                    <input type="number" id="enrolled" name="enrolled" class="form-control" value="{{ old('enrolled', $bootcamp->enrolled) }}" min="0" readonly>
+                    <small style="color: #6b7280; font-size: 0.75rem;">This field is automatically updated when students enroll</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="requirements">Requirements</label>
+                <textarea id="requirements" name="requirements" class="form-control" placeholder="Prerequisites and requirements for this bootcamp">{{ old('requirements', $bootcamp->requirements) }}</textarea>
+                @error('requirements')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-actions">
-                <a href="{{ route('admin.classes') }}" class="btn-secondary">Cancel</a>
-                <button type="submit" class="btn-primary">Update Class</button>
+                <a href="{{ route('admin.bootcamps') }}" class="btn-secondary">Cancel</a>
+                <button type="submit" class="btn-primary">Update Bootcamp</button>
             </div>
         </form>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Form ready for e-learning classes
-    console.log('Classes edit form loaded');
-});
-</script>
 @endsection

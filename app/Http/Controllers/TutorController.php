@@ -8,14 +8,15 @@ use App\Models\Classes;
 use App\Models\Task;
 use App\Models\Payment;
 use App\Models\Grade;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class TutorController extends Controller
 {
     public function dashboard()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         
         // Get tutor dashboard statistics
         $totalStudents = Payment::whereHas('class', function($query) use ($tutorId) {
@@ -67,7 +68,7 @@ class TutorController extends Controller
     // Classes CRUD for Tutors
     public function classes()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $classes = Classes::where('tutor_id', $tutorId)
             ->withCount('payments')
             ->latest()
@@ -95,7 +96,7 @@ class TutorController extends Controller
         ]);
 
         Classes::create(array_merge($request->all(), [
-            'tutor_id' => Auth::id(),
+            'tutor_id' => session('user_id'),
             'status' => 'active'
         ]));
 
@@ -104,13 +105,13 @@ class TutorController extends Controller
     
     public function classesEdit($id)
     {
-        $class = Classes::where('tutor_id', Auth::id())->findOrFail($id);
+        $class = Classes::where('tutor_id', session('user_id'))->findOrFail($id);
         return view('tutor.classes.edit', compact('class'));
     }
     
     public function classesUpdate(Request $request, $id)
     {
-        $class = Classes::where('tutor_id', Auth::id())->findOrFail($id);
+        $class = Classes::where('tutor_id', session('user_id'))->findOrFail($id);
         
         $request->validate([
             'title' => 'required|string|max:255',
@@ -131,7 +132,7 @@ class TutorController extends Controller
     
     public function classesDestroy($id)
     {
-        $class = Classes::where('tutor_id', Auth::id())->findOrFail($id);
+        $class = Classes::where('tutor_id', session('user_id'))->findOrFail($id);
         $class->delete();
 
         return redirect()->route('tutor.classes')->with('success', 'Class deleted successfully!');
@@ -140,7 +141,7 @@ class TutorController extends Controller
     // Tasks CRUD for Tutors
     public function tasks()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $tasks = Task::with(['class'])
             ->where('assigned_by', $tutorId)
             ->orWhereHas('class', function($query) use ($tutorId) {
@@ -154,7 +155,7 @@ class TutorController extends Controller
     
     public function tasksCreate()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $classes = Classes::where('tutor_id', $tutorId)->where('status', 'active')->get();
         return view('tutor.tasks.create', compact('classes'));
     }
@@ -172,11 +173,11 @@ class TutorController extends Controller
         
         // Verify the class belongs to this tutor
         $class = Classes::where('id', $request->class_id)
-            ->where('tutor_id', Auth::id())
+            ->where('tutor_id', session('user_id'))
             ->firstOrFail();
 
         Task::create(array_merge($request->all(), [
-            'assigned_by' => Auth::id(),
+            'assigned_by' => session('user_id'),
             'status' => 'pending'
         ]));
 
@@ -185,7 +186,7 @@ class TutorController extends Controller
     
     public function tasksEdit($id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $task = Task::with('class')
             ->where(function($query) use ($tutorId) {
                 $query->where('assigned_by', $tutorId)
@@ -202,7 +203,7 @@ class TutorController extends Controller
     
     public function tasksUpdate(Request $request, $id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $task = Task::with('class')
             ->where(function($query) use ($tutorId) {
                 $query->where('assigned_by', $tutorId)
@@ -224,7 +225,7 @@ class TutorController extends Controller
         
         // Verify the new class belongs to this tutor
         $class = Classes::where('id', $request->class_id)
-            ->where('tutor_id', Auth::id())
+            ->where('tutor_id', session('user_id'))
             ->firstOrFail();
 
         $task->update($request->all());
@@ -234,7 +235,7 @@ class TutorController extends Controller
     
     public function tasksDestroy($id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $task = Task::where(function($query) use ($tutorId) {
             $query->where('assigned_by', $tutorId)
                   ->orWhereHas('class', function($q) use ($tutorId) {
@@ -250,7 +251,7 @@ class TutorController extends Controller
     // Grades CRUD for Tutors
     public function grades()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $grades = Grade::with(['student', 'class', 'task'])
             ->where('graded_by', $tutorId)
             ->orWhereHas('class', function($query) use ($tutorId) {
@@ -264,7 +265,7 @@ class TutorController extends Controller
     
     public function gradesCreate()
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $classes = Classes::where('tutor_id', $tutorId)->where('status', 'active')->get();
         $students = User::where('role', 'member')->get();
         $tasks = Task::whereHas('class', function($query) use ($tutorId) {
@@ -287,7 +288,7 @@ class TutorController extends Controller
         
         // Verify the class belongs to this tutor
         $class = Classes::where('id', $request->class_id)
-            ->where('tutor_id', Auth::id())
+            ->where('tutor_id', session('user_id'))
             ->firstOrFail();
         
         // Calculate letter grade
@@ -299,7 +300,7 @@ class TutorController extends Controller
         elseif ($score >= 60) $letterGrade = 'D';
 
         Grade::create(array_merge($request->all(), [
-            'graded_by' => Auth::id(),
+            'graded_by' => session('user_id'),
             'grade' => $letterGrade
         ]));
 
@@ -308,7 +309,7 @@ class TutorController extends Controller
     
     public function gradesEdit($id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $grade = Grade::with(['student', 'class', 'task'])
             ->where(function($query) use ($tutorId) {
                 $query->where('graded_by', $tutorId)
@@ -329,7 +330,7 @@ class TutorController extends Controller
     
     public function gradesUpdate(Request $request, $id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $grade = Grade::where(function($query) use ($tutorId) {
             $query->where('graded_by', $tutorId)
                   ->orWhereHas('class', function($q) use ($tutorId) {
@@ -348,7 +349,7 @@ class TutorController extends Controller
         
         // Verify the new class belongs to this tutor
         $class = Classes::where('id', $request->class_id)
-            ->where('tutor_id', Auth::id())
+            ->where('tutor_id', session('user_id'))
             ->firstOrFail();
         
         // Calculate letter grade
@@ -368,7 +369,7 @@ class TutorController extends Controller
     
     public function gradesDestroy($id)
     {
-        $tutorId = Auth::id();
+        $tutorId = session('user_id');
         $grade = Grade::where(function($query) use ($tutorId) {
             $query->where('graded_by', $tutorId)
                   ->orWhereHas('class', function($q) use ($tutorId) {
@@ -383,6 +384,128 @@ class TutorController extends Controller
     
     public function account()
     {
-        return view('tutor.account');
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get tutor user from database
+        $tutor = User::find($userId);
+        
+        if (!$tutor || $tutor->role !== 'tutor') {
+            return redirect()->route('auth')->with('error', 'Access denied. Tutor privileges required.');
+        }
+        
+        // Get tutor statistics for account page
+        $totalClasses = Classes::where('tutor_id', $userId)->count();
+        $totalStudents = Payment::whereHas('class', function($query) use ($userId) {
+            $query->where('tutor_id', $userId);
+        })->where('status', 'completed')->distinct('user_id')->count();
+        $totalEarnings = Payment::whereHas('class', function($query) use ($userId) {
+            $query->where('tutor_id', $userId);
+        })->where('status', 'completed')->sum('amount');
+        
+        return view('tutor.account', compact('tutor', 'totalClasses', 'totalStudents', 'totalEarnings'));
+    }
+
+    public function accountEdit()
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Get tutor user from database
+        $tutor = User::find($userId);
+        
+        if (!$tutor || $tutor->role !== 'tutor') {
+            return redirect()->route('auth')->with('error', 'Access denied. Tutor privileges required.');
+        }
+        
+        return view('tutor.account-edit', compact('tutor'));
+    }
+
+    public function accountUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $tutor = User::find($userId);
+        
+        if (!$tutor || $tutor->role !== 'tutor') {
+            return redirect()->route('auth')->with('error', 'Access denied. Tutor privileges required.');
+        }
+        
+        $request->validate([
+            'name' => ['required', 'string', 'max:100', Rule::unique('users')->ignore($tutor->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($tutor->id)],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($tutor->profile_photo && file_exists(public_path('storage/profile_photos/' . $tutor->profile_photo))) {
+                unlink(public_path('storage/profile_photos/' . $tutor->profile_photo));
+            }
+            
+            // Store new photo
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $tutor->id . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/profile_photos'), $filename);
+            $updateData['profile_photo'] = $filename;
+        }
+
+        $tutor->update($updateData);
+        
+        // Update session data with new username
+        session(['username' => $request->name]);
+
+        return redirect()->route('tutor.account')->with('success', 'Profile updated successfully!');
+    }
+
+    public function accountPasswordUpdate(Request $request)
+    {
+        // Get user data from session (session-based auth)
+        $userId = session('user_id');
+        
+        if (!$userId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        $tutor = User::find($userId);
+        
+        if (!$tutor || $tutor->role !== 'tutor') {
+            return redirect()->route('auth')->with('error', 'Access denied. Tutor privileges required.');
+        }
+        
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+
+        // Verify current password
+        if (!Hash::check($request->current_password, $tutor->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        $tutor->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('tutor.account')->with('success', 'Password updated successfully!');
     }
 }

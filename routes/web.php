@@ -34,12 +34,12 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/detail_kursus', [PagesController::class, 'detailKursus'])->name('detail_kursus');
     Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
     Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');
+    Route::post('/checkout/process', [PagesController::class, 'processCheckout'])->name('checkout.process');
+    Route::get('/checkout/success', [PagesController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');
     Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
     Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
 });
-
-
 
 // Member
 Route::middleware(['role:member','prevent-back'])->group(function () {
@@ -75,6 +75,14 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/classes/{id}', [AdminController::class, 'classesUpdate'])->name('classes.update');
     Route::delete('/classes/{id}', [AdminController::class, 'classesDestroy'])->name('classes.destroy');
     
+    // Bootcamps CRUD
+    Route::get('/bootcamps', [AdminController::class, 'bootcamps'])->name('bootcamps');
+    Route::get('/bootcamps/create', [AdminController::class, 'bootcampsCreate'])->name('bootcamps.create');
+    Route::post('/bootcamps', [AdminController::class, 'bootcampsStore'])->name('bootcamps.store');
+    Route::get('/bootcamps/{id}/edit', [AdminController::class, 'bootcampsEdit'])->name('bootcamps.edit');
+    Route::put('/bootcamps/{id}', [AdminController::class, 'bootcampsUpdate'])->name('bootcamps.update');
+    Route::delete('/bootcamps/{id}', [AdminController::class, 'bootcampsDestroy'])->name('bootcamps.destroy');
+    
     // Payments CRUD
     Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
     Route::get('/payments/create', [AdminController::class, 'paymentsCreate'])->name('payments.create');
@@ -91,7 +99,11 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/tasks/{id}', [AdminController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [AdminController::class, 'tasksDestroy'])->name('tasks.destroy');
     
+    // Account Management
     Route::get('/account', [AdminController::class, 'account'])->name('account');
+    Route::get('/account/edit', [AdminController::class, 'accountEdit'])->name('account.edit');
+    Route::put('/account', [AdminController::class, 'accountUpdate'])->name('account.update');
+    Route::put('/account/password', [AdminController::class, 'accountPasswordUpdate'])->name('account.password.update');
 });
 
 // Tutor
@@ -114,7 +126,7 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::put('/tasks/{id}', [TutorController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [TutorController::class, 'tasksDestroy'])->name('tasks.destroy');
     
-    // Grades CRUD
+    // Grades CRUD 6
     Route::get('/grades', [TutorController::class, 'grades'])->name('grades');
     Route::get('/grades/create', [TutorController::class, 'gradesCreate'])->name('grades.create');
     Route::post('/grades', [TutorController::class, 'gradesStore'])->name('grades.store');
@@ -122,6 +134,14 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::put('/grades/{id}', [TutorController::class, 'gradesUpdate'])->name('grades.update');
     Route::delete('/grades/{id}', [TutorController::class, 'gradesDestroy'])->name('grades.destroy');
     
+    // Account Management
     Route::get('/account', [TutorController::class, 'account'])->name('account');
+    Route::get('/account/edit', [TutorController::class, 'accountEdit'])->name('account.edit');
+    Route::put('/account', [TutorController::class, 'accountUpdate'])->name('account.update');
+    Route::put('/account/password', [TutorController::class, 'accountPasswordUpdate'])->name('account.password.update');
+
 
 });
+
+
+

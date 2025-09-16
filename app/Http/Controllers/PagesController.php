@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classes;
+use App\Models\Bootcamp;
 use App\Models\User;
 use App\Models\Payment;
 
@@ -54,13 +55,15 @@ class PagesController extends Controller
 
     public function bootcamp()
     {
-        // Get bootcamp/intensive classes
-        $bootcampClasses = Classes::with(['tutor', 'payments'])
+        // Get bootcamp programs from the new Bootcamp model
+        $bootcampClasses = Bootcamp::with(['tutor'])
             ->where('status', 'active')
+
             ->where(function ($q) {
                 $q->where('category', 'like', '%bootcamp%')
                   ->orWhere('category', 'like', '%intensive%');
             })
+
             ->latest()
             ->get();
             
@@ -115,7 +118,127 @@ class PagesController extends Controller
 
     public function beliSekarang()
     {
-        return view('pages.beli_sekarang');
+        $classId = request('class_id');
+        $course = null;
+        
+        if ($classId) {
+            $course = Classes::with('tutor')
+                ->where('status', 'active')
+                ->findOrFail($classId);
+        }
+        
+        return view('pages.beli_sekarang', compact('course'));
+    }
+
+    public function processCheckout(Request $request)
+    {
+        try {
+            // Validate the checkout form data
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:20',
+                'whatsapp' => 'nullable|string|max:20',
+                'payment_method' => 'required|in:bank_transfer,e_wallet,credit_card',
+                'notes' => 'nullable|string|max:1000',
+                'terms' => 'required|accepted',
+            ]);
+
+            // Get class information if class_id is provided
+            $classId = $request->input('class_id');
+            $class = null;
+            if ($classId) {
+                $class = Classes::findOrFail($classId);
+            }
+
+            // Calculate total price
+            $coursePrice = $class ? $class->price : 500000; // Default price if no class
+            $adminFee = 5000;
+            $totalPrice = $coursePrice + $adminFee;
+
+            // Create payment record
+            $payment = Payment::create([
+                'user_id' => session('user_id') ?: null, // Using session-based auth, null if not logged in
+                'class_id' => $classId,
+                'full_name' => $validated['full_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'whatsapp' => $validated['whatsapp'],
+                'payment_method' => $validated['payment_method'],
+                'transaction_id' => 'TXN-' . time() . '-' . rand(1000, 9999),
+                'amount' => $totalPrice,
+                'status' => 'pending',
+                'notes' => $validated['notes'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Generate payment instructions based on method
+            $paymentInstructions = $this->generatePaymentInstructions($validated['payment_method'], $payment->id, $totalPrice);
+
+            // Redirect to success page with payment details
+            return redirect()->route('checkout.success')
+                ->with('success', 'Pesanan berhasil dibuat!')
+                ->with('payment', $payment)
+                ->with('instructions', $paymentInstructions);
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
+        }
+    }
+
+    private function generatePaymentInstructions($paymentMethod, $paymentId, $amount)
+    {
+        $instructions = [];
+        
+        switch ($paymentMethod) {
+            case 'bank_transfer':
+                $instructions = [
+                    'title' => 'Transfer Bank',
+                    'steps' => [
+                        'Transfer ke salah satu rekening bank berikut:',
+                        'BCA: 1234567890 A.n LearnServe',
+                        'BNI: 0987654321 A.n LearnServe', 
+                        'BRI: 1122334455 A.n LearnServe',
+                        'Jumlah transfer: Rp ' . number_format($amount, 0, ',', '.'),
+                        'Kode pembayaran: PAY-' . $paymentId,
+                        'Kirim bukti transfer ke WhatsApp: 08123456789'
+                    ]
+                ];
+                break;
+                
+            case 'e_wallet':
+                $instructions = [
+                    'title' => 'E-Wallet',
+                    'steps' => [
+                        'Pilih e-wallet yang Anda gunakan (GoPay/OVO/DANA)',
+                        'Scan QR Code yang akan dikirimkan ke email Anda',
+                        'Atau transfer ke nomor: 08123456789',
+                        'Jumlah transfer: Rp ' . number_format($amount, 0, ',', '.'),
+                        'Kode pembayaran: PAY-' . $paymentId
+                    ]
+                ];
+                break;
+                
+            case 'credit_card':
+                $instructions = [
+                    'title' => 'Kartu Kredit',
+                    'steps' => [
+                        'Anda akan dialihkan ke halaman pembayaran kartu kredit',
+                        'Masukkan detail kartu kredit Anda',
+                        'Ikuti instruksi untuk menyelesaikan pembayaran',
+                        'Simpan nomor referensi: PAY-' . $paymentId
+                    ]
+                ];
+                break;
+        }
+        
+        return $instructions;
+    }
+
+    public function checkoutSuccess()
+    {
+        return view('pages.checkout_success');
     }
 
     public function formPendaftaran()
