@@ -55,6 +55,14 @@
                 @enderror
                 
                 <div class="input-box">
+                    <input type="email" name="email" placeholder="Email / Gmail" value="{{ old('email') }}" required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                @error('email')
+                    <p style="color:red; font-size: 0.8rem; margin: -5px 0 10px 0;">{{ $message }}</p>
+                @enderror
+                
+                <div class="input-box">
                     <input type="password" name="password" placeholder="Password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>

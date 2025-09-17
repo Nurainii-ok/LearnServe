@@ -60,31 +60,24 @@ class AuthController extends Controller
         try {
             $request->validate([
                 'username' => 'required|string|max:100|unique:users,name',
+                'email' => 'required|email|max:255|unique:users,email',
                 'password' => 'required|string|min:4',
                 'role'     => 'required|in:admin,tutor,member',
             ], [
                 'username.unique' => 'Username sudah digunakan, silakan pilih username lain.',
                 'username.required' => 'Username wajib diisi.',
+                'email.required' => 'Email wajib diisi.',
+                'email.email' => 'Format email tidak valid.',
+                'email.unique' => 'Email sudah terdaftar, silakan gunakan email lain.',
                 'password.min' => 'Password minimal 4 karakter.',
                 'role.required' => 'Role wajib dipilih.',
                 'role.in' => 'Role yang dipilih tidak valid.'
             ]);
 
-            // Generate unique email
-            $baseEmail = strtolower($request->username);
-            $email = $baseEmail . '@learnserve.com';
-            
-            // Check if email already exists and make it unique
-            $counter = 1;
-            while (User::where('email', $email)->exists()) {
-                $email = $baseEmail . $counter . '@learnserve.com';
-                $counter++;
-            }
-
             // buat user baru
             $user = User::create([
                 'name'     => $request->username,
-                'email'    => $email,
+                'email'    => $request->email,
                 'password' => Hash::make($request->password),
                 'role'     => $request->role,
             ]);
