@@ -21,16 +21,16 @@
 
             <div class="row mb-4 text-center">
                 <div class="col-4">
-                    <h3 class="fw-bold text-warning">50K+</h3>
-                    <p class="small text-muted">Alumni</p>
+                    <h3 class="fw-bold text-warning">{{ $classes->total() ?? 0 }}+</h3>
+                    <p class="small text-muted">Kursus</p>
                 </div>
                 <div class="col-4">
                     <h3 class="fw-bold text-warning">95%</h3>
                     <p class="small text-muted">Job Placement</p>
                 </div>
                 <div class="col-4">
-                    <h3 class="fw-bold text-warning">200+</h3>
-                    <p class="small text-muted">Kursus</p>
+                    <h3 class="fw-bold text-warning">{{ $categories->count() }}+</h3>
+                    <p class="small text-muted">Kategori</p>
                 </div>
             </div>
 
@@ -44,224 +44,119 @@
     <div class="category-filter">
         <div class="container">
             <div class="d-flex justify-content-center flex-wrap gap-2">
-                <a href="#all-courses" class="btn btn-sm btn-warning text-white">Semua Kelas</a>
-                <a href="#web-development" class="btn btn-sm btn-outline-secondary">Pengembangan Web</a>
-                <a href="#data-science" class="btn btn-sm btn-outline-secondary">Data Science</a>
-                <a href="#digital-marketing" class="btn btn-sm btn-outline-secondary">Digital Marketing</a>
-                <a href="#excel" class="btn btn-sm btn-outline-secondary">Excel</a>
+                <a href="{{ route('learning') }}" class="btn btn-sm {{ !request('category') || request('category') == 'all' ? 'btn-warning text-white' : 'btn-outline-secondary' }}">Semua Kelas</a>
+                @foreach($categories as $category)
+                <a href="{{ route('learning', ['category' => $category]) }}" class="btn btn-sm {{ request('category') == $category ? 'btn-warning text-white' : 'btn-outline-secondary' }}">{{ ucfirst($category) }}</a>
+                @endforeach
             </div>
         </div>
     </div>
 
-    <!-- Kelas Populer -->
-    <section id="courses" class="py-5">
-        <div class="container">
-            <!-- Section Semua Kelas -->
-            <div id="all-courses" class="category-section">
-                <h2 class="fw-bold mb-4">Semua Kelas</h2>
-                <div class="row g-4">
-                    <!-- Course Card - Data Science -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Data Analytics.jpg') }}" alt="Data Science" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Data Science</h6>
-                                    <h5 class="fw-bold mb-2">Data Science & Analytics</h5>
-                                    <p class="text-muted small mb-3">Belajar analisis data mulai dari dasar hingga advanced dengan praktik langsung.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+    <!-- Search Bar -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="GET" action="{{ route('learning') }}">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Cari kursus..." value="{{ request('search') }}">
+                        @if(request('category'))
+                        <input type="hidden" name="category" value="{{ request('category') }}">
+                        @endif
+                        <button class="btn btn-warning text-white" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
-
-                    <!-- Course Card - Digital Marketing -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Digital marketing.jpg') }}" alt="Digital Marketing" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Digital Marketing</h6>
-                                    <h5 class="fw-bold mb-2">Digital Marketing</h5>
-                                    <p class="text-muted small mb-3">Kuasi strategi pemasaran digital untuk meningkatkan bisnis.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Course Card - Excel -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Excel.jpeg') }}" alt="Excel" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Excel</h6>
-                                    <h5 class="fw-bold mb-2">Excel</h5>
-                                    <p class="text-muted small mb-3">Belajar Excel mulai dari dasar hingga advanced dengan praktik langsung.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Gratis</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Course Card - Web Development -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Full Stack.jpg') }}" alt="Web Development" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Web Development</h6>
-                                    <h5 class="fw-bold mb-2">Full Stack Web Development</h5>
-                                    <p class="text-muted small mb-3">Jadi developer web full stack dengan belajar frontend dan backend.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section Pengembangan Web -->
-            <div id="web-development" class="category-section mt-5">
-                <h2 class="fw-bold mb-4">Pengembangan Web</h2>
-                <div class="row g-4">
-                    <!-- Course Card - Web Development -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Full Stack.jpg') }}" alt="Web Development" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Web Development</h6>
-                                    <h5 class="fw-bold mb-2">Full Stack Web Development</h5>
-                                    <p class="text-muted small mb-3">Jadi developer web full stack dengan belajar frontend dan backend.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <!-- Tambahkan lebih banyak kursus web development di sini -->
-                </div>
-            </div>
-
-            <!-- Section Data Science -->
-            <div id="data-science" class="category-section mt-5">
-                <h2 class="fw-bold mb-4">Data Science</h2>
-                <div class="row g-4">
-                    <!-- Course Card - Data Science -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Data Analytics.jpg') }}" alt="Data Science" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Data Science</h6>
-                                    <h5 class="fw-bold mb-2">Data Science & Analytics</h5>
-                                    <p class="text-muted small mb-3">Belajar analisis data mulai dari dasar hingga advanced dengan praktik langsung.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <!-- Tambahkan lebih banyak kursus data science di sini -->
-                </div>
-            </div>
-
-            <!-- Section Digital Marketing -->
-            <div id="digital-marketing" class="category-section mt-5">
-                <h2 class="fw-bold mb-4">Digital Marketing</h2>
-                <div class="row g-4">
-                    <!-- Course Card - Digital Marketing -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Digital marketing.jpg') }}" alt="Digital Marketing" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Digital Marketing</h6>
-                                    <h5 class="fw-bold mb-2">Digital Marketing</h5>
-                                    <p class="text-muted small mb-3">Kuasi strategi pemasaran digital untuk meningkatkan bisnis.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Rp 450.000</span>
-                                            <span class="course-price-discount">Rp 2.000.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <!-- Tambahkan lebih banyak kursus digital marketing di sini -->
-                </div>
-            </div>
-
-            <!-- Section Excel -->
-            <div id="excel" class="category-section mt-5">
-                <h2 class="fw-bold mb-4">Excel</h2>
-                <div class="row g-4">
-                    <!-- Course Card - Excel -->
-                    <div class="col-lg-3 col-md-6">
-                        <a href="{{ route('detail_kursus', ['id' => 3]) }}" class="text-decoration-none">
-                            <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ asset('assets/Excel.jpeg') }}" alt="Excel" class="card-img-top">
-                                <div class="card-body">
-                                    <h6 class="text-warning text-uppercase small fw-bold">Excel</h6>
-                                    <h5 class="fw-bold mb-2">Excel</h5>
-                                    <p class="text-muted small mb-3">Belajar Excel mulai dari dasar hingga advanced dengan praktik langsung.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning">⭐ 4.7 <!--(1.5k)--></span>
-                                        <div>
-                                            <span class="fw-bold text-brown">Gratis</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <!-- Tambahkan lebih banyak kursus Excel di sini -->
-                </div>
+                </form>
             </div>
         </div>
+    </div>
+
+    <!-- Kelas -->
+    <section id="courses" class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">
+                    @if(request('category') && request('category') != 'all')
+                        {{ ucfirst(request('category')) }} Kelas
+                    @elseif(request('search'))
+                        Hasil Pencarian: "{{ request('search') }}"
+                    @else
+                        Semua Kelas
+                    @endif
+                </h2>
+                <span class="text-muted">{{ $classes->total() }} kursus ditemukan</span>
+            </div>
+
+            <div class="row g-4">
+                @forelse($classes as $class)
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{{ route('detail_kursus', ['id' => $class->id]) }}" class="text-decoration-none">
+                            <div class="card h-100 shadow-sm border-0 course-card">
+                                <img src="{{ $class->image ? asset($class->image) : asset('assets/Full Stack.jpg') }}" 
+                                     alt="{{ $class->title }}" 
+                                     class="card-img-top"
+                                     style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    @if($class->category)
+                                    <h6 class="text-warning text-uppercase small fw-bold">{{ $class->category }}</h6>
+                                    @endif
+                                    <h5 class="fw-bold mb-2">{{ $class->title }}</h5>
+                                    <p class="text-muted small mb-3">{{ Str::limit($class->description, 80) }}</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="text-muted small">
+                                            @if($class->tutor)
+                                            <i class="fas fa-user"></i> {{ $class->tutor->name }}
+                                            @endif
+                                        </div>
+                                        <span class="text-warning">⭐ 4.7</span>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @if($class->price > 0)
+                                            <span class="fw-bold text-brown">Rp {{ number_format($class->price, 0, ',', '.') }}</span>
+                                            @else
+                                            <span class="fw-bold text-success">Gratis</span>
+                                            @endif
+                                        </div>
+                                        <div class="text-muted small">
+                                            @if($class->start_date)
+                                            <i class="fas fa-calendar"></i> {{ $class->start_date->format('d M Y') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-12 text-center py-5">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            @if(request('search'))
+                                Tidak ada kursus yang ditemukan untuk pencarian "{{ request('search') }}".
+                            @elseif(request('category'))
+                                Belum ada kursus untuk kategori "{{ request('category') }}".
+                            @else
+                                Belum ada kursus yang tersedia saat ini.
+                            @endif
+                        </div>
+                        @if(request('search') || request('category'))
+                        <a href="{{ route('learning') }}" class="btn btn-warning text-white">Lihat Semua Kelas</a>
+                        @endif
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Pagination -->
+            @if($classes->hasPages())
+            <div class="d-flex justify-content-center mt-5">
+                {{ $classes->appends(request()->except('page'))->links() }}
+            </div>
+            @endif
+        </div>
     </section>
-</div>
 
 @section('scripts')
 <script>
@@ -271,31 +166,8 @@
         
         filterButtons.forEach(button => {
             button.addEventListener('click', function(e) {
-                // Hapus kelas active dari semua tombol
-                filterButtons.forEach(btn => btn.classList.remove('btn-warning', 'text-white'));
-                filterButtons.forEach(btn => btn.classList.add('btn-outline-secondary'));
-                
-                // Tambahkan kelas active ke tombol yang diklik
-                this.classList.remove('btn-outline-secondary');
-                this.classList.add('btn-warning', 'text-white');
+                // Update active state will be handled by server-side rendering
             });
-        });
-        
-        // Menangani perubahan URL hash (ketika user mengklik link dengan hash)
-        window.addEventListener('hashchange', function() {
-            const hash = window.location.hash;
-            if (hash) {
-                // Hapus kelas active dari semua tombol
-                filterButtons.forEach(btn => btn.classList.remove('btn-warning', 'text-white'));
-                filterButtons.forEach(btn => btn.classList.add('btn-outline-secondary'));
-                
-                // Tambahkan kelas active ke tombol yang sesuai
-                const activeButton = document.querySelector(`.category-filter a[href="${hash}"]`);
-                if (activeButton) {
-                    activeButton.classList.remove('btn-outline-secondary');
-                    activeButton.classList.add('btn-warning', 'text-white');
-                }
-            }
         });
     });
 </script>

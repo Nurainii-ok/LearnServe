@@ -232,9 +232,20 @@ class AdminController extends Controller
             'end_date' => 'required|date|after:start_date',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Classes::create($request->all());
+        $data = $request->all();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/class_images'), $imageName);
+            $data['image'] = 'storage/class_images/' . $imageName;
+        }
+
+        Classes::create($data);
 
         return redirect()->route('admin.classes')->with('success', 'Class created successfully!');
     }
@@ -260,9 +271,25 @@ class AdminController extends Controller
             'end_date' => 'required|date|after:start_date',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $class->update($request->all());
+        $data = $request->all();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($class->image && file_exists(public_path($class->image))) {
+                unlink(public_path($class->image));
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/class_images'), $imageName);
+            $data['image'] = 'storage/class_images/' . $imageName;
+        }
+
+        $class->update($data);
 
         return redirect()->route('admin.classes')->with('success', 'Class updated successfully!');
     }
@@ -302,9 +329,20 @@ class AdminController extends Controller
             'category' => 'nullable|string',
             'level' => 'required|in:beginner,intermediate,advanced',
             'requirements' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Bootcamp::create($request->all());
+        $data = $request->all();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/bootcamp_images'), $imageName);
+            $data['image'] = 'storage/bootcamp_images/' . $imageName;
+        }
+
+        Bootcamp::create($data);
 
         return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp created successfully!');
     }
@@ -332,9 +370,25 @@ class AdminController extends Controller
             'category' => 'nullable|string',
             'level' => 'required|in:beginner,intermediate,advanced',
             'requirements' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $bootcamp->update($request->all());
+        $data = $request->all();
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($bootcamp->image && file_exists(public_path($bootcamp->image))) {
+                unlink(public_path($bootcamp->image));
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/bootcamp_images'), $imageName);
+            $data['image'] = 'storage/bootcamp_images/' . $imageName;
+        }
+
+        $bootcamp->update($data);
 
         return redirect()->route('admin.bootcamps')->with('success', 'Bootcamp updated successfully!');
     }

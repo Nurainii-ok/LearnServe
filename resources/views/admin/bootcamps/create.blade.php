@@ -183,7 +183,7 @@ textarea.form-control {
             </a>
         </div>
 
-        <form action="{{ route('admin.bootcamps.store') }}" method="POST" class="form-body">
+        <form action="{{ route('admin.bootcamps.store') }}" method="POST" enctype="multipart/form-data" class="form-body">
             @csrf
             
             @if ($errors->any())
@@ -301,6 +301,15 @@ textarea.form-control {
                 <label for="requirements">Requirements</label>
                 <textarea id="requirements" name="requirements" class="form-control" placeholder="Prerequisites and requirements for this bootcamp">{{ old('requirements') }}</textarea>
                 @error('requirements')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="image">Bootcamp Image</label>
+                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                <small class="text-muted">Upload an image for the bootcamp (JPEG, PNG, JPG, GIF, max 2MB)</small>
+                @error('image')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>

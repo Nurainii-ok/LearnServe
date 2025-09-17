@@ -61,62 +61,51 @@
             </div>
 
             <div class="row g-4">
-                <!-- Program 1 -->
-                <div class="col-md-4">
-                    <a href="{{ route('deskripsi_bootcamp') }}" class="text-decoration-none">
-                        <div class="card course-card h-100">
-                            <img src="{{ asset('assets/Bootcamp.jpg') }}" class="card-img-top" alt="Digital Marketing">
-                            <div class="card-body">
-                                <h6 class="card-title">Microsoft Excel Basic to Advanced: Fullstack</h6>
-                                <div class="mb-2 text-muted small">
-                                    <i class="fas fa-calendar me-1"></i> Mulai: 30 Oktober 2025
-                                </div>
-                                <div class="fw-bold">
-                                    <span class="text-primary">Rp 450.000</span>
-                                    <span class="text-muted text-decoration-line-through ms-2">Rp 2.000.000</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Program 2 -->
-                <div class="col-md-4">
-                    <a href="{{ route('deskripsi_bootcamp') }}" class="text-decoration-none">
-                        <div class="card course-card h-100">
-                            <img src="{{ asset('assets/Bootcamp.jpg') }}" class="card-img-top" alt="Digital Marketing">
-                            <div class="card-body">
-                                <h6 class="card-title">Data Science Bootcamp: Python & Machine Learning</h6>
-                                <div class="mb-2 text-muted small">
-                                    <i class="fas fa-calendar me-1"></i> Mulai: 15 November 2025
-                                </div>
-                                <div class="fw-bold">
-                                    <span class="text-primary">Rp 799.000</span>
-                                    <span class="text-muted text-decoration-line-through ms-2">Rp 1.500.000</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Program 3 -->
-                <div class="col-md-4">
-                    <a href="{{ route('deskripsi_bootcamp') }}" class="text-decoration-none">
-                        <div class="card course-card h-100">
-                            <img src="{{ asset('assets/Bootcamp.jpg') }}" class="card-img-top" alt="Digital Marketing">
-                            <div class="card-body">
-                                <h6 class="card-title">UI/UX Design Masterclass: Figma & Prototyping</h6>
-                                <div class="mb-2 text-muted small">
-                                    <i class="fas fa-calendar me-1"></i> Mulai: 5 Desember 2025
-                                </div>
-                                <div class="fw-bold">
-                                    <span class="text-primary">Rp 650.000</span>
-                                    <span class="text-muted text-decoration-line-through ms-2">Rp 1.200.000</span>
+                @forelse($bootcamps as $bootcamp)
+                    <!-- Program {{ $loop->iteration }} -->
+                    <div class="col-md-4">
+                        <a href="{{ route('deskripsi_bootcamp', ['id' => $bootcamp->id]) }}" class="text-decoration-none">
+                            <div class="card course-card h-100">
+                                <img src="{{ $bootcamp->image ? asset($bootcamp->image) : asset('assets/Bootcamp.jpg') }}" 
+                                     class="card-img-top" alt="{{ $bootcamp->title }}" 
+                                     style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ $bootcamp->title }}</h6>
+                                    <div class="mb-2 text-muted small">
+                                        <i class="fas fa-calendar me-1"></i> 
+                                        Mulai: {{ $bootcamp->start_date->format('d M Y') }}
+                                    </div>
+                                    <div class="mb-2 text-muted small">
+                                        <i class="fas fa-clock me-1"></i> 
+                                        Durasi: {{ $bootcamp->duration }}
+                                    </div>
+                                    <div class="mb-2 text-muted small">
+                                        <i class="fas fa-user me-1"></i> 
+                                        Tutor: {{ $bootcamp->tutor->name }}
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="badge bg-{{ $bootcamp->level == 'beginner' ? 'success' : ($bootcamp->level == 'intermediate' ? 'warning' : 'danger') }}">
+                                            {{ ucfirst($bootcamp->level) }}
+                                        </span>
+                                    </div>
+                                    <div class="fw-bold">
+                                        <span class="text-primary">Rp {{ number_format($bootcamp->price, 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="mt-2 small text-muted">
+                                        {{ Str::limit($bootcamp->description, 100) }}
+                                    </div>
                                 </div>
                             </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-12 text-center">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Belum ada program bootcamp yang tersedia saat ini.
                         </div>
-                    </a>
-                </div>
+                    </div>
+                @endforelse
             </div>
 
             <div class="text-center mt-5">

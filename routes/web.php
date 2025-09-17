@@ -31,7 +31,7 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/learning', [PagesController::class, 'learning'])->name('learning');
     Route::get('/bootcamp', [PagesController::class, 'bootcamp'])->name('bootcamp');
     Route::get('/webinar', [PagesController::class, 'webinar'])->name('webinar');
-    Route::get('/deskripsi_bootcamp', [PagesController::class, 'deskripsibootcamp'])->name('deskripsi_bootcamp');
+    Route::get('/deskripsi_bootcamp/{id?}', [PagesController::class, 'deskripsibootcamp'])->name('deskripsi_bootcamp');
     Route::get('/detail_kursus', [PagesController::class, 'detailKursus'])->name('detail_kursus');
     Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
     Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');

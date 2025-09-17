@@ -22,7 +22,8 @@ class Classes extends Model
         'end_date',
         'schedule',
         'status',
-        'category'
+        'category',
+        'image'
     ];
 
     protected $casts = [

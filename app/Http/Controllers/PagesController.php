@@ -55,19 +55,13 @@ class PagesController extends Controller
 
     public function bootcamp()
     {
-        // Get bootcamp programs from the new Bootcamp model
-        $bootcampClasses = Bootcamp::with(['tutor'])
+        // Get all active bootcamp programs from the Bootcamp model
+        $bootcamps = Bootcamp::with(['tutor'])
             ->where('status', 'active')
-
-            ->where(function ($q) {
-                $q->where('category', 'like', '%bootcamp%')
-                  ->orWhere('category', 'like', '%intensive%');
-            })
-
             ->latest()
             ->get();
             
-        return view('pages.bootcamp', compact('bootcampClasses'));
+        return view('pages.bootcamp', compact('bootcamps'));
     }
 
     public function webinar()
@@ -82,9 +76,18 @@ class PagesController extends Controller
         return view('pages.webinar', compact('webinarClasses'));
     }
 
-    public function deskripsibootcamp()
+    public function deskripsibootcamp($id = null)
     {
-        return view('pages.deskripsi_bootcamp');
+        // Get bootcamp details by ID if provided
+        $bootcamp = null;
+        
+        if ($id) {
+            $bootcamp = Bootcamp::with(['tutor'])
+                ->where('status', 'active')
+                ->findOrFail($id);
+        }
+        
+        return view('pages.deskripsi_bootcamp', compact('bootcamp'));
     }
 
     public function detailKursus()

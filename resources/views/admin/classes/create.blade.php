@@ -183,7 +183,7 @@ textarea.form-control {
             </a>
         </div>
 
-        <form action="{{ route('admin.classes.store') }}" method="POST" class="form-body">
+        <form action="{{ route('admin.classes.store') }}" method="POST" enctype="multipart/form-data" class="form-body">
             @csrf
             
             @if ($errors->any())
@@ -278,6 +278,15 @@ textarea.form-control {
                 <label for="schedule">Schedule</label>
                 <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Self-paced learning, Available 24/7">
                 @error('schedule')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="image">Class Image</label>
+                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                <small class="text-muted">Upload an image for the class (JPEG, PNG, JPG, GIF, max 2MB)</small>
+                @error('image')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>

@@ -183,7 +183,7 @@ textarea.form-control {
             </a>
         </div>
 
-        <form action="{{ route('admin.bootcamps.update', $bootcamp->id) }}" method="POST" class="form-body">
+        <form action="{{ route('admin.bootcamps.update', $bootcamp->id) }}" method="POST" enctype="multipart/form-data" class="form-body">
             @csrf
             @method('PUT')
             
@@ -313,6 +313,21 @@ textarea.form-control {
                 <label for="requirements">Requirements</label>
                 <textarea id="requirements" name="requirements" class="form-control" placeholder="Prerequisites and requirements for this bootcamp">{{ old('requirements', $bootcamp->requirements) }}</textarea>
                 @error('requirements')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="image">Bootcamp Image</label>
+                @if($bootcamp->image)
+                    <div style="margin-bottom: 1rem;">
+                        <img src="{{ asset($bootcamp->image) }}" alt="Current image" style="width: 150px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                        <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Current image</p>
+                    </div>
+                @endif
+                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                <small class="text-muted">Upload a new image to replace the current one (JPEG, PNG, JPG, GIF, max 2MB)</small>
+                @error('image')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
