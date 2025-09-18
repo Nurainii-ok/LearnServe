@@ -1,161 +1,159 @@
 @extends('layouts.app')
-
 @section('title', 'Home')
-
-
 @section('title', 'Bootcamp & Program')
-
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 @endsection
 
-
 @section('content')
 
-<div class="container-fluid px-4">
-    <!-- Clean Hero Section -->
-    <section class="hero row align-items-center">
-        <div class="col-lg-6">
-            <h1>Belajar dan Berkembang Bersama <br><span class="highlight">LearnServe</span></h1>
-            <p>Platform pembelajaran online dengan bootcamp dan e-learning terbaik untuk meningkatkan skill digitalmu dan mewujudkan karir impianmu.</p>
-            <!--<a href="#" class="btn btn-primary-custom">Mulai Perjalananmu</a>-->
+<!-- Clean Hero Section -->
+<section class="hero row align-items-center">
+    <div class="col-lg-6">
+        <h1>Belajar dan Berkembang Bersama <br><span class="highlight">LearnServe</span></h1>
+        <p>Platform pembelajaran online dengan bootcamp dan e-learning terbaik untuk meningkatkan skill digitalmu dan mewujudkan karir impianmu.</p>
+        <!--<a href="#" class="btn btn-primary-custom">Mulai Perjalananmu</a>-->
+    </div>
+    <div class="col-lg-6 text-center">
+        <img src="{{ asset('assets/Bootcamp2.jpg') }}" 
+            alt="Bootcamp Illustration" 
+            style="width: 100%; height: 400px; object-fit: cover; border-radius: 20px;">
+    </div>
+
+</section>
+
+<!--<div class="container-fluid px-4">-->
+    <!-- Popular Category Section -->
+    <section class="popular-category py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold mb-0">Popular Category</h5>
+        <a href="#" class="text-decoration-none fw-semibold">View all categories</a>
         </div>
-        <div class="col-lg-6 text-center">
-            <img src="{{ asset('assets/Bootcamp2.jpg') }}" 
-                alt="Bootcamp Illustration" 
-                style="width: 100%; height: 400px; object-fit: cover; border-radius: 20px;">
+        <p class="text-muted small mb-4">2020 jobs live – 293 added today.</p>
+
+        <!-- Categories Row -->
+        <div class="row g-3">
+        <!-- Category Card -->
+        <div class="col-6 col-md-3">
+            <div class="category-card h-100 shadow-sm">
+            <div class="icon-box">
+                <i class="bi bi-code-slash"></i>
+            </div>
+            <h6 class="fw-semibold">Development & IT</h6>
+            <p class="small text-muted mb-1">16 jobs</p>
+            <p class="small text-muted">Frontend, backend, web and app developer jobs.</p>
+            </div>
         </div>
 
+        <div class="col-6 col-md-3">
+            <div class="category-card h-100 shadow-sm">
+            <div class="icon-box">
+                <i class="bi bi-bullseye"></i>
+            </div>
+            <h6 class="fw-semibold">Marketing & Sales</h6>
+            <p class="small text-muted mb-1">8 jobs</p>
+            <p class="small text-muted">Advertising, digital marketing and brand...</p>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="category-card h-100 shadow-sm">
+            <div class="icon-box">
+                <i class="bi bi-palette"></i>
+            </div>
+            <h6 class="fw-semibold">Design & Creative</h6>
+            <p class="small text-muted mb-1">13 jobs</p>
+            <p class="small text-muted">Graphic, digital, web, and product design jobs.</p>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="category-card h-100 shadow-sm">
+            <div class="icon-box">
+                <i class="bi bi-people"></i>
+            </div>
+            <h6 class="fw-semibold">Customer Service</h6>
+            <p class="small text-muted mb-1">8 jobs</p>
+            <p class="small text-muted">Customer experience and account management jobs.</p>
+            </div>
+        </div>
+        </div>
+    </div>
     </section>
 
-    <!-- Popular Category Section -->
-<section class="popular-category my-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-semibold mb-0">Popular Category</h5>
-    <a href="#" class="text-decoration-none fw-semibold">View all categories</a>
-  </div>
-  <p class="text-muted small mb-4">2020 jobs live – 293 added today.</p>
 
-  <!-- Categories Row -->
-  <div class="row g-3">
-    <!-- Category Card -->
-    <div class="col-6 col-md-3">
-      <div class="category-card h-100 shadow-sm">
-        <div class="icon-box">
-          <i class="bi bi-code-slash"></i>
+
+    <section class="all-courses-section py-5" style="background-color: #ffecc7;">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-3 mb-md-0">
+            All <span style="color: #944e25;">Courses</span> of Edule
+        </h2>
+        <div class="search-box">
+            <input type="text" class="form-control" placeholder="Search your course">
+            <button class="btn btn-link p-0">
+            <i class="bi bi-search"></i>
+            </button>
         </div>
-        <h6 class="fw-semibold">Development & IT</h6>
-        <p class="small text-muted mb-1">16 jobs</p>
-        <p class="small text-muted">Frontend, backend, web and app developer jobs.</p>
-      </div>
-    </div>
-
-    <div class="col-6 col-md-3">
-      <div class="category-card h-100 shadow-sm">
-        <div class="icon-box">
-          <i class="bi bi-bullseye"></i>
         </div>
-        <h6 class="fw-semibold">Marketing & Sales</h6>
-        <p class="small text-muted mb-1">8 jobs</p>
-        <p class="small text-muted">Advertising, digital marketing and brand...</p>
-      </div>
-    </div>
 
-    <div class="col-6 col-md-3">
-      <div class="category-card h-100 shadow-sm">
-        <div class="icon-box">
-          <i class="bi bi-palette"></i>
+        <!-- Filter -->
+        <div class="d-flex flex-wrap gap-2 mb-5">
+        <button class="btn btn-light active">UI/UX Design</button>
+        <button class="btn btn-light">Development</button>
+        <button class="btn btn-light">Data Science</button>
+        <button class="btn btn-light">Business</button>
+        <button class="btn btn-light">Financial</button>
         </div>
-        <h6 class="fw-semibold">Design & Creative</h6>
-        <p class="small text-muted mb-1">13 jobs</p>
-        <p class="small text-muted">Graphic, digital, web, and product design jobs.</p>
-      </div>
-    </div>
 
-    <div class="col-6 col-md-3">
-      <div class="category-card h-100 shadow-sm">
-        <div class="icon-box">
-          <i class="bi bi-people"></i>
-        </div>
-        <h6 class="fw-semibold">Customer Service</h6>
-        <p class="small text-muted mb-1">8 jobs</p>
-        <p class="small text-muted">Customer experience and account management jobs.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="all-courses-section py-5" style="background-color: #f3efec;">
-  <div class="container">
-
-    <!-- Header -->
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold mb-3 mb-md-0">
-        All <span style="color: #4caf50;">Courses</span> of Edule
-      </h2>
-      <div class="search-box">
-        <input type="text" class="form-control" placeholder="Search your course">
-        <button class="btn btn-link p-0">
-          <i class="bi bi-search"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Filter -->
-    <div class="d-flex flex-wrap gap-2 mb-5">
-      <button class="btn btn-light active">UI/UX Design</button>
-      <button class="btn btn-light">Development</button>
-      <button class="btn btn-light">Data Science</button>
-      <button class="btn btn-light">Business</button>
-      <button class="btn btn-light">Financial</button>
-    </div>
-
-    <!-- Courses Grid -->
-    <div class="row g-4">
-      <!-- Course Card -->
-      <div class="col-lg-4 col-md-6">
-        <div class="course-card shadow-sm h-100">
-          <div class="course-img">
-            <img src="assets/Data Analytics.jpg" alt="Course">
-          </div>
-          <div class="course-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="assets/avatar1.jpg" class="avatar">
-              <div class="ms-2 small">
-                <div class="fw-semibold">Jason Williams</div>
-                <div class="badge bg-success-subtle text-success">Science</div>
-              </div>
+        <!-- Courses Grid -->
+        <div class="row g-4">
+        <!-- Course Card -->
+        <div class="col-lg-4 col-md-6">
+            <div class="course-card shadow-sm h-100">
+            <div class="course-img">
+                <img src="assets/Data Analytics.jpg" alt="Course">
             </div>
-            <h5 class="fw-semibold mb-2">Data Science and Machine Learning with Python - Hands On!</h5>
-            <div class="d-flex justify-content-between small text-muted mb-3">
-              <span><i class="bi bi-clock"></i> 08 hr 15 mins</span>
-              <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
+            <div class="course-body">
+                <div class="d-flex align-items-center mb-3">
+                <img src="assets/avatar1.jpg" class="avatar">
+                <div class="ms-2 small">
+                    <div class="fw-semibold">Jason Williams</div>
+                    <div class="badge bg-success-subtle text-success">Science</div>
+                </div>
+                </div>
+                <h5 class="fw-semibold mb-2">Data Science and Machine Learning with Python - Hands On!</h5>
+                <div class="d-flex justify-content-between small text-muted mb-3">
+                <span><i class="bi bi-clock"></i> 08 hr 15 mins</span>
+                <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                <div class="price">
+                    <span class="text-success fw-bold">$385.00</span>
+                    <span class="text-decoration-line-through text-muted small">$440.00</span>
+                </div>
+                <div class="rating text-warning fw-semibold">4.9 ★</div>
+                </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="price">
-                <span class="text-success fw-bold">$385.00</span>
-                <span class="text-decoration-line-through text-muted small">$440.00</span>
-              </div>
-              <div class="rating text-warning fw-semibold">4.9 ★</div>
             </div>
-          </div>
         </div>
-      </div>
 
-      <!-- Copy 5x lagi untuk course lain -->
-      <!-- ... -->
+        <!-- Copy 5x lagi untuk course lain -->
+        <!-- ... -->
+        </div>
+
+        <!-- Button -->
+        <div class="text-center mt-5">
+    <a href="{{ route('learning') }}" class="btn btn-outline-success px-4">
+        Other Course
+    </a>
     </div>
 
-    <!-- Button -->
-    <div class="text-center mt-5">
-  <a href="{{ route('learning') }}" class="btn btn-outline-success px-4">
-    Other Course
-  </a>
-</div>
-
-</section>
+    </section>
   
 
     <!-- Clean Why Choose Section -->
@@ -407,7 +405,7 @@
             </div>
         </div>
     </section>         
-</div>
+<!--</div>-->
 
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>-->
 <script>
