@@ -31,7 +31,7 @@
         <h5 class="fw-semibold mb-0">Popular Category</h5>
         <a href="#" class="text-decoration-none fw-semibold">View all categories</a>
         </div>
-        <p class="text-muted small mb-4">2020 jobs live – 293 added today.</p>
+        <!--<p class="text-muted small mb-4">2020 jobs live – 293 added today.</p>-->
 
         <!-- Categories Row -->
         <div class="row g-3">
@@ -91,7 +91,7 @@
         <!-- Header -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-3 mb-md-0">
-            All <span style="color: #944e25;">Courses</span> of Edule
+            <span style="color: #944e25;">Kelas</span> Populer
         </h2>
         <div class="search-box">
             <input type="text" class="form-control" placeholder="Search your course">
@@ -109,42 +109,149 @@
         <button class="btn btn-light">Business</button>
         <button class="btn btn-light">Financial</button>
         </div>
+<!-- Courses Grid -->
+<div class="row g-4">
+  <!-- Course Card -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100 border-0 shadow-sm course-card">
+      <!-- Image -->
+      <div class="position-relative">
+        <img src="assets/Data Analytics.jpg" class="card-img-top rounded-top" alt="Course">
+        <!-- Optional: label diskon -->
+        <span class="badge bg-danger position-absolute top-0 end-0 m-2">-15%</span>
+      </div>
 
-        <!-- Courses Grid -->
-        <div class="row g-4">
-        <!-- Course Card -->
-        <div class="col-lg-4 col-md-6">
-            <div class="course-card shadow-sm h-100">
-            <div class="course-img">
-                <img src="assets/Data Analytics.jpg" alt="Course">
-            </div>
-            <div class="course-body">
-                <div class="d-flex align-items-center mb-3">
-                <img src="assets/avatar1.jpg" class="avatar">
-                <div class="ms-2 small">
-                    <div class="fw-semibold">Jason Williams</div>
-                    <div class="badge bg-success-subtle text-success">Science</div>
-                </div>
-                </div>
-                <h5 class="fw-semibold mb-2">Data Science and Machine Learning with Python - Hands On!</h5>
-                <div class="d-flex justify-content-between small text-muted mb-3">
-                <span><i class="bi bi-clock"></i> 08 hr 15 mins</span>
-                <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                <div class="price">
-                    <span class="text-success fw-bold">$385.00</span>
-                    <span class="text-decoration-line-through text-muted small">$440.00</span>
-                </div>
-                <div class="rating text-warning fw-semibold">4.9 ★</div>
-                </div>
-            </div>
-            </div>
+      <!-- Body -->
+      <div class="card-body">
+        <!-- Instructor -->
+        <div class="d-flex align-items-center mb-3">
+          <img src="assets/avatar1.jpg" class="rounded-circle" width="40" height="40" alt="Instructor">
+          <div class="ms-2 small">
+            <div class="fw-semibold">Jason Williams</div>
+            <div class="badge bg-success-subtle text-success">Science</div>
+          </div>
         </div>
 
-        <!-- Copy 5x lagi untuk course lain -->
-        <!-- ... -->
+        <!-- Title -->
+        <h6 class="fw-semibold mb-2 text-truncate" title="Data Science and Machine Learning with Python - Hands On!">
+          Data Science and Machine Learning with Python - Hands On!
+        </h6>
+
+        <!-- Meta -->
+        <div class="d-flex justify-content-between small text-muted mb-3">
+          <span><i class="bi bi-clock"></i> 8h 15m</span>
+          <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
         </div>
+
+        <!-- Price & Rating -->
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="price">
+            <span class="text-success fw-bold">$385.00</span>
+            <span class="text-decoration-line-through text-muted small ms-1">$440.00</span>
+          </div>
+          <div class="rating text-warning fw-semibold">
+            <i class="bi bi-star-fill"></i> 4.9
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100 border-0 shadow-sm course-card">
+      <!-- Image -->
+      <div class="position-relative">
+        <img src="assets/Data Analytics.jpg" class="card-img-top rounded-top" alt="Course">
+        <!-- Optional: label diskon -->
+        <span class="badge bg-danger position-absolute top-0 end-0 m-2">-15%</span>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <!-- Instructor -->
+        <div class="d-flex align-items-center mb-3">
+          <img src="assets/avatar1.jpg" class="rounded-circle" width="40" height="40" alt="Instructor">
+          <div class="ms-2 small">
+            <div class="fw-semibold">Jason Williams</div>
+            <div class="badge bg-success-subtle text-success">Science</div>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <h6 class="fw-semibold mb-2 text-truncate" title="Data Science and Machine Learning with Python - Hands On!">
+          Data Science and Machine Learning with Python - Hands On!
+        </h6>
+
+        <!-- Meta -->
+        <div class="d-flex justify-content-between small text-muted mb-3">
+          <span><i class="bi bi-clock"></i> 8h 15m</span>
+          <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
+        </div>
+
+        <!-- Price & Rating -->
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="price">
+            <span class="text-success fw-bold">$385.00</span>
+            <span class="text-decoration-line-through text-muted small ms-1">$440.00</span>
+          </div>
+          <div class="rating text-warning fw-semibold">
+            <i class="bi bi-star-fill"></i> 4.9
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card h-100 border-0 shadow-sm course-card">
+      <!-- Image -->
+      <div class="position-relative">
+        <img src="assets/Data Analytics.jpg" class="card-img-top rounded-top" alt="Course">
+        <!-- Optional: label diskon -->
+        <span class="badge bg-danger position-absolute top-0 end-0 m-2">-15%</span>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <!-- Instructor -->
+        <div class="d-flex align-items-center mb-3">
+          <img src="assets/avatar1.jpg" class="rounded-circle" width="40" height="40" alt="Instructor">
+          <div class="ms-2 small">
+            <div class="fw-semibold">Jason Williams</div>
+            <div class="badge bg-success-subtle text-success">Science</div>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <h6 class="fw-semibold mb-2 text-truncate" title="Data Science and Machine Learning with Python - Hands On!">
+          Data Science and Machine Learning with Python - Hands On!
+        </h6>
+
+        <!-- Meta -->
+        <div class="d-flex justify-content-between small text-muted mb-3">
+          <span><i class="bi bi-clock"></i> 8h 15m</span>
+          <span><i class="bi bi-play-circle"></i> 29 Lectures</span>
+        </div>
+
+        <!-- Price & Rating -->
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="price">
+            <span class="text-success fw-bold">$385.00</span>
+            <span class="text-decoration-line-through text-muted small ms-1">$440.00</span>
+          </div>
+          <div class="rating text-warning fw-semibold">
+            <i class="bi bi-star-fill"></i> 4.9
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copy card ini 5x lagi untuk course lain -->
+</div>
+
 
         <!-- Button -->
         <div class="text-center mt-5">

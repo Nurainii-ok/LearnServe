@@ -132,6 +132,12 @@
         </div>
       </div>
 
+      <!-- Persyaratan -->
+      <div class="mb-4">
+        <h5 class="fw-bold mb-3">Persyaratan</h5>
+        <p>Kursus ini dirancang untuk Anda yang ingin menjadi Full Stack Developer. Mulai dari membuat tampilan web (frontend), membangun server (backend), mengatur database, hingga melakukan deployment ke server. Semua dijelaskan dengan praktik nyata agar siap menghadapi industri.</p>
+      </div>
+
       <!-- Deskripsi -->
       <div class="mb-4">
         <h5 class="fw-bold mb-3">Deskripsi</h5>
@@ -185,7 +191,7 @@
       <h6 class="fw-bold mb-3" style="color:#944e25;">Kursus ini mencakup:</h6>
       <ul class="list-unstyled small mb-4" style="color:#333;">
         <li>📺 43 jam video on-demand</li>
-        <li>📄 10 artikel</li>
+        <!--<li>📄 10 artikel</li>-->
         <li>📱 Akses di perangkat seluler dan TV</li>
         <li>♾️ Akses penuh seumur hidup</li>
         <li>🏆 Sertifikat penyelesaian</li>

@@ -115,7 +115,7 @@
     </section>
 
     <!-- Corporate Section -->
-    <section class="corporate-section">
+    <!--<section class="corporate-section">
         <div class="container text-center">
             <h2><i class="fas fa-building me-2"></i> E-learning & Training Untuk Perusahaan</h2>
             <p>Miliki akses ratusan konten e-learning LearnServe serta dukungan corporate training untuk perusahaan.</p>
@@ -143,7 +143,7 @@
             
             <a href="#" class="btn btn-warning mt-4"><i class="fas fa-phone me-2"></i> Hubungi Tim LearnServe</a>
         </div>
-    </section>
+    </section>-->
 @endsection
 
 @section('scripts')
