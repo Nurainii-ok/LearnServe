@@ -88,6 +88,7 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/classes/{id}', [AdminController::class, 'classesUpdate'])->name('classes.update');
     Route::delete('/classes/{id}', [AdminController::class, 'classesDestroy'])->name('classes.destroy');
     
+    
     // Bootcamps CRUD
     Route::get('/bootcamps', [AdminController::class, 'bootcamps'])->name('bootcamps');
     Route::get('/bootcamps/create', [AdminController::class, 'bootcampsCreate'])->name('bootcamps.create');
