@@ -231,11 +231,20 @@ textarea.form-control {
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category') }}" placeholder="e.g., Web Development, Programming">
+                    <select id="category" name="category" class="form-control">
+                        <option value="">-- Select Category --</option>
+                        <option value="Design & Development" {{ old('category') == 'Design & Development' ? 'selected' : '' }}>Design & Development</option>
+                        <option value="Marketing & Communication" {{ old('category') == 'Marketing & Communication' ? 'selected' : '' }}>Marketing & Communication</option>
+                        <option value="Digital Marketing" {{ old('category') == 'Digital Marketing' ? 'selected' : '' }}>Digital Marketing</option>
+                        <option value="Business & Consulting" {{ old('category') == 'Business & Consulting' ? 'selected' : '' }}>Business & Consulting</option>
+                        <option value="Finance Management" {{ old('category') == 'Finance Management' ? 'selected' : '' }}>Finance Management</option>
+                        <option value="Self Development" {{ old('category') == 'Self Development' ? 'selected' : '' }}>Self Development</option>
+                    </select>
                     @error('category')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
+
             </div>
 
             <div class="form-row">

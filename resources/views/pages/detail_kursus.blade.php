@@ -5,158 +5,109 @@
 @section('content')
 <div class="container my-5">
 
-  <style>
-    .card .btn-primary {
-      background-color: #5624d0 !important;
-      border-color: #5624d0 !important;
-    }
-    .card .btn-primary:hover {
-      background-color: #471aa0 !important;
-    }
-  </style>
+  {{-- Jika kursus berbayar --}}
+  @if($class->price > 0) 
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Judul & Info Kursus -->
+        <h1 class="fw-bold mb-3">{{ $class->title }}</h1>
+        <p class="lead text-muted">{{ $class->short_description }}</p>
 
+<<<<<<< HEAD
   <div class="row">
     <!-- Konten Kiri -->
     <div class="col-lg-8">
       <!-- Judul & Info Kursus -->
       <h1 class="fw-bold mb-3">{{ $class ? $class->title : 'Full Stack Web Development' }}</h1>
       <p class="lead text-muted">{{ $class ? $class->description : 'Belajar membuat website modern dengan teknologi terbaru dari frontend hingga backend secara komprehensif.' }}</p>
+=======
+        <div class="d-flex align-items-center mb-3">
+          <span class="badge bg-warning text-dark me-2">Best Seller</span>
+          <span>⭐ {{ $class->rating }} ({{ $class->reviews_count }} rating) • {{ $class->students_count }} peserta</span>
+        </div>
+>>>>>>> 0e46bc39732e8c47debf144f5398fc5addfd7892
 
-      <div class="d-flex align-items-center mb-3">
-        <span class="badge bg-warning text-dark me-2">Best Seller</span>
-        <span>⭐ 4.9 (8.752 rating) • 35.000 peserta</span>
-      </div>
-      <!--<p>Dibuat oleh <a href="#">Tim Developer Expert</a></p>-->
-      <p><i class="bi bi-globe"></i> Bahasa Indonesia • <i class="bi bi-clock-history"></i> Update terakhir 09/2025</p>
+        <p><i class="bi bi-globe"></i> {{ $class->language }} • 
+           <i class="bi bi-clock-history"></i> Update terakhir {{ $class->last_update }}</p>
 
-      <!-- Apa yang akan dipelajari -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="fw-bold mb-3">Yang akan Anda pelajari</h5>
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li>✔️ HTML, CSS, dan JavaScript dasar</li>
-                <li>✔️ Framework Frontend (React / Vue)</li>
-                <li>✔️ Desain responsif & UI/UX dasar</li>
-                <li>✔️ Git & version control</li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li>✔️ Backend dengan Node.js & Express</li>
-                <li>✔️ Database MySQL & MongoDB</li>
-                <li>✔️ Autentikasi & keamanan</li>
-                <li>✔️ Deployment ke server/cloud</li>
-              </ul>
+        {{-- Konten kursus, persyaratan, deskripsi, dll --}}
+        <div class="mt-4">
+          <h4 class="fw-bold">Deskripsi Kursus</h4>
+          <p>{{ $class->description }}</p>
+        </div>
+
+        <div class="mt-4">
+          <h4 class="fw-bold">Instruktur</h4>
+          <div class="d-flex align-items-center">
+            <img src="{{ $class->instructor_image }}" class="rounded-circle me-3" 
+                 alt="Instructor" style="width:80px;height:80px;object-fit:cover;">
+            <div>
+              <a href="#" class="fw-bold text-decoration-none">{{ $class->instructor }}</a>
+              <p class="mb-1 text-muted">{{ $class->instructor_job }}</p>
+              <span class="text-warning">★ {{ $class->rating }}</span> 
+              <span class="text-muted">Peringkat Instruktur</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Konten Kursus -->
-      <div class="mb-4">
-        <h5 class="fw-bold mb-3">Konten Kursus</h5>
-        <div class="accordion" id="courseContent">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                Dasar Pemrograman Web
-              </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#courseContent">
-              <div class="accordion-body">
-                <ul class="list-unstyled mb-0">
-                  <li>📺 Pengenalan Web Development (05:00)</li>
-                  <li>📺 HTML & Struktur Halaman (12:00)</li>
-                  <li>📺 CSS Dasar & Layouting (15:00)</li>
-                  <li>📺 JavaScript Dasar (20:00)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+      <!-- Sidebar Harga -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 100px; background-color:#f3efec;">
+          <div class="card-body">
+            <h3 class="fw-bold" style="color:#944e25;">
+              Rp{{ number_format($class->price) }}
+              @if($class->original_price > $class->price)
+                <small class="text-muted text-decoration-line-through fs-6">
+                  Rp{{ number_format($class->original_price) }}
+                </small>
+              @endif
+            </h3>
 
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                Frontend Development
-              </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#courseContent">
-              <div class="accordion-body">
-                <ul class="list-unstyled mb-0">
-                  <li>📺 JavaScript Lanjutan (18:00)</li>
-                  <li>📺 React Components & Hooks (25:00)</li>
-                  <li>📺 State Management (15:00)</li>
-                  <li>📺 Integrasi API ke Frontend (20:00)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+            @if($class->discount)
+              <p style="color:#944e25; font-weight:600;">Diskon {{ $class->discount }}%</p>
+            @endif
 
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                Backend Development
-              </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#courseContent">
-              <div class="accordion-body">
-                <ul class="list-unstyled mb-0">
-                  <li>📺 Node.js & Express (20:00)</li>
-                  <li>📺 REST API (18:00)</li>
-                  <li>📺 Database MySQL & MongoDB (25:00)</li>
-                  <li>📺 Autentikasi & Middleware (22:00)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+            <a href="{{ route('checkout', $class->id) }}" 
+               class="btn w-100 fw-bold mb-3" 
+               style="background-color:#944e25; color:white; border:none;">
+                <i class="fas fa-credit-card me-2"></i>Beli Sekarang
+            </a>
 
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingFour">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-                Deployment & Studi Kasus
-              </button>
-            </h2>
-            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#courseContent">
-              <div class="accordion-body">
-                <ul class="list-unstyled mb-0">
-                  <li>📺 GitHub & GitHub Actions (15:00)</li>
-                  <li>📺 Deployment ke Vercel/Netlify (12:00)</li>
-                  <li>📺 Deployment Backend ke VPS/Cloud (20:00)</li>
-                  <li>📺 Studi Kasus: Membuat Aplikasi Full Stack (30:00)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Deskripsi -->
-      <div class="mb-4">
-        <h5 class="fw-bold mb-3">Deskripsi</h5>
-        <p>Kursus ini dirancang untuk Anda yang ingin menjadi Full Stack Developer. Mulai dari membuat tampilan web (frontend), membangun server (backend), mengatur database, hingga melakukan deployment ke server. Semua dijelaskan dengan praktik nyata agar siap menghadapi industri.</p>
-      </div>
-
-      <!-- Instruktor -->
-      <div class="mb-4">
-        <h5 class="fw-bold mb-3">Instruktur</h5>
-        <div class="d-flex align-items-center">
-          <img src="{{ asset('assets/L1.jpg') }}" alt="Instruktur" class="rounded-circle me-3" style="width:60px; height:60px; object-fit:cover;">
-          <div>
-            <h6 class="mb-0">Ahmad Rizki</h6>
-            <small class="text-muted">Senior Full Stack Developer</small>
+            <hr>
+            <h6 class="fw-bold mb-3" style="color:#944e25;">Kursus ini mencakup:</h6>
+            <ul class="list-unstyled small mb-4" style="color:#333;">
+              <li>📺 {{ $class->duration }} jam video on-demand</li>
+              <li>📱 Akses di perangkat seluler dan TV</li>
+              <li>♾️ Akses penuh seumur hidup</li>
+              <li>🏆 Sertifikat penyelesaian</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Sidebar Kanan -->
-<!-- Sidebar Kanan -->
-<div class="col-lg-4">
-  <div class="card shadow-sm border-0 sticky-top" style="top: 100px; background-color:#f3efec;">
-    <div class="card-body">
+  {{-- Jika kursus gratis --}}
+  @else 
+    <div class="row g-4">
+      <!-- Video Preview -->
+      <div class="col-lg-7">
+        <div class="ratio ratio-16x9 border rounded">
+          @if(Str::contains($class->preview_url, 'youtube.com') || Str::contains($class->preview_url, 'vimeo.com'))
+              {{-- Embed YouTube/Vimeo --}}
+              <iframe src="{{ $class->preview_url }}" 
+                      title="Course Preview" allowfullscreen></iframe>
+          @else
+              {{-- Video lokal / file upload --}}
+              <video controls>
+                <source src="{{ asset('storage/videos/' . $class->preview_url) }}" type="video/mp4">
+                Browser kamu tidak mendukung video tag.
+              </video>
+          @endif
+        </div>
+      </div>
 
+<<<<<<< HEAD
       <!-- Harga -->
       <h3 class="fw-bold" style="color:#944e25;">
         @if($class)
@@ -244,12 +195,51 @@
         <input type="text" class="form-control" placeholder="Masukkan Kupon" style="border-color:#944e25;">
         <button class="btn" style="background-color:#ecac57; color:#fff; border:none;">Terapkan</button>
       </div>-->
+=======
+      <!-- Info Kursus -->
+      <div class="col-lg-5">
+        <h3 class="fw-bold">{{ $class->title }}</h3>
+        <p class="text-muted">{{ $class->short_description }}</p>
+        
+        <span class="badge bg-success mb-2">Tutorial Gratis</span>
+        <div class="d-flex align-items-center mb-2">
+          <span class="fw-bold text-warning">★ {{ $class->rating }}</span>
+          <span class="ms-2 text-muted">({{ $class->reviews_count }} rating) • {{ $class->students_count }} peserta</span>
+        </div>
 
+        <p class="mb-1 text-muted">Dibuat oleh <a href="#" class="text-decoration-none">{{ $class->instructor }}</a></p>
+        <p class="text-muted"><i class="bi bi-globe"></i> {{ $class->language }}</p>
+>>>>>>> 0e46bc39732e8c47debf144f5398fc5addfd7892
+
+        <h5 class="fw-bold">Gratis</h5>
+        <a href="{{ route('detail_kursus', $class->id) }}" 
+           class="btn btn-outline-primary w-100">Daftar Sekarang</a>
+      </div>
     </div>
-  </div>
-</div>
 
-  </div>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mt-5" id="courseTabs">
+      <li class="nav-item"><a class="nav-link active" href="#">Yang akan Anda pelajari</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Konten kursus</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Ulasan</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Instruktur</a></li>
+    </ul>
+
+    <!-- Instructor -->
+    <div class="mt-4">
+      <h5 class="fw-bold">Instruktur</h5>
+      <div class="d-flex align-items-center">
+        <img src="{{ $class->instructor_image }}" class="rounded-circle me-3" 
+             alt="Instructor" style="width:80px;height:80px;object-fit:cover;">
+        <div>
+          <a href="#" class="fw-bold text-decoration-none">{{ $class->instructor }}</a>
+          <p class="mb-1 text-muted">{{ $class->instructor_job }}</p>
+          <span class="text-warning">★ {{ $class->rating }}</span> 
+          <span class="text-muted">Peringkat Instruktur</span>
+        </div>
+      </div>
+    </div>
+  @endif
 
 </div>
 @endsection

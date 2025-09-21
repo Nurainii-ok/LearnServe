@@ -28,7 +28,7 @@ body {
     font-size: 2.75rem;
     font-weight: 700;
     color: var(--deep-brown);
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     letter-spacing: -0.025em;
 }
 
@@ -43,8 +43,8 @@ body {
 .hero {
     background: linear-gradient(135deg, var(--light-cream) 0%, #ffffff 100%);
     border-radius: 20px;
-    padding: 80px 60px;
-    margin: 40px 0;
+    padding: 60px 0; /* hanya atas dan bawah */
+    margin: 0 0 40px 0;
     position: relative;
     overflow: hidden;
 }
@@ -80,6 +80,59 @@ body {
     color: var(--primary-gold);
 }
 
+.stats-section {
+  background: #f8f3f1;
+  padding: 40px 20px;
+  border-radius: 16px;
+  margin: 40px auto;
+  max-width: 1100px;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 250px;
+}
+
+.stat-icon {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.stat-text h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #4F46E5;
+  margin: 0;
+}
+
+.stat-text p {
+  font-size: 14px;
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 2px 0 0;
+}
+
 /* Clean Buttons */
 .btn-primary-custom {
     background: var(--primary-gold);
@@ -112,90 +165,95 @@ body {
     border: 1px solid var(--primary-gold);
 }
 
-/* Category Card */
+/* Kategori  */
 .category-card {
   background: #fff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 24px;
   transition: all .3s ease;
   cursor: pointer;
-  border: 1px solid var(--border-light);
+  border: 1px solid #eee;
 }
 .category-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 .icon-box {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--primary-brown);
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 1.4rem;
+  font-size: 22px;
   margin-bottom: 15px;
 }
+.bg-soft-blue { background: #e0f2fe; }
+.text-blue { color: #0ea5e9; }
 
-/* Courses Section */
-.all-courses-section .search-box {
-    position: relative;
-    width: 260px;
+.bg-soft-purple { background: #ede9fe; }
+.text-purple { color: #7c3aed; }
+
+.bg-soft-orange { background: #ffedd5; }
+.text-orange { color: #f97316; }
+
+.bg-soft-red { background: #fee2e2; }
+.text-red { color: #ef4444; }
+
+.bg-soft-pink { background: #fce7f3; }
+.text-pink { color: #db2777; }
+
+.bg-soft-green { background: #dcfce7; }
+.text-green { color: #16a34a; }
+
+.category-card h6 {
+  font-size: 1rem;
+  margin-bottom: 6px;
 }
-.all-courses-section .search-box input {
-    padding-right: 35px;
-    border-radius: 8px;
-    border: 1px solid var(--border-light);
-}
-.all-courses-section .search-box button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-secondary);
-}
-.all-courses-section .btn-light {
-    border-radius: 30px;
-    padding: 6px 18px;
-    border: 1px solid var(--border-light);
-    color: var(--deep-brown);
-}
-.all-courses-section .btn-light.active {
-    background-color: var(--soft-gold);
-    color: var(--deep-brown);
-    border-color: var(--primary-gold);
+.category-card p {
+  font-size: 0.85rem;
 }
 
-/* Course Card */
-.course-card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all .3s ease;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border-light);
+
+/* Kelas Populer */
+.popular-courses-section .course-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all .3s ease;
 }
-.course-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+.popular-courses-section .course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
-.course-card .course-img {
-    height: 180px;
-    overflow: hidden;
+.popular-courses-section .course-img {
+  height: 180px;
+  overflow: hidden;
 }
-.course-card .course-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .4s ease;
+.popular-courses-section .course-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
 }
-.course-card:hover .course-img img {
-    transform: scale(1.05);
+.popular-courses-section .course-card:hover .course-img img {
+  transform: scale(1.05);
+}
+.text-purple { color: #8b5cf6; }
+
+.custom-btn {
+  border: 1px solid #944e25;
+  color: #944e25;
+  background-color: transparent;
+  transition: all 0.3s ease;
 }
 
-/* Why Section */
+.custom-btn:hover {
+  background-color: #944e25;
+  color: #fff;
+}
+
+
+/* Sektion Kenapa ? */
 .why-section {
     background: var(--bg-section);
     padding: 80px 0;
@@ -229,7 +287,7 @@ body {
     line-height: 1.6;
 }
 
-/* Testimonials */
+/* Testimoni */
 .testimonial-card {
     background: #fff;
     border-radius: 20px;
