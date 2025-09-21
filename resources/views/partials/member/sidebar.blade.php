@@ -17,12 +17,62 @@
 
   <ul class="menu-inner py-1">
 
+    <!-- Dashboard -->
+    <li class="menu-item {{ request()->routeIs('member.dashboard*') ? 'active' : '' }}">
+      <a href="{{ route('member.dashboard') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Dashboard">Dashboard</div>
+      </a>
+    </li>
+
     <!-- Profile -->
     <li class="menu-item {{ request()->routeIs('profile*') ? 'active' : '' }}">
       <a href="{{ route('profile') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user"></i>
         <div data-i18n="Profile">Profile</div>
       </a>
+    </li>
+
+    <!-- Divider -->
+    <li class="menu-header small text-uppercase">
+      <span class="menu-header-text">Learning</span>
+    </li>
+
+    <!-- My Enrollments -->
+    <li class="menu-item {{ request()->routeIs('member.enrollments*') ? 'active' : '' }}">
+      <a href="{{ route('member.enrollments') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
+        <div data-i18n="Enrollments">My Enrollments</div>
+      </a>
+    </li>
+
+    <!-- My Grades -->
+    <li class="menu-item {{ request()->routeIs('member.grades*') ? 'active' : '' }}">
+      <a href="{{ route('member.grades') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-trophy"></i>
+        <div data-i18n="Grades">My Grades</div>
+      </a>
+    </li>
+
+    <!-- My Tasks -->
+    <li class="menu-item {{ request()->routeIs('member.tasks*') ? 'active' : '' }}">
+      <a href="{{ route('member.tasks') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-task"></i>
+        <div data-i18n="Tasks">My Tasks</div>
+      </a>
+    </li>
+
+    <!-- E-Learning -->
+    <li class="menu-item {{ request()->routeIs('elearning*') ? 'active' : '' }}">
+      <a href="{{ route('elearning.index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-play-circle"></i>
+        <div data-i18n="E-Learning">E-Learning</div>
+      </a>
+    </li>
+
+    <!-- Divider -->
+    <li class="menu-header small text-uppercase">
+      <span class="menu-header-text">Explore</span>
     </li>
 
     <!-- Home/Learning -->

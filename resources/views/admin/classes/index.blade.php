@@ -232,10 +232,9 @@
                         <th style="width: 60px;">ID</th>
                         <th style="width: 250px;">Class Details</th>
                         <th style="width: 150px;">Tutor</th>
-                        <th style="width: 100px;">Enrollment</th>
+                        <th style="width: 100px;">Enrolled</th>
                         <th style="width: 120px;">Price</th>
                         <th style="width: 100px;">Status</th>
-                        <th style="width: 120px;">Start Date</th>
                         <th style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
@@ -267,18 +266,9 @@
                             </div>
                         </td>
                         <td>
-                            @php
-                                $enrolled = $class->enrolled ?? 0;
-                                $capacity = $class->capacity;
-                                $percentage = $capacity > 0 ? ($enrolled / $capacity) * 100 : 0;
-                                $statusColor = $percentage >= 90 ? '#ef4444' : ($percentage >= 70 ? '#f59e0b' : '#10b981');
-                            @endphp
                             <div style="text-align: center;">
-                                <div style="font-weight: 600; margin-bottom: 0.25rem;">{{ $enrolled }}/{{ $capacity }}</div>
-                                <div style="width: 100%; background: #f3f4f6; border-radius: 4px; height: 6px; overflow: hidden;">
-                                    <div style="width: {{ $percentage }}%; background: {{ $statusColor }}; height: 100%; transition: width 0.3s ease;"></div>
-                                </div>
-                                <small style="color: #6b7280; font-size: 0.75rem;">{{ number_format($percentage, 0) }}% full</small>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">{{ $class->enrolled ?? 0 }} students</div>
+                                <small style="color: #6b7280; font-size: 0.75rem;">Unlimited capacity</small>
                             </div>
                         </td>
                         <td>
@@ -298,7 +288,6 @@
                                 {{ ucfirst($status) }}
                             </span>
                         </td>
-                        <td>{{ $class->start_date ? $class->start_date->format('M d, Y') : 'Not set' }}</td>
                         <td>
                             <div style="display: flex; gap: 0.375rem; justify-content: center;">
                                 <a href="{{ route('admin.classes.edit', $class->id) }}" class="btn-edit" title="Edit Class">

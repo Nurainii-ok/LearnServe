@@ -4,6 +4,18 @@
 
 @section('styles')
 <style>
+:root {
+    --primary-brown: #944e25;
+    --primary-gold: #ecac57;
+    --light-cream: #f3efec;
+    --deep-brown: #6b3419;
+    --soft-gold: #f4d084;
+    --success-green: #10b981;
+    --error-red: #ef4444;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+}
+
 .page-container {
     padding: 2rem;
     margin: 0;
@@ -212,7 +224,7 @@
                         <tr>
                             <th>Transaction ID</th>
                             <th>Member</th>
-                            <th>Class</th>
+                            <th>Course</th>
                             <th>Amount</th>
                             <th>Method</th>
                             <th>Status</th>
@@ -234,8 +246,16 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <strong>{{ $payment->class->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem;">by {{ $payment->class->tutor->name }}</div>
+                                        @if($payment->class)
+                                            <strong>{{ $payment->class->title }}</strong>
+                                            <div style="color: var(--text-secondary); font-size: 0.75rem;">by {{ $payment->class->tutor->name ?? 'Unknown Tutor' }}</div>
+                                        @elseif($payment->bootcamp)
+                                            <strong>{{ $payment->bootcamp->title }}</strong>
+                                            <div style="color: var(--text-secondary); font-size: 0.75rem;">by {{ $payment->bootcamp->tutor->name ?? 'Unknown Tutor' }}</div>
+                                        @else
+                                            <span class="text-muted">Course not found</span>
+                                            <div style="color: var(--text-secondary); font-size: 0.75rem;">Course may have been deleted</div>
+                                        @endif
                                     </div>
                                 </td>
                                 <td>

@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Bootcamp;
 use App\Models\Payment;
 use App\Models\Task;
+use App\Models\Enrollment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -21,6 +22,18 @@ class AdminController extends Controller
         $totalClasses = Classes::count();
         $totalBootcamps = Bootcamp::count();
         $totalRevenue = Payment::where('status', 'completed')->sum('amount');
+        
+        // Get enrollment statistics
+        $totalEnrollments = Enrollment::count();
+        $activeEnrollments = Enrollment::where('status', 'active')->count();
+        $classEnrollments = Enrollment::where('type', 'class')->count();
+        $bootcampEnrollments = Enrollment::where('type', 'bootcamp')->count();
+        
+        // Get recent enrollments
+        $recentEnrollments = Enrollment::with(['user', 'class', 'bootcamp'])
+            ->latest()
+            ->take(10)
+            ->get();
         
         // Get recent members
         $recentMembers = User::where('role', 'member')
@@ -39,7 +52,12 @@ class AdminController extends Controller
             'totalTutors', 
             'totalClasses', 
             'totalBootcamps',
-            'totalRevenue', 
+            'totalRevenue',
+            'totalEnrollments',
+            'activeEnrollments',
+            'classEnrollments',
+            'bootcampEnrollments',
+            'recentEnrollments',
             'recentMembers', 
             'recentTutors'
         ));
@@ -226,11 +244,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -265,11 +279,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -321,10 +331,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
             'duration' => 'required|string',
             'category' => 'nullable|string',
             'level' => 'required|in:beginner,intermediate,advanced',
@@ -362,10 +369,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
             'duration' => 'required|string',
             'category' => 'nullable|string',
             'level' => 'required|in:beginner,intermediate,advanced',
@@ -404,7 +408,7 @@ class AdminController extends Controller
     // Payments CRUD
     public function payments()
     {
-        $payments = Payment::with(['user', 'class'])->latest()->paginate(10);
+        $payments = Payment::with(['user', 'class.tutor', 'bootcamp.tutor'])->latest()->paginate(10);
         return view('admin.payments.index', compact('payments'));
     }
 

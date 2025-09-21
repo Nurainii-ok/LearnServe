@@ -252,29 +252,7 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
-                    <label for="schedule">Schedule</label>
-                    <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Mon,Wed,Fri 10:00-12:00">
-                    @error('schedule')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="start_date">Start Date *</label>
-                    <input type="datetime-local" id="start_date" name="start_date" class="form-control" value="{{ old('start_date') }}" required>
-                    @error('start_date')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="end_date">End Date *</label>
-                    <input type="datetime-local" id="end_date" name="end_date" class="form-control" value="{{ old('end_date') }}" required>
-                    @error('end_date')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+                    <!-- This space reserved for future fields if needed -->
                 </div>
             </div>
 
@@ -292,40 +270,6 @@ textarea.form-control {
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-focus first input
     document.getElementById('title').focus();
-    
-    // Set minimum date to current date/time
-    const now = new Date();
-    const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
-    document.getElementById('start_date').min = minDate;
-    document.getElementById('end_date').min = minDate;
-    
-    // Add form validation
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        const startDate = new Date(document.getElementById('start_date').value);
-        const endDate = new Date(document.getElementById('end_date').value);
-        const currentDate = new Date();
-        
-        if (startDate <= currentDate) {
-            e.preventDefault();
-            alert('Start date must be in the future');
-            return false;
-        }
-        
-        if (endDate <= startDate) {
-            e.preventDefault();
-            alert('End date must be after start date');
-            return false;
-        }
-    });
-    
-    // Update end date minimum when start date changes
-    document.getElementById('start_date').addEventListener('change', function() {
-        const startDate = this.value;
-        if (startDate) {
-            document.getElementById('end_date').min = startDate;
-        }
-    });
 });
 </script>
 @endsection

@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\VideoContentController;
+use App\Http\Controllers\ELearningController;
 
 // Halaman Auth (Login & Register dalam 1 file)
 Route::get('/auth', function () {
@@ -32,7 +34,7 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/bootcamp', [PagesController::class, 'bootcamp'])->name('bootcamp');
     Route::get('/webinar', [PagesController::class, 'webinar'])->name('webinar');
     Route::get('/deskripsi_bootcamp/{id?}', [PagesController::class, 'deskripsibootcamp'])->name('deskripsi_bootcamp');
-    Route::get('/detail_kursus', [PagesController::class, 'detailKursus'])->name('detail_kursus');
+    Route::get('/detail_kursus/{id?}', [PagesController::class, 'detailKursus'])->name('detail_kursus');
     Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
     Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');
     Route::post('/checkout/process', [PagesController::class, 'processCheckout'])->name('checkout.process');
@@ -58,6 +60,30 @@ Route::prefix('payment')->name('payment.')->group(function () {
 Route::middleware(['role:member','prevent-back'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Enrollment Routes
+Route::middleware(['role:member','prevent-back'])->group(function () {
+    Route::post('/enrollment/class/{classId}', [EnrollmentController::class, 'enrollClass'])->name('enrollment.class');
+    Route::post('/enrollment/bootcamp/{bootcampId}', [EnrollmentController::class, 'enrollBootcamp'])->name('enrollment.bootcamp');
+    Route::delete('/enrollment/{enrollmentId}', [EnrollmentController::class, 'unenroll'])->name('enrollment.unenroll');
+    Route::patch('/enrollment/{enrollmentId}/progress', [EnrollmentController::class, 'updateProgress'])->name('enrollment.progress');
+});
+
+// Member Dashboard
+Route::prefix('member')->middleware(['role:member','prevent-back'])->name('member.')->group(function () {
+    Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('dashboard');
+    Route::get('/enrollments', [MemberController::class, 'enrollments'])->name('enrollments');
+    Route::get('/grades', [MemberController::class, 'grades'])->name('grades');
+    Route::get('/tasks', [MemberController::class, 'tasks'])->name('tasks');
+});
+
+// E-Learning Routes for Members
+Route::prefix('elearning')->middleware(['role:member','prevent-back'])->name('elearning.')->group(function () {
+    Route::get('/', [ELearningController::class, 'index'])->name('index');
+    Route::get('/class/{classId}', [ELearningController::class, 'showClass'])->name('class');
+    Route::get('/bootcamp/{bootcampId}', [ELearningController::class, 'showBootcamp'])->name('bootcamp');
+    Route::get('/watch/{videoId}', [ELearningController::class, 'watchVideo'])->name('watch');
 });
 
 // Admin
@@ -112,6 +138,19 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/tasks/{id}', [AdminController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [AdminController::class, 'tasksDestroy'])->name('tasks.destroy');
     
+    // Enrollments Management
+    Route::get('/enrollments', [EnrollmentController::class, 'adminIndex'])->name('enrollments');
+    Route::delete('/enrollments/{id}', [EnrollmentController::class, 'adminDestroy'])->name('enrollments.destroy');
+    
+    // Video Contents CRUD
+    Route::get('/video-contents', [VideoContentController::class, 'index'])->name('video-contents.index');
+    Route::get('/video-contents/create', [VideoContentController::class, 'create'])->name('video-contents.create');
+    Route::post('/video-contents', [VideoContentController::class, 'store'])->name('video-contents.store');
+    Route::get('/video-contents/{videoContent}', [VideoContentController::class, 'show'])->name('video-contents.show');
+    Route::get('/video-contents/{videoContent}/edit', [VideoContentController::class, 'edit'])->name('video-contents.edit');
+    Route::put('/video-contents/{videoContent}', [VideoContentController::class, 'update'])->name('video-contents.update');
+    Route::delete('/video-contents/{videoContent}', [VideoContentController::class, 'destroy'])->name('video-contents.destroy');
+    
     // Account Management
     Route::get('/account', [AdminController::class, 'account'])->name('account');
     Route::get('/account/edit', [AdminController::class, 'accountEdit'])->name('account.edit');
@@ -146,6 +185,15 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::get('/grades/{id}/edit', [TutorController::class, 'gradesEdit'])->name('grades.edit');
     Route::put('/grades/{id}', [TutorController::class, 'gradesUpdate'])->name('grades.update');
     Route::delete('/grades/{id}', [TutorController::class, 'gradesDestroy'])->name('grades.destroy');
+
+    // Video Contents CRUD
+    Route::get('/video-contents', [VideoContentController::class, 'index'])->name('video-contents.index');
+    Route::get('/video-contents/create', [VideoContentController::class, 'create'])->name('video-contents.create');
+    Route::post('/video-contents', [VideoContentController::class, 'store'])->name('video-contents.store');
+    Route::get('/video-contents/{videoContent}', [VideoContentController::class, 'show'])->name('video-contents.show');
+    Route::get('/video-contents/{videoContent}/edit', [VideoContentController::class, 'edit'])->name('video-contents.edit');
+    Route::put('/video-contents/{videoContent}', [VideoContentController::class, 'update'])->name('video-contents.update');
+    Route::delete('/video-contents/{videoContent}', [VideoContentController::class, 'destroy'])->name('video-contents.destroy');
     
     // Account Management
     Route::get('/account', [TutorController::class, 'account'])->name('account');
@@ -155,6 +203,3 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
 
 
 });
-
-
-

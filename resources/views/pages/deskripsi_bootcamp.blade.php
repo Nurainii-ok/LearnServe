@@ -49,9 +49,47 @@
                     </div>
 
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="{{ route('form_pendaftaran') }}" class="btn btn-warning px-4">
-                            ⚡ Daftar Sekarang
-                        </a>
+                        @if(session('user_id'))
+                            @php
+                                $isEnrolled = false;
+                                if($bootcamp && session('user_id')) {
+                                    $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                                  ->where('bootcamp_id', $bootcamp->id)
+                                                  ->where('type', 'bootcamp')
+                                                  ->exists();
+                                }
+                            @endphp
+                            
+                            @if($isEnrolled)
+                                <div class="alert alert-success w-100">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    Anda sudah terdaftar di bootcamp ini
+                                </div>
+                                <a href="{{ route('member.dashboard') }}" class="btn btn-success px-4">
+                                    <i class="fas fa-graduation-cap me-2"></i> Ke Dashboard Belajar
+                                </a>
+                            @else
+                                @if($bootcamp->price > 0)
+                                    {{-- Bootcamp berbayar - ke checkout --}}
+                                    <a href="{{ route('checkout') }}?bootcamp_id={{ $bootcamp->id }}" class="btn btn-warning px-4">
+                                        ⚡ Daftar Sekarang
+                                    </a>
+                                @else
+                                    {{-- Bootcamp gratis - langsung enrollment --}}
+                                    <form action="{{ route('enrollment.bootcamp', $bootcamp->id) }}" method="POST" class="w-100">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning px-4">
+                                            ⚡ Daftar Sekarang (Gratis)
+                                        </button>
+                                    </form>
+                                @endif
+                            @endif
+                        @else
+                            <div class="alert alert-warning w-100">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Silakan <a href="{{ route('auth') }}" class="alert-link">login</a> untuk mendaftar bootcamp
+                            </div>
+                        @endif
                     </div>
 
                     <p class="mt-3 alumni-text">
@@ -110,10 +148,45 @@
                                 @endif
                                 <li class="nav-item"><a href="#testimoni" class="nav-link">Testimoni</a></li>
                             </ul>
-                            <a href="{{ route('form_pendaftaran') }}" 
-                               class="btn btn-warning w-100 mt-4">
-                                Daftar Sekarang
-                            </a>
+                            @if(session('user_id'))
+                                @php
+                                    $sidebarEnrolled = false;
+                                    if($bootcamp && session('user_id')) {
+                                        $sidebarEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                                          ->where('bootcamp_id', $bootcamp->id)
+                                                          ->where('type', 'bootcamp')
+                                                          ->exists();
+                                    }
+                                @endphp
+                                
+                                @if($sidebarEnrolled)
+                                    <a href="{{ route('elearning.bootcamp', $bootcamp->id) }}" 
+                                       class="btn btn-success w-100 mt-4">
+                                        <i class="fas fa-play-circle me-2"></i>Ikuti Course
+                                    </a>
+                                @else
+                                    @if($bootcamp->price > 0)
+                                        {{-- Bootcamp berbayar - ke checkout --}}
+                                        <a href="{{ route('checkout') }}?bootcamp_id={{ $bootcamp->id }}" 
+                                           class="btn btn-warning w-100 mt-4">
+                                            ⚡ Daftar Sekarang
+                                        </a>
+                                    @else
+                                        {{-- Bootcamp gratis - langsung enrollment --}}
+                                        <form action="{{ route('enrollment.bootcamp', $bootcamp->id) }}" method="POST" class="mt-4">
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning w-100">
+                                                ⚡ Daftar Sekarang (Gratis)
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endif
+                            @else
+                                <a href="{{ route('auth') }}" 
+                                   class="btn btn-warning w-100 mt-4">
+                                    Login untuk Daftar
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </aside>

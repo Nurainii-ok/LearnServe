@@ -14,6 +14,7 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'class_id',
+        'bootcamp_id',
         'full_name',
         'email',
         'phone',
@@ -46,6 +47,11 @@ class Payment extends Model
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function bootcamp()
+    {
+        return $this->belongsTo(Bootcamp::class, 'bootcamp_id');
     }
 
     // Helper method to get customer name

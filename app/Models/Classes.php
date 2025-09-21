@@ -15,20 +15,14 @@ class Classes extends Model
         'title',
         'description',
         'tutor_id',
-        'capacity',
         'enrolled',
         'price',
-        'start_date',
-        'end_date',
-        'schedule',
         'status',
         'category',
         'image'
     ];
 
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
         'price' => 'decimal:2'
     ];
 
@@ -46,6 +40,27 @@ class Classes extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class, 'class_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'class_id');
+    }
+
+    public function activeEnrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'class_id')->where('status', 'active');
+    }
+
+    public function enrolledStudents()
+    {
+        return $this->hasManyThrough(User::class, Enrollment::class, 'class_id', 'id', 'id', 'user_id')
+                    ->where('enrollments.status', 'active');
+    }
+
+    public function videoContents()
+    {
+        return $this->hasMany(VideoContent::class, 'class_id');
     }
 
     // Scopes

@@ -37,6 +37,32 @@ class Bootcamp extends Model
         return $this->belongsTo(User::class, 'tutor_id');
     }
 
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'bootcamp_id');
+    }
+
+    public function activeEnrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'bootcamp_id')->where('status', 'active');
+    }
+
+    public function enrolledStudents()
+    {
+        return $this->hasManyThrough(User::class, Enrollment::class, 'bootcamp_id', 'id', 'id', 'user_id')
+                    ->where('enrollments.status', 'active');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'bootcamp_id');
+    }
+
+    public function videoContents()
+    {
+        return $this->hasMany(VideoContent::class, 'bootcamp_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {

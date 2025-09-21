@@ -274,6 +274,30 @@
     opacity: 0.5;
 }
 
+.status-badge {
+    background: var(--success-green);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-badge.status-active { background: #10b981; }
+.status-badge.status-completed { background: #3b82f6; }
+.status-badge.status-paused { background: #f59e0b; }
+.status-badge.status-dropped { background: #ef4444; }
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge.badge-info { background: #17a2b8; color: white; }
+.badge.badge-primary { background: #944e25; color: white; }
+
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -337,6 +361,16 @@
             </div>
             <div class="stat-icon">
                 <i class="las la-rocket"></i>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-info">
+                <h3>{{ $totalEnrollments ?? 0 }}</h3>
+                <p>Total Enrollments</p>
+            </div>
+            <div class="stat-icon">
+                <i class="las la-user-check"></i>
             </div>
         </div>
         
@@ -443,6 +477,73 @@
                         <i class="las la-chalkboard-teacher"></i>
                         <h4>No tutors found</h4>
                         <p>No tutors have registered yet.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+        
+        <!-- Recent Enrollments -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Recent Enrollments</h3>
+                <a href="{{ route('admin.enrollments') }}" class="btn-secondary">
+                    See all <i class="las la-arrow-right"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                @if(isset($recentEnrollments) && $recentEnrollments->count() > 0)
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Course</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($recentEnrollments as $enrollment)
+                                <tr>
+                                    <td>
+                                        <div class="user-info">
+                                            <div class="user-avatar">
+                                                {{ strtoupper(substr($enrollment->user->name, 0, 1)) }}
+                                            </div>
+                                            <span class="font-medium">{{ $enrollment->user->name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if($enrollment->type == 'class' && $enrollment->class)
+                                            {{ Str::limit($enrollment->class->title, 30) }}
+                                        @elseif($enrollment->type == 'bootcamp' && $enrollment->bootcamp)
+                                            {{ Str::limit($enrollment->bootcamp->title, 30) }}
+                                        @else
+                                            <span class="text-muted">Course not found</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{{ $enrollment->type == 'class' ? 'info' : 'primary' }}">
+                                            {{ ucfirst($enrollment->type) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-{{ $enrollment->status }}">
+                                            {{ ucfirst($enrollment->status) }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="empty-state">
+                        <i class="las la-user-check"></i>
+                        <h4>No enrollments found</h4>
+                        <p>No students have enrolled yet.</p>
                     </div>
                 @endif
             </div>

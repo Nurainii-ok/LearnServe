@@ -269,44 +269,9 @@ textarea.form-control {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="capacity">Capacity *</label>
-                    <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity', $class->capacity) }}" min="1" required>
-                    @error('capacity')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
                     <label for="price">Price (Rp) *</label>
                     <input type="number" id="price" name="price" class="form-control" value="{{ old('price', $class->price) }}" min="0" step="0.01" required>
                     @error('price')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="start_date">Start Date *</label>
-                    <input type="datetime-local" id="start_date" name="start_date" class="form-control" value="{{ old('start_date', $class->start_date ? $class->start_date->format('Y-m-d\TH:i') : '') }}" required>
-                    @error('start_date')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="end_date">End Date *</label>
-                    <input type="datetime-local" id="end_date" name="end_date" class="form-control" value="{{ old('end_date', $class->end_date ? $class->end_date->format('Y-m-d\TH:i') : '') }}" required>
-                    @error('end_date')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="schedule">Schedule</label>
-                    <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule', $class->schedule) }}" placeholder="e.g., Self-paced learning, Available 24/7">
-                    @error('schedule')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
@@ -353,38 +318,6 @@ textarea.form-control {
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-focus first input
     document.getElementById('title').focus();
-    
-    // Set minimum date to current date/time for future classes
-    const now = new Date();
-    const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
-    
-    // Only set min date if class is not already completed
-    const status = document.getElementById('status').value;
-    if (status !== 'completed') {
-        document.getElementById('start_date').min = minDate;
-        document.getElementById('end_date').min = minDate;
-    }
-    
-    // Add form validation
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        const startDate = new Date(document.getElementById('start_date').value);
-        const endDate = new Date(document.getElementById('end_date').value);
-        
-        if (endDate <= startDate) {
-            e.preventDefault();
-            alert('End date must be after start date');
-            return false;
-        }
-    });
-    
-    // Update end date minimum when start date changes
-    document.getElementById('start_date').addEventListener('change', function() {
-        const startDate = this.value;
-        if (startDate) {
-            document.getElementById('end_date').min = startDate;
-        }
-    });
 });
 </script>
 @endsection

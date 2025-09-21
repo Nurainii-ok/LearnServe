@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Kursus')
+@section('title', $class ? $class->title : 'Detail Kursus')
 
 @section('content')
 <div class="container my-5">
@@ -19,8 +19,8 @@
     <!-- Konten Kiri -->
     <div class="col-lg-8">
       <!-- Judul & Info Kursus -->
-      <h1 class="fw-bold mb-3">Full Stack Web Development</h1>
-      <p class="lead text-muted">Belajar membuat website modern dengan teknologi terbaru dari frontend hingga backend secara komprehensif.</p>
+      <h1 class="fw-bold mb-3">{{ $class ? $class->title : 'Full Stack Web Development' }}</h1>
+      <p class="lead text-muted">{{ $class ? $class->description : 'Belajar membuat website modern dengan teknologi terbaru dari frontend hingga backend secara komprehensif.' }}</p>
 
       <div class="d-flex align-items-center mb-3">
         <span class="badge bg-warning text-dark me-2">Best Seller</span>
@@ -159,23 +159,68 @@
 
       <!-- Harga -->
       <h3 class="fw-bold" style="color:#944e25;">
-        Rp139.000 
+        @if($class)
+          @if($class->price > 0)
+            Rp{{ number_format($class->price, 0, ',', '.') }}
+          @else
+            <span class="text-success">GRATIS</span>
+          @endif
+        @else
+          Rp139.000 
+        @endif
         <small class="text-muted text-decoration-line-through fs-6">Rp169.000</small>
       </h3>
       <p style="color:#944e25; font-weight:600;">Diskon 18%</p>
       <!--<p style="color:#d9534f;"><i class="bi bi-alarm"></i> 14 jam lagi dengan harga ini!</p>-->
 
       <!-- Tombol -->
-
-      <!--<button class="btn w-100 fw-bold mb-2" 
-              style="background-color:#944e25; color:white; border:none;">
-        Tambahkan ke Keranjang
-      </button>-->
-      <a href="{{ route('checkout') }}" 
-         class="btn w-100 fw-bold mb-3" 
-         style="background-color:#944e25; color:white; border:none;">
-          <i class="fas fa-credit-card me-2"></i>Beli Sekarang
-      </a>
+      @if(session('user_id'))
+        @php
+          $isEnrolled = false;
+          if($class && session('user_id')) {
+            $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                          ->where('class_id', $class->id)
+                          ->where('type', 'class')
+                          ->exists();
+          }
+        @endphp
+        
+        @if($isEnrolled)
+          <div class="alert alert-success mb-3">
+            <i class="fas fa-check-circle me-2"></i>
+            Anda sudah terdaftar di kelas ini
+          </div>
+          <a href="{{ route('elearning.class', $class->id) }}" 
+             class="btn w-100 fw-bold mb-3" 
+             style="background-color:#28a745; color:white; border:none;">
+              <i class="fas fa-play-circle me-2"></i>Ikuti Course
+          </a>
+        @else
+          <!-- Original Beli Sekarang Button with Midtrans -->
+          <a href="{{ route('checkout', ['class_id' => $class ? $class->id : null]) }}" 
+             class="btn w-100 fw-bold mb-3" 
+             style="background-color:#944e25; color:white; border:none;">
+              <i class="fas fa-credit-card me-2"></i>Beli Sekarang
+          </a>
+          
+          <!-- Alternative: Quick Enroll (if free or for quick access) -->
+          @if($class && $class->price == 0)
+            <form action="{{ route('enrollment.class', $class->id) }}" method="POST" class="mb-3">
+              @csrf
+              <button type="submit" 
+                      class="btn w-100 fw-bold btn-outline-success" 
+                      style="border-color:#28a745;">
+                  <i class="fas fa-user-plus me-2"></i>Daftar Gratis
+              </button>
+            </form>
+          @endif
+        @endif
+      @else
+        <div class="alert alert-warning mb-3">
+          <i class="fas fa-info-circle me-2"></i>
+          Silakan <a href="{{ route('auth') }}" class="alert-link">login</a> untuk membeli kelas
+        </div>
+      @endif
 
 
       <!--<p class="text-center small" style="color:#944e25;">Jaminan Uang Kembali 30 Hari</p>-->

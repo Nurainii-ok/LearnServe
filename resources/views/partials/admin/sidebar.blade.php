@@ -50,6 +50,18 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.video-contents.index') }}" class="{{ request()->routeIs('admin.video-contents*') ? 'active' : '' }}">
+                    <span class="las la-video"></span>
+                    <span>Video Contents</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.enrollments') }}" class="{{ request()->routeIs('admin.enrollments*') ? 'active' : '' }}">
+                    <span class="las la-user-check"></span>
+                    <span>Enrollments</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.account') }}" class="{{ request()->routeIs('admin.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
                     <span>Account</span>

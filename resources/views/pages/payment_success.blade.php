@@ -24,8 +24,8 @@
                                 <span class="text-muted">{{ $payment->transaction_id }}</span>
                             </div>
                             <div class="col-sm-6">
-                                <strong>Course:</strong><br>
-                                <span class="text-muted">{{ $payment->class->title ?? 'N/A' }}</span>
+                                <strong>{{ $payment->class ? 'Course' : 'Bootcamp' }}:</strong><br>
+                                <span class="text-muted">{{ $payment->class->title ?? $payment->bootcamp->title ?? 'N/A' }}</span>
                             </div>
                             <div class="col-sm-6 mt-3">
                                 <strong>Amount:</strong><br>
@@ -39,10 +39,46 @@
                     </div>
                     @endif
                     
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ route('home') }}" class="btn btn-primary">
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        @if($payment && session('user_id'))
+                            @php
+                                $isEnrolled = false;
+                                $courseUrl = '';
+                                
+                                if ($payment->class_id) {
+                                    $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                                  ->where('class_id', $payment->class_id)
+                                                  ->where('type', 'class')
+                                                  ->exists();
+                                    $courseUrl = route('elearning.class', $payment->class_id);
+                                } elseif ($payment->bootcamp_id) {
+                                    $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                                  ->where('bootcamp_id', $payment->bootcamp_id)
+                                                  ->where('type', 'bootcamp')
+                                                  ->exists();
+                                    $courseUrl = route('elearning.bootcamp', $payment->bootcamp_id);
+                                }
+                            @endphp
+                            
+                            @if($isEnrolled)
+                                <a href="{{ $courseUrl }}" class="btn btn-success btn-lg">
+                                    <i class="fas fa-play-circle me-2"></i>Start Learning Now!
+                                </a>
+                                <a href="{{ route('elearning.index') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-graduation-cap me-2"></i>My E-Learning
+                                </a>
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Your enrollment is being processed. Please check your dashboard in a few minutes.
+                                </div>
+                            @endif
+                        @endif
+                        
+                        <a href="{{ route('home') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-home me-2"></i>Back to Home
                         </a>
+                        
                         @if(session()->has('role'))
                             @if(session('role') === 'admin')
                                 <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
@@ -52,9 +88,9 @@
                                 <a href="{{ route('tutor.dashboard') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
                                 </a>
-                            @else
-                                <a href="{{ route('profile') }}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-user me-2"></i>My Profile
+                            @elseif(session('role') === 'member')
+                                <a href="{{ route('member.dashboard') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-tachometer-alt me-2"></i>My Dashboard
                                 </a>
                             @endif
                         @endif

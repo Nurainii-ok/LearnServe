@@ -95,22 +95,50 @@ class PaymentController extends Controller
             Log::info('Payment request received', $request->all());
             
             $request->validate([
-                'class_id' => 'required|exists:classes,id',
                 'full_name' => 'required|string|max:255',
                 'email' => 'required|email',
                 'phone' => 'required|string|max:20',
                 'amount' => 'required|numeric|min:0'
             ]);
 
-            $class = Classes::findOrFail($request->class_id);
+            // Validate that either class_id or bootcamp_id is provided
+            if (!$request->has('class_id') && !$request->has('bootcamp_id')) {
+                Log::error('Neither class_id nor bootcamp_id provided');
+                throw new \Exception('Either class_id or bootcamp_id must be provided');
+            }
+
+            $class = null;
+            $bootcamp = null;
+            $itemName = '';
+            
+            if ($request->filled('class_id')) {
+                Log::info('Processing class payment', ['class_id' => $request->class_id]);
+                $class = Classes::find($request->class_id);
+                if (!$class) {
+                    throw new \Exception('Class not found with ID: ' . $request->class_id);
+                }
+                $itemName = $class->title;
+                Log::info('Class found', ['title' => $itemName, 'price' => $class->price]);
+            } elseif ($request->filled('bootcamp_id')) {
+                Log::info('Processing bootcamp payment', ['bootcamp_id' => $request->bootcamp_id]);
+                $bootcamp = \App\Models\Bootcamp::find($request->bootcamp_id);
+                if (!$bootcamp) {
+                    throw new \Exception('Bootcamp not found with ID: ' . $request->bootcamp_id);
+                }
+                $itemName = $bootcamp->title;
+                Log::info('Bootcamp found', ['title' => $itemName, 'price' => $bootcamp->price]);
+            } else {
+                Log::error('No valid class_id or bootcamp_id provided', $request->all());
+                throw new \Exception('Either class_id or bootcamp_id must be provided');
+            }
+            
             $orderId = 'ORDER-' . time() . '-' . Str::random(5);
             
             Log::info('Creating payment for order: ' . $orderId);
 
             // Create payment record
-            $payment = Payment::create([
+            $paymentData = [
                 'user_id' => session('user_id'),
-                'class_id' => $request->class_id,
                 'full_name' => $request->full_name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -118,9 +146,19 @@ class PaymentController extends Controller
                 'amount' => $request->amount,
                 'payment_method' => 'midtrans',
                 'transaction_id' => $orderId,
-                'status' => 'pending',
-                'notes' => 'Payment via Midtrans'
-            ]);
+                'status' => 'pending'
+            ];
+            
+            if ($class) {
+                $paymentData['class_id'] = $class->id;
+                $paymentData['notes'] = 'Payment for class: ' . $class->title;
+            } elseif ($bootcamp) {
+                $paymentData['bootcamp_id'] = $bootcamp->id;
+                $paymentData['notes'] = 'Payment for bootcamp: ' . $bootcamp->title;
+            }
+            
+            Log::info('Creating payment record', $paymentData);
+            $payment = Payment::create($paymentData);
 
             // Prepare transaction details for Midtrans
             $transactionDetails = [
@@ -168,12 +206,12 @@ class PaymentController extends Controller
             ];
 
             $itemDetails = [[
-                'id' => 'class_' . $class->id,
+                'id' => $class ? 'class_' . $class->id : 'bootcamp_' . $bootcamp->id,
                 'price' => (int) $request->amount,
                 'quantity' => 1,
-                'name' => substr($class->title, 0, 50), // Limit to 50 characters
+                'name' => substr($itemName, 0, 50), // Limit to 50 characters
                 'brand' => 'LearnServe',
-                'category' => 'Course',
+                'category' => $class ? 'Course' : 'Bootcamp',
                 'merchant_name' => 'LearnServe'
             ]];
 
@@ -243,6 +281,13 @@ class PaymentController extends Controller
                 'order_id' => $orderId
             ]);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation error in payment creation', ['errors' => $e->errors()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed: ' . implode(', ', array_flatten($e->errors())),
+                'debug' => config('app.debug') ? $e->errors() : null
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Payment creation error: ' . $e->getMessage());
             Log::error('Stack trace: ' . $e->getTraceAsString());
@@ -253,6 +298,8 @@ class PaymentController extends Controller
                 $errorMessage = 'Network connection error. Please check your internet connection.';
             } elseif (strpos($e->getMessage(), 'SSL') !== false) {
                 $errorMessage = 'SSL connection error. Please try again.';
+            } elseif (strpos($e->getMessage(), 'not found') !== false) {
+                $errorMessage = $e->getMessage();
             }
             
             return response()->json([
@@ -275,6 +322,12 @@ class PaymentController extends Controller
             $fraudStatus = $notification->fraud_status;
             $orderId = $notification->order_id;
 
+            Log::info('Payment notification received', [
+                'order_id' => $orderId,
+                'transaction_status' => $transactionStatus,
+                'fraud_status' => $fraudStatus
+            ]);
+
             // Find payment record
             $payment = Payment::where('transaction_id', $orderId)->first();
 
@@ -282,6 +335,9 @@ class PaymentController extends Controller
                 Log::error('Payment not found for order ID: ' . $orderId);
                 return response()->json(['status' => 'error', 'message' => 'Payment not found'], 404);
             }
+
+            // Only process if status is changing to avoid duplicate processing
+            $oldStatus = $payment->status;
 
             // Update payment status based on transaction status
             if ($transactionStatus == 'capture') {
@@ -296,6 +352,11 @@ class PaymentController extends Controller
                         'payment_date' => now(),
                         'notes' => 'Payment completed successfully'
                     ]);
+                    
+                    // Auto-enroll user after successful payment (only if status changed)
+                    if ($oldStatus !== 'completed') {
+                        $this->autoEnrollUser($payment);
+                    }
                 }
             } else if ($transactionStatus == 'settlement') {
                 $payment->update([
@@ -303,6 +364,11 @@ class PaymentController extends Controller
                     'payment_date' => now(),
                     'notes' => 'Payment completed successfully'
                 ]);
+                
+                // Auto-enroll user after successful payment (only if status changed)
+                if ($oldStatus !== 'completed') {
+                    $this->autoEnrollUser($payment);
+                }
             } else if ($transactionStatus == 'pending') {
                 $payment->update([
                     'status' => 'pending',
@@ -360,10 +426,18 @@ class PaymentController extends Controller
     public function paymentSuccess(Request $request)
     {
         $orderId = $request->query('order_id');
-        $payment = Payment::where('transaction_id', $orderId)->with('class')->first();
+        $payment = Payment::where('transaction_id', $orderId)->with(['class', 'bootcamp'])->first();
 
         if (!$payment) {
             return redirect()->route('home')->with('error', 'Payment not found');
+        }
+
+        // Ensure auto-enrollment is processed if payment is completed
+        if ($payment->status === 'completed') {
+            $this->autoEnrollUser($payment);
+            
+            // Refresh payment to get updated relationships
+            $payment = $payment->fresh(['class', 'bootcamp']);
         }
 
         return view('pages.payment_success', compact('payment'));
@@ -470,6 +544,98 @@ class PaymentController extends Controller
                 'status' => 'error',
                 'message' => $e->getMessage(),
                 'trace' => config('app.debug') ? $e->getTraceAsString() : null
+            ]);
+        }
+    }
+    
+    /**
+     * Auto-enroll user after successful payment
+     */
+    private function autoEnrollUser($payment)
+    {
+        try {
+            Log::info('Starting auto-enrollment process', [
+                'payment_id' => $payment->id,
+                'user_id' => $payment->user_id,
+                'class_id' => $payment->class_id,
+                'bootcamp_id' => $payment->bootcamp_id
+            ]);
+
+            if (!$payment->user_id) {
+                Log::warning('Cannot auto-enroll: No user_id in payment', ['payment_id' => $payment->id]);
+                return;
+            }
+
+            if ($payment->class_id) {
+                // Enroll in class
+                $existingEnrollment = \App\Models\Enrollment::where('user_id', $payment->user_id)
+                    ->where('class_id', $payment->class_id)
+                    ->where('type', 'class')
+                    ->first();
+
+                if (!$existingEnrollment) {
+                    $enrollment = \App\Models\Enrollment::create([
+                        'user_id' => $payment->user_id,
+                        'class_id' => $payment->class_id,
+                        'type' => 'class',
+                        'status' => 'active',
+                        'enrolled_at' => now(),
+                        'progress' => 0.00,
+                        'notes' => 'Auto-enrolled after payment completion'
+                    ]);
+                    
+                    Log::info('User auto-enrolled in class successfully', [
+                        'user_id' => $payment->user_id,
+                        'class_id' => $payment->class_id,
+                        'payment_id' => $payment->id,
+                        'enrollment_id' => $enrollment->id
+                    ]);
+                } else {
+                    Log::info('User already enrolled in class', [
+                        'user_id' => $payment->user_id,
+                        'class_id' => $payment->class_id,
+                        'existing_enrollment_id' => $existingEnrollment->id
+                    ]);
+                }
+            } elseif ($payment->bootcamp_id) {
+                // Enroll in bootcamp
+                $existingEnrollment = \App\Models\Enrollment::where('user_id', $payment->user_id)
+                    ->where('bootcamp_id', $payment->bootcamp_id)
+                    ->where('type', 'bootcamp')
+                    ->first();
+
+                if (!$existingEnrollment) {
+                    $enrollment = \App\Models\Enrollment::create([
+                        'user_id' => $payment->user_id,
+                        'bootcamp_id' => $payment->bootcamp_id,
+                        'type' => 'bootcamp',
+                        'status' => 'active',
+                        'enrolled_at' => now(),
+                        'progress' => 0.00,
+                        'notes' => 'Auto-enrolled after payment completion'
+                    ]);
+                    
+                    Log::info('User auto-enrolled in bootcamp successfully', [
+                        'user_id' => $payment->user_id,
+                        'bootcamp_id' => $payment->bootcamp_id,
+                        'payment_id' => $payment->id,
+                        'enrollment_id' => $enrollment->id
+                    ]);
+                } else {
+                    Log::info('User already enrolled in bootcamp', [
+                        'user_id' => $payment->user_id,
+                        'bootcamp_id' => $payment->bootcamp_id,
+                        'existing_enrollment_id' => $existingEnrollment->id
+                    ]);
+                }
+            } else {
+                Log::warning('No class_id or bootcamp_id found in payment', ['payment_id' => $payment->id]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Auto-enrollment failed', [
+                'payment_id' => $payment->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
         }
     }

@@ -8,6 +8,8 @@ use App\Models\Classes;
 use App\Models\Task;
 use App\Models\Payment;
 use App\Models\Grade;
+use App\Models\Enrollment;
+use App\Models\Bootcamp;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -18,38 +20,68 @@ class TutorController extends Controller
     {
         $tutorId = session('user_id');
         
-        // Get tutor dashboard statistics
-        $totalStudents = Payment::whereHas('class', function($query) use ($tutorId) {
-            $query->where('tutor_id', $tutorId);
-        })->where('status', 'completed')->distinct('user_id')->count();
+        // Get tutor dashboard statistics using enrollments
+        $totalStudents = Enrollment::where(function($query) use ($tutorId) {
+            $query->whereHas('class', function($q) use ($tutorId) {
+                $q->where('tutor_id', $tutorId);
+            })->orWhereHas('bootcamp', function($q) use ($tutorId) {
+                $q->where('tutor_id', $tutorId);
+            });
+        })->where('status', 'active')->distinct('user_id')->count();
         
         $totalClasses = Classes::where('tutor_id', $tutorId)->count();
+        $totalBootcamps = Bootcamp::where('tutor_id', $tutorId)->count();
         
-        $totalHours = Classes::where('tutor_id', $tutorId)->count() * 40; // Estimate 40 hours per class
+        $totalHours = ($totalClasses + $totalBootcamps) * 40; // Estimate 40 hours per course
         
-        $monthlyEarnings = Payment::whereHas('class', function($query) use ($tutorId) {
-            $query->where('tutor_id', $tutorId);
+        $monthlyEarnings = Payment::where(function($query) use ($tutorId) {
+            $query->whereHas('class', function($q) use ($tutorId) {
+                $q->where('tutor_id', $tutorId);
+            })->orWhereHas('bootcamp', function($q) use ($tutorId) {
+                $q->where('tutor_id', $tutorId);
+            });
         })->where('status', 'completed')
           ->whereMonth('payment_date', now()->month)
           ->sum('amount');
         
-        // Get recent classes
+        // Get recent enrollments for tutor's courses
+        $recentEnrollments = Enrollment::with(['user', 'class', 'bootcamp'])
+            ->where(function($query) use ($tutorId) {
+                $query->whereHas('class', function($q) use ($tutorId) {
+                    $q->where('tutor_id', $tutorId);
+                })->orWhereHas('bootcamp', function($q) use ($tutorId) {
+                    $q->where('tutor_id', $tutorId);
+                });
+            })
+            ->latest()
+            ->take(10)
+            ->get();
+        
+        // Get recent classes with enrollment count
         $recentClasses = Classes::where('tutor_id', $tutorId)
             ->where('status', 'active')
-            ->withCount('payments')
+            ->withCount(['enrollments' => function($query) {
+                $query->where('status', 'active');
+            }])
             ->latest()
             ->take(5)
             ->get()
             ->map(function($class) {
                 return [
                     'name' => $class->title,
-                    'students' => $class->payments_count,
-                    'next_session' => $class->start_date,
+                    'students' => $class->enrollments_count,
+                    'next_session' => 'Self-paced learning',
                 ];
             });
         
-        $recentStudents = User::whereHas('payments.class', function($query) use ($tutorId) {
-            $query->where('tutor_id', $tutorId);
+        $recentStudents = User::whereHas('enrollments', function($query) use ($tutorId) {
+            $query->where(function($q) use ($tutorId) {
+                $q->whereHas('class', function($subQ) use ($tutorId) {
+                    $subQ->where('tutor_id', $tutorId);
+                })->orWhereHas('bootcamp', function($subQ) use ($tutorId) {
+                    $subQ->where('tutor_id', $tutorId);
+                });
+            })->where('status', 'active');
         })->where('role', 'member')
             ->latest()
             ->take(5)
@@ -57,10 +89,12 @@ class TutorController extends Controller
         
         return view('tutor.dashboard', compact(
             'totalStudents', 
-            'totalClasses', 
+            'totalClasses',
+            'totalBootcamps',
             'totalHours', 
             'monthlyEarnings', 
-            'recentClasses', 
+            'recentClasses',
+            'recentEnrollments',
             'recentStudents'
         ));
     }
@@ -87,11 +121,7 @@ class TutorController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
         ]);
 
@@ -116,11 +146,7 @@ class TutorController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'capacity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
             'status' => 'required|in:active,inactive,completed'
         ]);

@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class VideoContent extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'description',
+        'video_url',
+        'thumbnail',
+        'duration',
+        'class_id',
+        'bootcamp_id',
+        'order',
+        'status',
+        'created_by'
+    ];
+
+    protected $casts = [
+        'duration' => 'integer',
+        'order' => 'integer'
+    ];
+
+    // Relationships
+    public function class()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function bootcamp()
+    {
+        return $this->belongsTo(Bootcamp::class, 'bootcamp_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeByClass($query, $classId)
+    {
+        return $query->where('class_id', $classId);
+    }
+
+    public function scopeByBootcamp($query, $bootcampId)
+    {
+        return $query->where('bootcamp_id', $bootcampId);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
+
+    // Helper methods
+    public function getFormattedDurationAttribute()
+    {
+        if (!$this->duration) return 'N/A';
+        
+        $minutes = floor($this->duration / 60);
+        $seconds = $this->duration % 60;
+        
+        return sprintf('%02d:%02d', $minutes, $seconds);
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->class_id ? 'class' : 'bootcamp';
+    }
+
+    public function getParentAttribute()
+    {
+        return $this->class_id ? $this->class : $this->bootcamp;
+    }
+}

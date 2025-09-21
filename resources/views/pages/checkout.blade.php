@@ -50,8 +50,16 @@
 
             <form id="checkout-form">
                 @csrf
-                <input type="hidden" name="class_id" value="2" id="class_id">
-                <input type="hidden" name="amount" value="169000" id="amount">
+                @if($class)
+                    <input type="hidden" name="class_id" value="{{ $class->id }}" id="class_id">
+                    <input type="hidden" name="amount" value="{{ $class->price }}" id="amount">
+                @elseif($bootcamp)
+                    <input type="hidden" name="bootcamp_id" value="{{ $bootcamp->id }}" id="bootcamp_id">
+                    <input type="hidden" name="amount" value="{{ $bootcamp->price }}" id="amount">
+                @else
+                    <input type="hidden" name="class_id" value="2" id="class_id">
+                    <input type="hidden" name="amount" value="169000" id="amount">
+                @endif
 
                 <!-- Customer Information -->
                 <div class="mb-4">
@@ -104,17 +112,43 @@
 
                 <!-- Detail Pesanan -->
                 <div class="mt-5">
-                    <h6 class="fw-bold">Order Details (1 course)</h6>
-                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('assets/Digital marketing.jpg') }}" 
-                                 alt="thumbnail" 
-                                 class="img-fluid rounded me-2" 
-                                 style="width: 100px; height: auto;">
-                            <span>Digital Marketing</span>
+                    @if($class)
+                        <h6 class="fw-bold">Order Details (1 course)</h6>
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $class->image ? asset($class->image) : asset('assets/Digital marketing.jpg') }}" 
+                                     alt="thumbnail" 
+                                     class="img-fluid rounded me-2" 
+                                     style="width: 100px; height: auto;">
+                                <span>{{ $class->title }}</span>
+                            </div>
+                            <span class="fw-bold">Rp{{ number_format($class->price, 0, ',', '.') }}</span>
                         </div>
-                        <span class="fw-bold">Rp169.000</span>
-                    </div>
+                    @elseif($bootcamp)
+                        <h6 class="fw-bold">Order Details (1 bootcamp)</h6>
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $bootcamp->image ? asset($bootcamp->image) : asset('assets/Bootcamp.jpg') }}" 
+                                     alt="thumbnail" 
+                                     class="img-fluid rounded me-2" 
+                                     style="width: 100px; height: auto;">
+                                <span>{{ $bootcamp->title }}</span>
+                            </div>
+                            <span class="fw-bold">Rp{{ number_format($bootcamp->price, 0, ',', '.') }}</span>
+                        </div>
+                    @else
+                        <h6 class="fw-bold">Order Details (1 course)</h6>
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ asset('assets/Digital marketing.jpg') }}" 
+                                     alt="thumbnail" 
+                                     class="img-fluid rounded me-2" 
+                                     style="width: 100px; height: auto;">
+                                <span>Digital Marketing</span>
+                            </div>
+                            <span class="fw-bold">Rp169.000</span>
+                        </div>
+                    @endif
                 </div>
             </form>
         </div>
@@ -125,16 +159,37 @@
                 <h5 class="mb-3">Order Summary</h5>
                 <div class="d-flex justify-content-between">
                     <span>Original Price</span>
-                    <span>Rp169.000</span>
+                    @if($class)
+                        <span>Rp{{ number_format($class->price, 0, ',', '.') }}</span>
+                    @elseif($bootcamp)
+                        <span>Rp{{ number_format($bootcamp->price, 0, ',', '.') }}</span>
+                    @else
+                        <span>Rp169.000</span>
+                    @endif
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between fw-bold">
-                    <span>Total (1 course)</span>
-                    <span>Rp169.000</span>
+                    @if($class)
+                        <span>Total (1 course)</span>
+                        <span>Rp{{ number_format($class->price, 0, ',', '.') }}</span>
+                    @elseif($bootcamp)
+                        <span>Total (1 bootcamp)</span>
+                        <span>Rp{{ number_format($bootcamp->price, 0, ',', '.') }}</span>
+                    @else
+                        <span>Total (1 course)</span>
+                        <span>Rp169.000</span>
+                    @endif
                 </div>
                 
                 <button type="button" id="pay-button" class="mt-4">
-                    <i class="fas fa-credit-card me-2"></i>Beli Sekarang - Rp169.000
+                    <i class="fas fa-credit-card me-2"></i>Beli Sekarang - 
+                    @if($class)
+                        Rp{{ number_format($class->price, 0, ',', '.') }}
+                    @elseif($bootcamp)
+                        Rp{{ number_format($bootcamp->price, 0, ',', '.') }}
+                    @else
+                        Rp169.000
+                    @endif
                 </button>
                 
                 <div class="mt-3 text-center small text-muted">
@@ -172,6 +227,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Checkout page loaded successfully');
     
+    // Set price for JavaScript use
+    const originalButtonText = 'Beli Sekarang - {{ $class ? "Rp".number_format($class->price, 0, ",", ".") : ($bootcamp ? "Rp".number_format($bootcamp->price, 0, ",", ".") : "Rp169.000") }}';
+    
     const payButton = document.getElementById('pay-button');
     const form = document.getElementById('checkout-form');
     
@@ -205,6 +263,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Prepare form data
         const formData = new FormData(form);
+        
+        // Debug: Log form data
+        console.log('Form data being sent:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
 
         // Create payment transaction
         fetch('{{ route('payment.create') }}', {
@@ -215,15 +279,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .then(response => {
+            console.log('Response status:', response.status);
             if (!response.ok) {
-                throw new Error('Server error: ' + response.status);
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Server error: ' + response.status);
+                });
             }
             return response.json();
         })
         .then(data => {
             loadingModal.hide();
             payButton.disabled = false;
-            payButton.innerHTML = '<i class="fas fa-credit-card me-2"></i>Beli Sekarang - Rp169.000';
+            payButton.innerHTML = '<i class="fas fa-credit-card me-2"></i>' + originalButtonText;
 
             if (data.success) {
                 console.log('Opening Midtrans Snap...');
@@ -252,8 +319,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             loadingModal.hide();
             payButton.disabled = false;
-            payButton.innerHTML = '<i class="fas fa-credit-card me-2"></i>Beli Sekarang - Rp169.000';
-            alert('Payment failed: ' + error.message);
+            payButton.innerHTML = '<i class="fas fa-credit-card me-2"></i>' + originalButtonText;
+            console.error('Payment error:', error);
+            alert('Payment failed: ' + error.message + '\nPlease check the console for more details.');
         });
     });
 
@@ -307,6 +375,5 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Button text:', payButton.innerText);
     console.log('Button HTML:', payButton.innerHTML);
 });
-</script>
 </script>
 @endsection

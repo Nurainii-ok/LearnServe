@@ -90,16 +90,15 @@ class PagesController extends Controller
         return view('pages.deskripsi_bootcamp', compact('bootcamp'));
     }
 
-    public function detailKursus()
+    public function detailKursus($id = null)
     {
         // Get class details by ID if provided
-        $classId = request('id');
         $class = null;
         
-        if ($classId) {
+        if ($id) {
             $class = Classes::with(['tutor', 'payments', 'tasks'])
                 ->where('status', 'active')
-                ->findOrFail($classId);
+                ->findOrFail($id);
         }
         
         return view('pages.detail_kursus', compact('class'));
@@ -279,9 +278,25 @@ class PagesController extends Controller
         return view('pages.kelas', compact('classes', 'categories'));
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-        // kalau nanti checkout butuh data kelas/pembayaran, bisa dioper dari sini
-        return view('pages.checkout');
+        $classId = $request->input('class_id');
+        $bootcampId = $request->input('bootcamp_id');
+        $class = null;
+        $bootcamp = null;
+        
+        if ($classId) {
+            $class = Classes::with('tutor')
+                ->where('status', 'active')
+                ->findOrFail($classId);
+        }
+        
+        if ($bootcampId) {
+            $bootcamp = Bootcamp::with('tutor')
+                ->where('status', 'active')
+                ->findOrFail($bootcampId);
+        }
+        
+        return view('pages.checkout', compact('class', 'bootcamp'));
     }
 }

@@ -26,6 +26,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('tutor.video-contents.index') }}" class="{{ request()->routeIs('tutor.video-contents*') ? 'active' : '' }}">
+                    <span class="las la-video"></span>
+                    <span>Video Contents</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('tutor.account') }}" class="{{ request()->routeIs('tutor.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
                     <span>Profile & Settings</span>

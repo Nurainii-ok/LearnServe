@@ -31,6 +31,21 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class, 'user_id');
     }
 
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function classEnrollments()
+    {
+        return $this->hasMany(Enrollment::class)->where('type', 'class');
+    }
+
+    public function bootcampEnrollments()
+    {
+        return $this->hasMany(Enrollment::class)->where('type', 'bootcamp');
+    }
+
     // Scopes
     public function scopeTutors($query)
     {
