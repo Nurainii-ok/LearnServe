@@ -50,16 +50,19 @@
 
             <form id="checkout-form">
                 @csrf
-                @if($class)
+                @if(!empty($class))
                     <input type="hidden" name="class_id" value="{{ $class->id }}" id="class_id">
                     <input type="hidden" name="amount" value="{{ $class->price }}" id="amount">
-                @elseif($bootcamp)
+
+                @elseif(!empty($bootcamp))
                     <input type="hidden" name="bootcamp_id" value="{{ $bootcamp->id }}" id="bootcamp_id">
                     <input type="hidden" name="amount" value="{{ $bootcamp->price }}" id="amount">
+
                 @else
                     <input type="hidden" name="class_id" value="2" id="class_id">
                     <input type="hidden" name="amount" value="169000" id="amount">
                 @endif
+
 
                 <!-- Customer Information -->
                 <div class="mb-4">

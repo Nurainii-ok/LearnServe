@@ -41,6 +41,7 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/detail_kursus/{id}', [PagesController::class, 'detailKursus'])->name('detail_kursus');
     Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
     Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');
+    Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
     Route::post('/checkout/process', [PagesController::class, 'processCheckout'])->name('checkout.process');
     Route::get('/checkout/success', [PagesController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');

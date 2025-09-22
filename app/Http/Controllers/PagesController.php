@@ -130,61 +130,79 @@ class PagesController extends Controller
     }
 
     public function processCheckout(Request $request)
-    {
-        try {
-            // Validate the checkout form data
-            $validated = $request->validate([
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
-                'whatsapp' => 'nullable|string|max:20',
-                'payment_method' => 'required|in:bank_transfer,e_wallet,credit_card',
-                'notes' => 'nullable|string|max:1000',
-                'terms' => 'required|accepted',
-            ]);
+{
+    try {
+        // Validate the checkout form data
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'whatsapp' => 'nullable|string|max:20',
+            'payment_method' => 'required|in:bank_transfer,e_wallet,credit_card',
+            'notes' => 'nullable|string|max:1000',
+            'terms' => 'required|accepted',
+        ]);
 
-            // Get class information if class_id is provided
-            $classId = $request->input('class_id');
-            $class = null;
-            if ($classId) {
-                $class = Classes::findOrFail($classId);
-            }
+        // Cek apakah checkout untuk class atau bootcamp
+        $classId = $request->input('class_id');
+        $bootcampId = $request->input('bootcamp_id');
 
-            // Calculate total price
-            $coursePrice = $class ? $class->price : 500000; // Default price if no class
-            $adminFee = 5000;
-            $totalPrice = $coursePrice + $adminFee;
+        $class = null;
+        $bootcamp = null;
 
-            // Create payment record
-            $payment = Payment::create([
-                'user_id' => session('user_id') ?: null, // Using session-based auth, null if not logged in
-                'class_id' => $classId,
-                'full_name' => $validated['full_name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'whatsapp' => $validated['whatsapp'],
-                'payment_method' => $validated['payment_method'],
-                'transaction_id' => 'TXN-' . time() . '-' . rand(1000, 9999),
-                'amount' => $totalPrice,
-                'status' => 'pending',
-                'notes' => $validated['notes'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // Generate payment instructions based on method
-            $paymentInstructions = $this->generatePaymentInstructions($validated['payment_method'], $payment->id, $totalPrice);
-
-            // Redirect to success page with payment details
-            return redirect()->route('checkout.success')
-                ->with('success', 'Pesanan berhasil dibuat!')
-                ->with('payment', $payment)
-                ->with('instructions', $paymentInstructions);
-
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
+        if ($classId) {
+            $class = Classes::findOrFail($classId);
         }
+
+        if ($bootcampId) {
+            $bootcamp = Bootcamp::findOrFail($bootcampId);
+        }
+
+        if (!$class && !$bootcamp) {
+            return back()->withErrors(['error' => 'Data kursus/bootcamp tidak ditemukan.'])->withInput();
+        }
+
+        // Hitung harga
+        $coursePrice = $class ? $class->price : ($bootcamp ? $bootcamp->price : 500000);
+        $adminFee = 5000;
+        $totalPrice = $coursePrice + $adminFee;
+
+        // Simpan ke tabel payments
+        $payment = Payment::create([
+            'user_id' => session('user_id') ?: null,
+            'class_id' => $classId,
+            'bootcamp_id' => $bootcampId,
+            'full_name' => $validated['full_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'whatsapp' => $validated['whatsapp'],
+            'payment_method' => $validated['payment_method'],
+            'transaction_id' => 'TXN-' . time() . '-' . rand(1000, 9999),
+            'amount' => $totalPrice,
+            'status' => 'pending',
+            'notes' => $validated['notes'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Buat instruksi pembayaran
+        $paymentInstructions = $this->generatePaymentInstructions(
+            $validated['payment_method'],
+            $payment->id,
+            $totalPrice
+        );
+
+        // Redirect ke halaman sukses
+        return redirect()->route('checkout.success')
+            ->with('success', 'Pesanan berhasil dibuat!')
+            ->with('payment', $payment)
+            ->with('instructions', $paymentInstructions);
+
+    } catch (\Exception $e) {
+        return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
     }
+}
+
 
     private function generatePaymentInstructions($paymentMethod, $paymentId, $amount)
     {
@@ -276,24 +294,30 @@ class PagesController extends Controller
     }
 
     public function checkout(Request $request)
-    {
-        $classId = $request->input('class_id');
-        $bootcampId = $request->input('bootcamp_id');
-        $class = null;
-        $bootcamp = null;
-        
-        if ($classId) {
-            $class = Classes::with('tutor')
-                ->where('status', 'active')
-                ->findOrFail($classId);
-        }
-        
-        if ($bootcampId) {
-            $bootcamp = Bootcamp::with('tutor')
-                ->where('status', 'active')
-                ->findOrFail($bootcampId);
-        }
-        
-        return view('pages.checkout', compact('class', 'bootcamp'));
+{
+    $class = null;
+    $bootcamp = null;
+
+    if ($request->filled('class_id')) {
+        $class = Classes::with('tutor')
+            ->where('status', 'active')
+            ->where('id', $request->class_id)
+            ->first();
     }
+
+    if ($request->filled('bootcamp_id')) {
+        $bootcamp = Bootcamp::with('tutor')
+            ->where('status', 'active')
+            ->where('id', $request->bootcamp_id)
+            ->first();
+    }
+
+    if (!$class && !$bootcamp) {
+        return redirect()->route('home')
+            ->with('error', 'Data kursus atau bootcamp tidak ditemukan.');
+    }
+
+    return view('pages.checkout', compact('class', 'bootcamp'));
+}
+
 }
