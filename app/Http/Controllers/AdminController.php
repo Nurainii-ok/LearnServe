@@ -545,7 +545,7 @@ class AdminController extends Controller
         $userId = session('user_id');
         
         if (!$userId) {
-            \Log::error('AdminController@account: No user_id in session');
+            Log::error('AdminController@account: No user_id in session');
             return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
         }
         
@@ -553,7 +553,7 @@ class AdminController extends Controller
         $admin = User::find($userId);
         
         if (!$admin || $admin->role !== 'admin') {
-            \Log::error('AdminController@account: User not found or not admin', ['user_id' => $userId]);
+            Log::error('AdminController@account: User not found or not admin', ['user_id' => $userId]);
             return redirect()->route('auth')->with('error', 'Access denied. Admin privileges required.');
         }
         

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Home')
-@section('title', 'Bootcamp & Program')
 
 @section('styles')
   <link rel="stylesheet" href="{{ asset('css/home.css') }}">
@@ -19,7 +18,8 @@
       <div class="col-lg-6 text-center">
         <img src="{{ asset('assets/img/illustrations/Bootcamp2.jpg') }}" 
              alt="Bootcamp Illustration" 
-             style="width: 100%; height: 400px; object-fit: cover; border-radius: 20px;">
+             style="width: 100%; height: 400px; object-fit: cover; border-radius: 20px;"
+             loading="lazy">
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
     <!-- Item 1 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/3b82f6/books.png" alt="courses">
+        <img src="https://img.icons8.com/ios-filled/50/3b82f6/books.png" alt="courses" loading="lazy">
       </div>
       <div class="stat-text">
         <h2>10k+</h2>
@@ -42,7 +42,7 @@
     <!-- Item 2 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/f97316/classroom.png" alt="mentors">
+        <img src="https://img.icons8.com/ios-filled/50/f97316/classroom.png" alt="mentors" loading="lazy">
       </div>
       <div class="stat-text">
         <h2>500+</h2>
@@ -53,7 +53,7 @@
     <!-- Item 3 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/8b5cf6/conference.png" alt="students">
+        <img src="https://img.icons8.com/ios-filled/50/8b5cf6/conference.png" alt="students" loading="lazy">
       </div>
       <div class="stat-text">
         <h2>300k+</h2>
@@ -164,7 +164,7 @@
         <div class="course-card border-0 shadow-sm h-100">
           <!-- Image -->
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/img/illustrations/SEO.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
 
           <!-- Body -->
@@ -186,7 +186,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/img/illustrations/motionGraphic.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
             <span class="badge bg-light text-success mb-2">Graphic Design</span>
@@ -204,7 +204,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/img/illustrations/CMS.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
             <span class="badge bg-light text-purple mb-2">Web Design</span>
@@ -222,7 +222,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/img/illustrations/webdesign2.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
             <span class="badge bg-light text-primary mb-2">Web Design</span>
@@ -239,7 +239,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
             <span class="badge bg-light text-danger mb-2">Art</span>
@@ -256,7 +256,7 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/img/course6.jpg') }}" alt="Course" class="w-100 rounded-top">
+            <img src="{{ asset('assets/img/illustrations/Videography.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
             <span class="badge bg-light text-info mb-2">Media</span>
@@ -285,21 +285,21 @@
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
                 <div class="card-custom">
-                    <!--<img src="https://img.icons8.com/color/96/learning.png" alt="Materi Lengkap">-->
+                    <!--<img src="https://img.icons8.com/color/96/learning.png" alt="Materi Lengkap" loading="lazy">-->
                     <h5>Materi Terlengkap</h5>
                     <p>Kurikulum yang selalu update sesuai kebutuhan industri terkini dengan materi yang komprehensif dan praktis</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="card-custom">
-                    <!--<img src="https://img.icons8.com/color/96/training.png" alt="Mentor Berpengalaman">-->
+                    <!--<img src="https://img.icons8.com/color/96/training.png" alt="Mentor Berpengalaman" loading="lazy">-->
                     <h5>Mentor Ahli</h5>
                     <p>Dibimbing langsung oleh para praktisi profesional dengan pengalaman bertahun-tahun di industri</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="card-custom">
-                    <!--<img src="https://img.icons8.com/color/96/certificate.png" alt="Sertifikat Resmi">-->
+                    <!--<img src="https://img.icons8.com/color/96/certificate.png" alt="Sertifikat Resmi" loading="lazy">-->
                     <h5>Sertifikat Berstandar</h5>
                     <p>Raih sertifikat yang diakui industri untuk meningkatkan portofolio dan peluang karir yang cemerlang</p>
                 </div>
@@ -324,7 +324,7 @@
                         “Platform ini benar-benar mengubah hidup saya. Sekarang saya sudah bekerja sebagai <strong>Full Stack Developer</strong> di startup unicorn!”
                     </p>
                     <div class="d-flex align-items-center mt-4">
-                        <img src="{{ asset('assets/avatars/andi.jpg') }}" alt="Andi" class="author-avatar me-3">
+                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Andi" class="author-avatar me-3" loading="lazy">
                         <div>
                             <h6 class="author-name mb-0">Andi Pratama</h6>
                             <small class="author-role">Full Stack Developer</small>
@@ -341,7 +341,7 @@
                         “Instrukturnya sabar dan jelas. Saya yang awalnya awam sekarang bisa <strong>freelance UI/UX</strong> dengan income stabil.”
                     </p>
                     <div class="d-flex align-items-center mt-4">
-                        <img src="{{ asset('assets/avatars/siti.jpg') }}" alt="Siti" class="author-avatar me-3">
+                        <img src="{{ asset('assets/img/avatars/3.png') }}" alt="Siti" class="author-avatar me-3" loading="lazy">
                         <div>
                             <h6 class="author-name mb-0">Siti Nurhaliza</h6>
                             <small class="author-role">UI/UX Designer</small>
@@ -358,7 +358,7 @@
                         “Bootcamp Digital Marketing di LearnServe sangat worth it! Omzet bisnis saya naik <strong>300%</strong> berkat ilmunya.”
                     </p>
                     <div class="d-flex align-items-center mt-4">
-                        <img src="{{ asset('assets/avatars/budi.jpg') }}" alt="Budi" class="author-avatar me-3">
+                        <img src="{{ asset('assets/img/avatars/4.png') }}" alt="Budi" class="author-avatar me-3" loading="lazy">
                         <div>
                             <h6 class="author-name mb-0">Budi Santoso</h6>
                             <small class="author-role">Digital Entrepreneur</small>

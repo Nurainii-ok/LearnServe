@@ -140,7 +140,7 @@
                         <h6 class="fw-bold">Order Details (1 course)</h6>
                         <div class="d-flex justify-content-between align-items-center border-bottom py-2">
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/Digital marketing.jpg') }}" 
+                                <img src="{{ asset('assets/img/illustrations/Digital marketing.jpg') }}" 
                                      alt="thumbnail" 
                                      class="img-fluid rounded me-2" 
                                      style="width: 100px; height: auto;">

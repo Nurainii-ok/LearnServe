@@ -73,11 +73,8 @@
                 <div class="input-box">
                     <label>Pilih Role:</label><br>
                     <select name="role" required>
-<<<<<<< HEAD
-                        <!-- <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option> -->
-=======
                         <!--<option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>-->
->>>>>>> 0e46bc39732e8c47debf144f5398fc5addfd7892
+                        <!--<option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>-->
                         <option value="tutor" {{ old('role') == 'tutor' ? 'selected' : '' }}>Tutor</option>
                         <option value="member" {{ old('role') == 'member' ? 'selected' : '' }}>Member</option>
                     </select>
