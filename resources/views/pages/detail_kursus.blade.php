@@ -109,7 +109,7 @@
               <p style="color:#944e25; font-weight:600;">Diskon {{ $class->discount }}%</p>
             @endif
 
-            <a href="{{ route('checkout', $class->id) }}" 
+            <a href="{{ route('checkout', ['class_id' => $class->id]) }}" 
                class="btn w-100 fw-bold mb-3" 
                style="background-color:#944e25; color:white; border:none;">
               <i class="fas fa-credit-card me-2"></i>Beli Sekarang

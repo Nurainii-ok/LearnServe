@@ -90,19 +90,16 @@ class PagesController extends Controller
         return view('pages.deskripsi_bootcamp', compact('bootcamp'));
     }
 
-    public function detailKursus($id = null)
+    public function detailKursus($id)
     {
-        // Get class details by ID if provided
-        $class = null;
-        
-        if ($id) {
-            $class = Classes::with(['tutor', 'payments', 'tasks'])
-                ->where('status', 'active')
-                ->findOrFail($id);
-        }
-        
+        // Ambil data berdasarkan id
+        $class = Classes::with(['tutor', 'payments', 'tasks'])
+            ->where('status', 'active')
+            ->findOrFail($id);
+
         return view('pages.detail_kursus', compact('class'));
     }
+
 
     public function formPayments()
     {

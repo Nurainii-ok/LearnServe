@@ -220,7 +220,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <!-- Midtrans Snap -->
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 <script>
@@ -376,4 +376,4 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Button HTML:', payButton.innerHTML);
 });
 </script>
-@endsection
+@endpush

@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="{{ asset('assets/Bootcamp.jpg') }}" alt="Bootcamp" class="img-fluid">
+                    <img src="{{ asset('assets/img/illustrations/Bootcamp_org.jpg') }}" alt="Bootcamp" class="img-fluid">
                 </div>
             </div>
         </div>
