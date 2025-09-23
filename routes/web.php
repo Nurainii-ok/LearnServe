@@ -18,6 +18,30 @@ Route::get('/auth', function () {
     return view('auth');
 })->name('auth');
 
+// Test route for debugging
+Route::get('/test', function () {
+    return 'Test route works!';
+});
+
+// Test task submissions
+Route::get('/test-submissions', function () {
+    try {
+        $taskSubmission = new App\Models\TaskSubmission();
+        $tasks = App\Models\Task::with('submissions')->get();
+        return [
+            'status' => 'success',
+            'message' => 'TaskSubmission model works',
+            'tasks_count' => $tasks->count(),
+            'table_exists' => Schema::hasTable('task_submissions')
+        ];
+    } catch (Exception $e) {
+        return [
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ];
+    }
+});
+
 Route::get('/enroll/free', function () {
     return 'Halaman enroll gratis (dummy)';
 })->name('enroll.free');
@@ -83,6 +107,7 @@ Route::prefix('member')->middleware(['role:member','prevent-back'])->name('membe
     Route::get('/enrollments', [MemberController::class, 'enrollments'])->name('enrollments');
     Route::get('/grades', [MemberController::class, 'grades'])->name('grades');
     Route::get('/tasks', [MemberController::class, 'tasks'])->name('tasks');
+    Route::post('/tasks/{task}/submit', [MemberController::class, 'submitTask'])->name('tasks.submit');
 });
 
 // E-Learning Routes for Members
@@ -185,6 +210,7 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::get('/tasks/{id}/edit', [TutorController::class, 'tasksEdit'])->name('tasks.edit');
     Route::put('/tasks/{id}', [TutorController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [TutorController::class, 'tasksDestroy'])->name('tasks.destroy');
+    Route::post('/tasks/submissions/{submission}/grade', [TutorController::class, 'gradeSubmission'])->name('tasks.grade');
     
     // Grades CRUD 6
     Route::get('/grades', [TutorController::class, 'grades'])->name('grades');

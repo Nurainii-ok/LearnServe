@@ -246,7 +246,7 @@ class AdminController extends Controller
             'tutor_id' => 'required|exists:users,id',
             'price' => 'required|numeric|min:0',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $data = $request->all();
@@ -281,7 +281,7 @@ class AdminController extends Controller
             'tutor_id' => 'required|exists:users,id',
             'price' => 'required|numeric|min:0',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $data = $request->all();

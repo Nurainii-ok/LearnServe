@@ -4,7 +4,7 @@
     <nav class="d-flex justify-content-center">
         <ul class="pagination" style="margin: 0;">
             {{-- Previous Number --}}
-            @if ($paginator->currentPage() > 1)
+            @if ($paginator->currentPage() -1)
                 <li class="page-item">
                     <a class="page-link" href="{{ $paginator->url($paginator->currentPage() - 1) }}" 
                        style="font-size: 14px; padding: 8px 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 1px solid #ddd; margin: 0 2px; border-radius: 6px;">
@@ -17,7 +17,7 @@
             <li class="page-item active">
                 <span class="page-link" 
                       style="font-size: 14px; padding: 8px 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #944e25; border: 1px solid #944e25; color: white; margin: 0 2px; border-radius: 6px;">
-                    {{ $paginator->currentPage() }}
+                    {{ $paginator->currentPage()  }}
                 </span>
             </li>
 

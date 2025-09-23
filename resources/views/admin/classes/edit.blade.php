@@ -298,7 +298,8 @@ textarea.form-control {
                     </div>
                 @endif
                 <input type="file" id="image" name="image" class="form-control" accept="image/*">
-                <small class="text-muted">Upload a new image to replace the current one (JPEG, PNG, JPG, GIF, max 2MB)</small>
+                <small class="text-muted">Upload a new image to replace the current one (JPEG, PNG, JPG, GIF, max 10MB)</small>
+                <div id="file-size-error" class="error-message" style="display: none;">File size must be less than 10MB</div>
                 @error('image')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -318,6 +319,42 @@ textarea.form-control {
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-focus first input
     document.getElementById('title').focus();
+    
+    // File size validation
+    const imageInput = document.getElementById('image');
+    const fileSizeError = document.getElementById('file-size-error');
+    const submitButton = document.querySelector('.btn-primary');
+    
+    imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            // Check file size (10MB = 10 * 1024 * 1024 bytes)
+            const maxSize = 10 * 1024 * 1024;
+            
+            if (file.size > maxSize) {
+                fileSizeError.style.display = 'block';
+                this.value = ''; // Clear the input
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+                submitButton.style.cursor = 'not-allowed';
+            } else {
+                fileSizeError.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.cursor = 'pointer';
+            }
+        }
+    });
+    
+    // Form submission validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const file = imageInput.files[0];
+        if (file && file.size > 10 * 1024 * 1024) {
+            e.preventDefault();
+            alert('Please select an image smaller than 10MB');
+            return false;
+        }
+    });
 });
 </script>
 @endsection

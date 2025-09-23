@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Classes;
 use App\Models\Task;
-use App\Models\Payment;
+use App\Models\TaskSubmission;
 use App\Models\Grade;
+use Illuminate\Support\Facades\Log;
 use App\Models\Enrollment;
 use App\Models\Bootcamp;
 use App\Models\VideoContent;
@@ -170,15 +171,15 @@ class TutorController extends Controller
     public function tasks()
     {
         $tutorId = session('user_id');
-        $tasks = Task::with(['class'])
+        $tasks = Task::with(['class', 'submissions.user'])
             ->where('assigned_by', $tutorId)
             ->orWhereHas('class', function($query) use ($tutorId) {
                 $query->where('tutor_id', $tutorId);
             })
             ->latest()
-            ->paginate(10);
+            ->get(); // Changed to get() to load all tasks with submissions
         
-        return view('tutor.tasks.index', compact('tasks'));
+        return view('tutor.tasks', compact('tasks'));
     }
     
     public function tasksCreate()
@@ -300,6 +301,35 @@ class TutorController extends Controller
         $task->delete();
 
         return redirect()->route('tutor.tasks')->with('success', 'Task deleted successfully!');
+    }
+
+    public function gradeSubmission(Request $request, $submissionId)
+    {
+        $tutorId = session('user_id');
+        
+        // Find the submission
+        $submission = TaskSubmission::with(['task.class', 'user'])->findOrFail($submissionId);
+        
+        // Check if tutor owns this task/class
+        if ($submission->task->assigned_by !== $tutorId && $submission->task->class->tutor_id !== $tutorId) {
+            return back()->withErrors(['error' => 'You are not authorized to grade this submission.']);
+        }
+        
+        // Validate input
+        $request->validate([
+            'grade' => 'required|integer|min:0|max:100',
+            'feedback' => 'nullable|string|max:1000',
+        ]);
+        
+        // Update submission with grade
+        $submission->update([
+            'grade' => $request->grade,
+            'feedback' => $request->feedback,
+            'graded_at' => now(),
+            'graded_by' => $tutorId,
+        ]);
+        
+        return back()->with('success', 'Assignment graded successfully!');
     }
     
     // Grades CRUD for Tutors

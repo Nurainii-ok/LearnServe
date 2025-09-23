@@ -199,21 +199,6 @@
     color: #166534;
     border: 1px solid #bbf7d0;
 }
-</style>
-    background: #f9fafb;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-secondary);
-}
-
-.empty-state i {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #d1d5db;
-}
 
 .due-date {
     font-size: 0.75rem;

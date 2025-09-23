@@ -8,6 +8,7 @@ use App\Models\Classes;
 use App\Models\Bootcamp;
 use App\Models\Payment;
 use App\Models\Task;
+use App\Models\TaskSubmission;
 use App\Models\Enrollment;
 use App\Models\Grade;
 
@@ -137,10 +138,75 @@ class MemberController extends Controller
             
         // Get tasks for enrolled classes
         $tasks = Task::whereIn('class_id', $enrolledClassIds)
-            ->with(['class', 'assignedBy'])
+            ->with(['class', 'assignedBy', 'submissions' => function($query) {
+                $query->where('user_id', session('user_id'));
+            }])
             ->orderBy('due_date')
             ->paginate(10);
             
         return view('member.tasks', compact('tasks'));
+    }
+
+    public function submitTask(Request $request, $taskId)
+    {
+        $memberId = session('user_id');
+        
+        if (!$memberId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+
+        // Find the task
+        $task = Task::findOrFail($taskId);
+        
+        // Check if member is enrolled in the class
+        $enrollment = Enrollment::where('user_id', $memberId)
+            ->where('class_id', $task->class_id)
+            ->where('status', 'active')
+            ->first();
+            
+        if (!$enrollment) {
+            return back()->withErrors(['error' => 'You are not enrolled in this class.']);
+        }
+
+        // Check if already submitted
+        $existingSubmission = TaskSubmission::where('task_id', $taskId)
+            ->where('user_id', $memberId)
+            ->first();
+            
+        if ($existingSubmission) {
+            return back()->withErrors(['error' => 'You have already submitted this assignment.']);
+        }
+
+        // Validate input
+        $request->validate([
+            'content' => 'nullable|string|max:5000',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,txt,zip|max:10240', // 10MB max
+        ]);
+
+        // Check if at least one submission method is provided
+        if (!$request->filled('content') && !$request->hasFile('file')) {
+            return back()->withErrors(['error' => 'Please provide either text content or upload a file.']);
+        }
+
+        $submissionData = [
+            'task_id' => $taskId,
+            'user_id' => $memberId,
+            'content' => $request->content,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+            $filePath = $file->store('task-submissions', 'public');
+            
+            $submissionData['file_path'] = $filePath;
+            $submissionData['original_filename'] = $originalName;
+        }
+
+        // Create submission
+        TaskSubmission::create($submissionData);
+
+        return back()->with('success', 'Assignment submitted successfully! Your tutor will review it soon.');
     }
 }
