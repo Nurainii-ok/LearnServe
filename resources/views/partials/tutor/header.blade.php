@@ -1,3 +1,7 @@
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/Tutor/sidebar_header.css') }}">
+@endsection
+
 <header>
     <h1>
         <label for="nav-toggle">
