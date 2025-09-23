@@ -111,6 +111,7 @@
               <p style="color:#944e25; font-weight:600;">Diskon {{ $class->discount }}%</p>
             @endif
 
+<<<<<<< HEAD
             @php
                 $isEnrolled = false;
                 $hasValidPayment = false;
@@ -154,6 +155,13 @@
                   <i class="fas fa-credit-card me-2"></i>Beli Sekarang
                 </a>
             @endif
+=======
+            <a href="{{ route('checkout', ['class_id' => $class->id]) }}" 
+               class="btn w-100 fw-bold mb-3" 
+               style="background-color:#944e25; color:white; border:none;">
+              <i class="fas fa-credit-card me-2"></i>Beli Sekarang
+            </a>
+>>>>>>> e0ec30bcae333ffa259abdcc461d174a235a67c4
 
             <hr>
             <h6 class="fw-bold mb-3" style="color:#944e25;">Kursus ini mencakup:</h6>

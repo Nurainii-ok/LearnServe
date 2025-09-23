@@ -49,7 +49,7 @@
   </script>
 
   {{-- Script khusus halaman --}}
-  @yield('scripts')
+  @stack('scripts')
   
 </body>
 </html>

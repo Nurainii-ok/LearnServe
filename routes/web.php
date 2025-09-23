@@ -18,6 +18,10 @@ Route::get('/auth', function () {
     return view('auth');
 })->name('auth');
 
+Route::get('/enroll/free', function () {
+    return 'Halaman enroll gratis (dummy)';
+})->name('enroll.free');
+
 // Login
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
@@ -34,9 +38,10 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/bootcamp', [PagesController::class, 'bootcamp'])->name('bootcamp');
     Route::get('/webinar', [PagesController::class, 'webinar'])->name('webinar');
     Route::get('/deskripsi_bootcamp/{id?}', [PagesController::class, 'deskripsibootcamp'])->name('deskripsi_bootcamp');
-    Route::get('/detail_kursus/{id?}', [PagesController::class, 'detailKursus'])->name('detail_kursus');
+    Route::get('/detail_kursus/{id}', [PagesController::class, 'detailKursus'])->name('detail_kursus');
     Route::get('/form_payments', [PagesController::class, 'formPayments'])->name('form_payments');
     Route::get('/beli_sekarang', [PagesController::class, 'beliSekarang'])->name('beli_sekarang');
+    Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
     Route::post('/checkout/process', [PagesController::class, 'processCheckout'])->name('checkout.process');
     Route::get('/checkout/success', [PagesController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');

@@ -9,7 +9,11 @@
       </a>
 
       <div class="ms-auto">
-        <a href="{{ route('detail_kursus') }}" class="btn btn-outline-danger fw-semibold">Batal</a>
+        @if(!empty($class))
+          <a href="{{ route('detail_kursus', ['id' => $class->id]) }}" class="btn btn-outline-danger fw-semibold">Batal</a>
+        @elseif(!empty($bootcamp))
+          <a href="{{ route('deskripsi_bootcamp', ['id' => $bootcamp->id]) }}" class="btn btn-outline-danger fw-semibold">Batal</a>
+        @endif
       </div>
     @else
       <!-- Header normal -->

@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="sidebar-brand">
-        <img src="{{ asset('assets/Logo2.png') }}" alt="Logo" style="height:40px; margin-right:10px;">
+        <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" style="height:40px; margin-right:10px;">
         <span>LearnServe</span>
         <small style="color: var(--soft-gold); font-size: 0.8rem; margin-left: 0.5rem;">Admin</small>
     </div>

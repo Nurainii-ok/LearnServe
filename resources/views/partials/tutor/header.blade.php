@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 <header class="tutor-header-fixed">
+=======
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/Tutor/sidebar_header.css') }}">
+@endsection
+
+<header>
+>>>>>>> e0ec30bcae333ffa259abdcc461d174a235a67c4
     <h1>
         <label for="nav-toggle">
             <span class="las la-bars"></span>

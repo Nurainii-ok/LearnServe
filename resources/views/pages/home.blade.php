@@ -69,10 +69,10 @@
 <section class="popular-category py-5">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold">Explore courses by category</h3>
+      <h3 class="fw-bold">Jelajahi kursus berdasarkan kategori</h3>
       <!--<a href="#" class="btn btn-outline-primary btn-sm">All Category</a>-->
     </div>
-    <p class="text-muted mb-5">Browse top class courses by browsing our category which will be more easy for you.</p>
+    <p class="text-muted mb-5">Jelajahi kursus terbaik melalui kategori yang tersedia agar lebih mudah menemukan yang sesuai.</p>
 
     <div class="row g-4">
       <!-- Category Card -->
@@ -147,12 +147,12 @@
     <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
       <div>
-        <h3 class="fw-bold mb-1">Popular courses for you</h3>
-        <p class="text-muted small mb-0">Get the best course with the best price with world-class tutors</p>
+        <h3 class="fw-bold mb-1">Kursus Populer untuk Anda</h3>
+        <p class="text-muted small mb-0">Dapatkan kursus terbaik dengan harga terbaik bersama tutor terbaik</p>
       </div>
         <a href="{{ route('learning') }}" 
             class="btn btn-sm custom-btn">
-            See All Jobs
+            Lihat semua kelas
         </a>
     </div>
 
