@@ -316,6 +316,13 @@
                                     </div>
                                     <span style="font-size: 0.875rem; color: var(--text-secondary);">{{ $class->tutor->name ?? 'Tutor' }}</span>
                                 </div>
+                                <div class="class-actions mt-2">
+                                    <a href="{{ route('elearning.class', $class->id) }}" 
+                                       class="btn btn-sm" 
+                                       style="background: var(--primary-brown); color: white; border: none; padding: 0.375rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem;">
+                                        <i class="bx bx-play-circle me-1"></i>Start Learning
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         @endforeach

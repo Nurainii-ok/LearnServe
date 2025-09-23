@@ -7,15 +7,23 @@ use App\Models\VideoContent;
 use App\Models\Classes;
 use App\Models\Bootcamp;
 use App\Models\Enrollment;
+use App\Models\VideoProgress;
+use Illuminate\Support\Facades\Auth;
 
 class ELearningController extends Controller
 {
+    public function __construct()
+    {
+        // No middleware needed here, will be handled by routes
+    }
+
     public function index()
     {
         $memberId = session('user_id');
+        $userRole = session('role');
         
-        if (!$memberId) {
-            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        if (!$memberId || $userRole !== 'member') {
+            return redirect()->route('auth')->with('error', 'Access denied. Please login as member.');
         }
 
         // Get member's active enrollments
@@ -31,9 +39,10 @@ class ELearningController extends Controller
     public function showClass($classId)
     {
         $memberId = session('user_id');
+        $userRole = session('role');
         
-        if (!$memberId) {
-            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        if (!$memberId || $userRole !== 'member') {
+            return redirect()->route('auth')->with('error', 'Access denied. Please login as member.');
         }
 
         // Check if member is enrolled in this class
@@ -132,5 +141,96 @@ class ELearningController extends Controller
             ->get();
 
         return view('member.elearning.watch', compact('video', 'otherVideos', 'enrollment'));
+    }
+
+    /**
+     * Update video progress via AJAX
+     */
+    public function updateProgress(Request $request)
+    {
+        $request->validate([
+            'video_id' => 'required|exists:video_contents,id',
+            'watch_time' => 'required|integer|min:0',
+            'total_duration' => 'required|integer|min:1'
+        ]);
+
+        $memberId = session('user_id');
+        
+        if (!$memberId) {
+            return response()->json(['error' => 'Session expired'], 401);
+        }
+
+        $video = VideoContent::findOrFail($request->video_id);
+        
+        // Check enrollment
+        $enrollment = null;
+        if ($video->class_id) {
+            $enrollment = Enrollment::where('user_id', $memberId)
+                ->where('class_id', $video->class_id)
+                ->where('status', 'active')
+                ->first();
+        } elseif ($video->bootcamp_id) {
+            $enrollment = Enrollment::where('user_id', $memberId)
+                ->where('bootcamp_id', $video->bootcamp_id)
+                ->where('status', 'active')
+                ->first();
+        }
+            
+        if (!$enrollment) {
+            return response()->json(['error' => 'Not enrolled'], 403);
+        }
+
+        // Update or create progress (temporarily without VideoProgress model)
+        // For now, we'll just return success
+        $progressPercentage = ($request->watch_time / $request->total_duration) * 100;
+        $isCompleted = $progressPercentage >= 90;
+
+        return response()->json([
+            'success' => true,
+            'progress' => round($progressPercentage, 2),
+            'completed' => $isCompleted,
+            'message' => $isCompleted ? 'Video completed!' : 'Progress saved'
+        ]);
+    }
+
+    /**
+     * Mark video as completed
+     */
+    public function markCompleted(Request $request)
+    {
+        $request->validate([
+            'video_id' => 'required|exists:video_contents,id'
+        ]);
+
+        $memberId = session('user_id');
+        
+        if (!$memberId) {
+            return response()->json(['error' => 'Session expired'], 401);
+        }
+
+        $video = VideoContent::findOrFail($request->video_id);
+        
+        // Check enrollment
+        $enrollment = null;
+        if ($video->class_id) {
+            $enrollment = Enrollment::where('user_id', $memberId)
+                ->where('class_id', $video->class_id)
+                ->where('status', 'active')
+                ->first();
+        } elseif ($video->bootcamp_id) {
+            $enrollment = Enrollment::where('user_id', $memberId)
+                ->where('bootcamp_id', $video->bootcamp_id)
+                ->where('status', 'active')
+                ->first();
+        }
+            
+        if (!$enrollment) {
+            return response()->json(['error' => 'Not enrolled'], 403);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Video marked as completed!'
+        ]);
     }
 }

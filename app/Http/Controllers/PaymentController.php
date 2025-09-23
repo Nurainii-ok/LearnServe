@@ -318,14 +318,32 @@ class PaymentController extends Controller
         try {
             $notification = new Notification();
 
+            // Get all transaction details from Midtrans
             $transactionStatus = $notification->transaction_status;
             $fraudStatus = $notification->fraud_status;
             $orderId = $notification->order_id;
+            $paymentType = $notification->payment_type;
+            $grossAmount = $notification->gross_amount;
+            $transactionTime = $notification->transaction_time;
+            $settlementTime = $notification->settlement_time ?? null;
+            $signatureKey = $notification->signature_key;
+            
+            // Get additional payment method details
+            $bankName = $notification->va_numbers[0]->bank ?? $notification->bank ?? null;
+            $vaNumber = $notification->va_numbers[0]->va_number ?? $notification->account_number ?? null;
+            $billerCode = $notification->biller_code ?? null;
+            $billKey = $notification->bill_key ?? null;
 
-            Log::info('Payment notification received', [
+            Log::info('Payment notification received with full details', [
                 'order_id' => $orderId,
                 'transaction_status' => $transactionStatus,
-                'fraud_status' => $fraudStatus
+                'fraud_status' => $fraudStatus,
+                'payment_type' => $paymentType,
+                'gross_amount' => $grossAmount,
+                'transaction_time' => $transactionTime,
+                'settlement_time' => $settlementTime,
+                'bank_name' => $bankName,
+                'va_number' => $vaNumber
             ]);
 
             // Find payment record
@@ -339,19 +357,32 @@ class PaymentController extends Controller
             // Only process if status is changing to avoid duplicate processing
             $oldStatus = $payment->status;
 
+            // Prepare update data with Midtrans information
+            $updateData = [
+                'payment_method' => $this->formatPaymentMethod($paymentType, $bankName),
+                'midtrans_transaction_id' => $notification->transaction_id ?? null,
+                'midtrans_payment_type' => $paymentType,
+                'midtrans_gross_amount' => $grossAmount,
+                'midtrans_transaction_time' => $transactionTime,
+                'midtrans_settlement_time' => $settlementTime,
+                'midtrans_signature_key' => $signatureKey,
+                'midtrans_fraud_status' => $fraudStatus,
+                'midtrans_bank' => $bankName,
+                'midtrans_va_number' => $vaNumber,
+                'midtrans_biller_code' => $billerCode,
+                'midtrans_bill_key' => $billKey,
+                'midtrans_raw_notification' => json_encode($notification->getResponse())
+            ];
+
             // Update payment status based on transaction status
             if ($transactionStatus == 'capture') {
                 if ($fraudStatus == 'challenge') {
-                    $payment->update([
-                        'status' => 'pending',
-                        'notes' => 'Transaction is challenged by FDS'
-                    ]);
+                    $updateData['status'] = 'pending';
+                    $updateData['notes'] = 'Transaction is challenged by FDS - ' . $paymentType;
                 } else if ($fraudStatus == 'accept') {
-                    $payment->update([
-                        'status' => 'completed',
-                        'payment_date' => now(),
-                        'notes' => 'Payment completed successfully'
-                    ]);
+                    $updateData['status'] = 'completed';
+                    $updateData['payment_date'] = $settlementTime ? date('Y-m-d H:i:s', strtotime($settlementTime)) : now();
+                    $updateData['notes'] = 'Payment completed via ' . $this->formatPaymentMethod($paymentType, $bankName);
                     
                     // Auto-enroll user after successful payment (only if status changed)
                     if ($oldStatus !== 'completed') {
@@ -359,46 +390,76 @@ class PaymentController extends Controller
                     }
                 }
             } else if ($transactionStatus == 'settlement') {
-                $payment->update([
-                    'status' => 'completed',
-                    'payment_date' => now(),
-                    'notes' => 'Payment completed successfully'
-                ]);
+                $updateData['status'] = 'completed';
+                $updateData['payment_date'] = $settlementTime ? date('Y-m-d H:i:s', strtotime($settlementTime)) : now();
+                $updateData['notes'] = 'Payment settled via ' . $this->formatPaymentMethod($paymentType, $bankName);
                 
                 // Auto-enroll user after successful payment (only if status changed)
                 if ($oldStatus !== 'completed') {
                     $this->autoEnrollUser($payment);
                 }
             } else if ($transactionStatus == 'pending') {
-                $payment->update([
-                    'status' => 'pending',
-                    'notes' => 'Waiting for payment'
-                ]);
+                $updateData['status'] = 'pending';
+                $updateData['notes'] = 'Waiting for payment via ' . $this->formatPaymentMethod($paymentType, $bankName);
+                
+                // Add payment instructions for pending payments
+                if ($vaNumber) {
+                    $updateData['notes'] .= ' - VA Number: ' . $vaNumber;
+                }
+                if ($billerCode && $billKey) {
+                    $updateData['notes'] .= ' - Biller Code: ' . $billerCode . ', Bill Key: ' . $billKey;
+                }
             } else if ($transactionStatus == 'deny') {
-                $payment->update([
-                    'status' => 'failed',
-                    'notes' => 'Payment denied'
-                ]);
+                $updateData['status'] = 'failed';
+                $updateData['notes'] = 'Payment denied via ' . $this->formatPaymentMethod($paymentType, $bankName);
             } else if ($transactionStatus == 'expire') {
-                $payment->update([
-                    'status' => 'failed',
-                    'notes' => 'Payment expired'
-                ]);
+                $updateData['status'] = 'failed';
+                $updateData['notes'] = 'Payment expired via ' . $this->formatPaymentMethod($paymentType, $bankName);
             } else if ($transactionStatus == 'cancel') {
-                $payment->update([
-                    'status' => 'failed',
-                    'notes' => 'Payment cancelled'
-                ]);
+                $updateData['status'] = 'failed';
+                $updateData['notes'] = 'Payment cancelled via ' . $this->formatPaymentMethod($paymentType, $bankName);
             }
 
-            Log::info('Payment notification processed for order: ' . $orderId . ' with status: ' . $transactionStatus);
+            // Update payment with all Midtrans data
+            $payment->update($updateData);
+
+            Log::info('Payment notification processed with full Midtrans data', [
+                'order_id' => $orderId,
+                'status' => $updateData['status'],
+                'payment_method' => $updateData['payment_method'],
+                'amount' => $grossAmount
+            ]);
 
             return response()->json(['status' => 'success']);
 
         } catch (\Exception $e) {
             Log::error('Payment notification error: ' . $e->getMessage());
+            Log::error('Notification data: ' . json_encode($request->all()));
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
+    }
+    
+    /**
+     * Format payment method name from Midtrans data
+     */
+    private function formatPaymentMethod($paymentType, $bankName = null)
+    {
+        $methods = [
+            'credit_card' => 'Credit Card',
+            'bank_transfer' => $bankName ? strtoupper($bankName) . ' Bank Transfer' : 'Bank Transfer',
+            'echannel' => 'Mandiri Bill Payment',
+            'gopay' => 'GoPay',
+            'shopeepay' => 'ShopeePay',
+            'qris' => 'QRIS',
+            'cstore' => 'Convenience Store',
+            'akulaku' => 'Akulaku',
+            'bca_va' => 'BCA Virtual Account',
+            'bni_va' => 'BNI Virtual Account',
+            'bri_va' => 'BRI Virtual Account',
+            'other_va' => ($bankName ? strtoupper($bankName) : 'Other') . ' Virtual Account'
+        ];
+        
+        return $methods[$paymentType] ?? ucwords(str_replace('_', ' ', $paymentType));
     }
 
     /**
@@ -452,28 +513,240 @@ class PaymentController extends Controller
     }
 
     /**
-     * Check payment status
+     * Check payment status from Midtrans and sync if needed
      */
     public function checkStatus($orderId)
     {
         try {
-            $status = Transaction::status($orderId);
             $payment = Payment::where('transaction_id', $orderId)->first();
-
+            
+            if (!$payment) {
+                return response()->json(['error' => 'Payment not found'], 404);
+            }
+            
+            // Get status from Midtrans
+            $status = Transaction::status($orderId);
+            
+            Log::info('Checking payment status', [
+                'order_id' => $orderId,
+                'local_status' => $payment->status,
+                'midtrans_status' => $status->transaction_status
+            ]);
+            
+            // If status differs, sync it
+            if ($this->shouldSyncStatus($payment->status, $status->transaction_status)) {
+                $this->syncPaymentStatus($payment, $status);
+                
+                // Reload payment to get updated status
+                $payment->refresh();
+                
+                Log::info('Payment status synced', [
+                    'order_id' => $orderId,
+                    'old_status' => $payment->status,
+                    'new_status' => $status->transaction_status
+                ]);
+            }
+            
+            return response()->json([
+                'order_id' => $orderId,
+                'local_status' => $payment->status,
+                'midtrans_status' => $status->transaction_status,
+                'payment_type' => $status->payment_type ?? null,
+                'gross_amount' => $status->gross_amount ?? null,
+                'synced' => $this->shouldSyncStatus($payment->status, $status->transaction_status)
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error checking payment status: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+    /**
+     * Manual sync payment status from Midtrans
+     */
+    public function syncStatus($orderId)
+    {
+        try {
+            $payment = Payment::where('transaction_id', $orderId)->first();
+            
+            if (!$payment) {
+                return response()->json(['error' => 'Payment not found'], 404);
+            }
+            
+            // Get status from Midtrans
+            $status = Transaction::status($orderId);
+            
+            Log::info('Manual sync payment status', [
+                'order_id' => $orderId,
+                'old_status' => $payment->status,
+                'midtrans_status' => $status->transaction_status
+            ]);
+            
+            $oldStatus = $payment->status;
+            $this->syncPaymentStatus($payment, $status);
+            
+            // Reload payment to get updated status
+            $payment->refresh();
+            
             return response()->json([
                 'success' => true,
-                'midtrans_status' => $status,
-                'payment_status' => $payment ? $payment->status : 'not_found'
+                'message' => 'Payment status synced successfully',
+                'order_id' => $orderId,
+                'old_status' => $oldStatus,
+                'new_status' => $payment->status,
+                'midtrans_data' => [
+                    'transaction_status' => $status->transaction_status,
+                    'payment_type' => $status->payment_type ?? null,
+                    'gross_amount' => $status->gross_amount ?? null,
+                    'settlement_time' => $status->settlement_time ?? null
+                ]
             ]);
-
+            
         } catch (\Exception $e) {
+            Log::error('Error syncing payment status: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'error' => $e->getMessage()
             ], 500);
         }
     }
     
+    /**
+     * Check if status should be synced
+     */
+    private function shouldSyncStatus($localStatus, $midtransStatus)
+    {
+        // Always sync if local is pending but midtrans is settled/completed
+        if ($localStatus === 'pending' && in_array($midtransStatus, ['settlement', 'capture'])) {
+            return true;
+        }
+        
+        // Sync if local is not failed but midtrans shows failure
+        if (!in_array($localStatus, ['failed', 'cancelled']) && in_array($midtransStatus, ['deny', 'expire', 'cancel'])) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Sync payment status with Midtrans data
+     */
+    private function syncPaymentStatus($payment, $midtransStatus)
+    {
+        $updateData = [
+            'midtrans_transaction_id' => $midtransStatus->transaction_id ?? null,
+            'midtrans_payment_type' => $midtransStatus->payment_type ?? null,
+            'midtrans_gross_amount' => $midtransStatus->gross_amount ?? null,
+            'midtrans_transaction_time' => $midtransStatus->transaction_time ?? null,
+            'midtrans_settlement_time' => $midtransStatus->settlement_time ?? null,
+            'midtrans_fraud_status' => $midtransStatus->fraud_status ?? null,
+            'midtrans_signature_key' => $midtransStatus->signature_key ?? null,
+        ];
+        
+        $transactionStatus = $midtransStatus->transaction_status;
+        $fraudStatus = $midtransStatus->fraud_status ?? 'accept';
+        
+        // Update status based on Midtrans status
+        if ($transactionStatus == 'capture') {
+            if ($fraudStatus == 'challenge') {
+                $updateData['status'] = 'pending';
+                $updateData['notes'] = 'Transaction is challenged by FDS';
+            } else if ($fraudStatus == 'accept') {
+                $updateData['status'] = 'completed';
+                $updateData['payment_date'] = $midtransStatus->settlement_time ? 
+                    date('Y-m-d H:i:s', strtotime($midtransStatus->settlement_time)) : now();
+                $updateData['notes'] = 'Payment completed - synced from Midtrans';
+                
+                // Auto-enroll user
+                if ($payment->status !== 'completed') {
+                    $this->autoEnrollUser($payment);
+                }
+            }
+        } else if ($transactionStatus == 'settlement') {
+            $updateData['status'] = 'completed';
+            $updateData['payment_date'] = $midtransStatus->settlement_time ? 
+                date('Y-m-d H:i:s', strtotime($midtransStatus->settlement_time)) : now();
+            $updateData['notes'] = 'Payment settled - synced from Midtrans';
+            
+            // Auto-enroll user
+            if ($payment->status !== 'completed') {
+                $this->autoEnrollUser($payment);
+            }
+        } else if ($transactionStatus == 'pending') {
+            $updateData['status'] = 'pending';
+            $updateData['notes'] = 'Waiting for payment - synced from Midtrans';
+        } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
+            $updateData['status'] = 'failed';
+            $updateData['notes'] = 'Payment ' . $transactionStatus . ' - synced from Midtrans';
+        }
+        
+        $payment->update($updateData);
+        
+        Log::info('Payment synced successfully', [
+            'order_id' => $payment->transaction_id,
+            'new_status' => $updateData['status'],
+            'midtrans_status' => $transactionStatus
+        ]);
+    }
+
+    /**
+     * Test webhook notification manually
+     */
+    public function testWebhook(Request $request)
+    {
+        try {
+            $orderId = $request->input('order_id');
+            
+            if (!$orderId) {
+                return response()->json(['error' => 'Order ID is required'], 400);
+            }
+            
+            // Get payment record
+            $payment = Payment::where('transaction_id', $orderId)->first();
+            
+            if (!$payment) {
+                return response()->json(['error' => 'Payment not found'], 404);
+            }
+            
+            // Get status from Midtrans
+            $status = Transaction::status($orderId);
+            
+            // Simulate webhook notification
+            $webhookData = [
+                'transaction_status' => $status->transaction_status,
+                'order_id' => $orderId,
+                'gross_amount' => $status->gross_amount,
+                'payment_type' => $status->payment_type,
+                'transaction_time' => $status->transaction_time,
+                'settlement_time' => $status->settlement_time ?? null,
+                'fraud_status' => $status->fraud_status ?? 'accept',
+                'signature_key' => $status->signature_key ?? null
+            ];
+            
+            Log::info('Manual webhook test', $webhookData);
+            
+            // Process the webhook data
+            $request->merge($webhookData);
+            $result = $this->handleNotification($request);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Webhook test completed',
+                'midtrans_data' => $webhookData,
+                'webhook_result' => $result->getData()
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Webhook test error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Test Midtrans connection
      */

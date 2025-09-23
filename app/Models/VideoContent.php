@@ -13,6 +13,8 @@ class VideoContent extends Model
         'title',
         'description',
         'video_url',
+        'youtube_url',
+        'video_type', // 'upload' or 'youtube'
         'thumbnail',
         'duration',
         'class_id',
@@ -83,5 +85,40 @@ class VideoContent extends Model
     public function getParentAttribute()
     {
         return $this->class_id ? $this->class : $this->bootcamp;
+    }
+
+    // Video progress relationship
+    public function progress()
+    {
+        return $this->hasMany(VideoProgress::class);
+    }
+
+    public function userProgress($userId)
+    {
+        return $this->progress()->where('user_id', $userId)->first();
+    }
+
+    // YouTube helpers
+    public function getYoutubeIdAttribute()
+    {
+        if (!$this->youtube_url) return null;
+        
+        preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $this->youtube_url, $matches);
+        return $matches[1] ?? null;
+    }
+
+    public function getYoutubeEmbedUrlAttribute()
+    {
+        $id = $this->youtube_id;
+        return $id ? "https://www.youtube.com/embed/{$id}" : null;
+    }
+
+    public function getVideoSourceAttribute()
+    {
+        if ($this->video_type === 'youtube' && $this->youtube_url) {
+            return $this->youtube_embed_url;
+        }
+        
+        return $this->video_url ? asset('storage/' . $this->video_url) : null;
     }
 }

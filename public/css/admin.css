@@ -651,6 +651,80 @@ td .status {
     background: var(--light-cream);
 }
 
+/* Laravel Pagination Fixes */
+.pagination .page-link {
+    padding: 0.5rem 0.75rem !important;
+    border: 1px solid var(--light-gray) !important;
+    background: var(--white) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    margin: 0 2px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 40px !important;
+    height: 40px !important;
+}
+
+.pagination .page-link:hover {
+    background: var(--light-cream) !important;
+    color: var(--primary-brown) !important;
+    border-color: var(--primary-brown) !important;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--primary-brown) !important;
+    color: var(--white) !important;
+    border-color: var(--primary-brown) !important;
+}
+
+.pagination .page-item.disabled .page-link {
+    background: var(--background-light) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--light-gray) !important;
+    cursor: not-allowed !important;
+}
+
+/* Fix for oversized arrows */
+.pagination .page-link svg {
+    width: 16px !important;
+    height: 16px !important;
+    fill: currentColor !important;
+}
+
+/* Alternative fix for text-based arrows */
+.pagination .page-link[rel="prev"]::before {
+    content: "‹" !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.pagination .page-link[rel="next"]::before {
+    content: "›" !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.pagination .page-link[rel="prev"],
+.pagination .page-link[rel="next"] {
+    font-size: 0 !important; /* Hide original text */
+}
+
+/* Bootstrap pagination container */
+nav[role="navigation"] {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1rem !important;
+}
+
+.pagination {
+    margin: 0 !important;
+}
+
 /* === TUTOR SECTION === */
 .tutor {
     display: flex;

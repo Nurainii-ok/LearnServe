@@ -31,38 +31,39 @@
     <!-- Item 1 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/3b82f6/books.png" alt="courses" loading="lazy">
+        <i class="bi bi-journal-bookmark-fill fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>10k+</h2>
-        <p>Total Courses</p>
+        <h2 style="color:#944E25;">100+</h2>
+        <p>Total Kelas</p>
       </div>
     </div>
 
     <!-- Item 2 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/f97316/classroom.png" alt="mentors" loading="lazy">
+        <i class="bi bi-person-workspace fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>500+</h2>
-        <p>Expert Mentors</p>
+        <h2 style="color:#944E25;">50+</h2>
+        <p>Tutor Berpengalaman</p>
       </div>
     </div>
 
     <!-- Item 3 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/8b5cf6/conference.png" alt="students" loading="lazy">
+        <i class="bi bi-people-fill fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>300k+</h2>
-        <p>Students Globally</p>
+        <h2 style="color:#944E25;">500+</h2>
+        <p>Member</p>
       </div>
     </div>
 
   </div>
 </section>
+
 
 <!--<div class="container-fluid px-4">-->
 <!-- Explore Courses by Category -->
@@ -194,7 +195,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 500.000</span>
             </div>
           </div>
         </div>
@@ -212,7 +213,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 150.000</span>
             </div>
           </div>
         </div>
@@ -230,7 +231,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 500.000</span>
             </div>
           </div>
         </div>
@@ -247,7 +248,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 250.000</span>
             </div>
           </div>
         </div>
@@ -264,7 +265,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 350.000</span>
             </div>
           </div>
         </div>

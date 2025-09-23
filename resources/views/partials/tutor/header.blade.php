@@ -85,3 +85,63 @@
         @endif
     </div>
 </header>
+
+
+<style>
+    /* Fix header alignment untuk tutor dashboard - sesuaikan dengan layout Bootstrap */
+header {
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-color);
+    width: 100%;
+}
+
+header h1 {
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+header h1 label {
+    margin-right: 1rem;
+    display: none; /* Hide hamburger on desktop since we're using Bootstrap layout */
+}
+
+header h1 label span {
+    font-size: 1.5rem;
+    color: var(--primary-brown);
+    cursor: pointer;
+}
+
+/* Show hamburger only on mobile */
+@media only screen and (max-width: 1199px) {
+    header h1 label {
+        display: block;
+    }
+}
+
+/* Ensure proper spacing for content */
+.container-xxl.flex-grow-1.container-p-y {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+/* Fix dashboard content alignment */
+.dashboard-content {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+</style>
+
+
+

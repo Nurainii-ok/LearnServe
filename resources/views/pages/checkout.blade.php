@@ -195,6 +195,11 @@
                     @endif
                 </button>
                 
+                <!-- Tombol Batal -->
+                <button type="button" id="cancel-button" class="btn btn-outline-secondary mt-2 w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Batal
+                </button>
+                
                 <div class="mt-3 text-center small text-muted">
                     <i class="fas fa-shield-alt me-1"></i>30-Day Money Back Guarantee
                 </div>
@@ -234,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalButtonText = 'Beli Sekarang - {{ $class ? "Rp".number_format($class->price, 0, ",", ".") : ($bootcamp ? "Rp".number_format($bootcamp->price, 0, ",", ".") : "Rp169.000") }}';
     
     const payButton = document.getElementById('pay-button');
+    const cancelButton = document.getElementById('cancel-button');
     const form = document.getElementById('checkout-form');
     
     if (!payButton) {
@@ -247,6 +253,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('All elements found correctly');
+    
+    // Handle cancel button
+    if (cancelButton) {
+        cancelButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Determine where to go back based on what we're purchasing
+            @if($class)
+                window.location.href = '{{ route('detail_kursus', $class->id) }}';
+            @elseif($bootcamp)
+                window.location.href = '{{ route('deskripsi_bootcamp', $bootcamp->id) }}';
+            @else
+                window.location.href = '{{ route('learning') }}';
+            @endif
+        });
+    }
     
     const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
 

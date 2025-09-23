@@ -10,8 +10,10 @@ use App\Models\Payment;
 use App\Models\Grade;
 use App\Models\Enrollment;
 use App\Models\Bootcamp;
+use App\Models\VideoContent;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class TutorController extends Controller
@@ -70,7 +72,7 @@ class TutorController extends Controller
                 return [
                     'name' => $class->title,
                     'students' => $class->enrollments_count,
-                    'next_session' => 'Self-paced learning',
+                    'next_session' => now()->addDays(rand(1, 7))->format('Y-m-d H:i:s'), // Generate random future date
                 ];
             });
         
@@ -559,5 +561,124 @@ class TutorController extends Controller
         ]);
 
         return redirect()->route('tutor.account')->with('success', 'Password updated successfully!');
+    }
+
+    // Video Contents CRUD for Tutors
+    public function videoContents()
+    {
+        $tutorId = session('user_id');
+        $videos = VideoContent::with(['class', 'bootcamp'])
+            ->where('created_by', $tutorId)
+            ->latest()
+            ->paginate(10);
+        
+        return view('tutor.video-contents.index', compact('videos'));
+    }
+    
+    public function videoContentsCreate()
+    {
+        $tutorId = session('user_id');
+        $classes = Classes::where('tutor_id', $tutorId)->where('status', 'active')->get();
+        $bootcamps = Bootcamp::where('tutor_id', $tutorId)->get();
+        
+        return view('tutor.video-contents.create', compact('classes', 'bootcamps'));
+    }
+    
+    public function videoContentsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'video_url' => 'required|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'duration' => 'nullable|integer|min:1',
+            'class_id' => 'nullable|exists:classes,id',
+            'bootcamp_id' => 'nullable|exists:bootcamps,id',
+            'order' => 'nullable|integer|min:0',
+            'status' => 'required|in:active,inactive'
+        ]);
+
+        // Ensure either class_id or bootcamp_id is provided
+        if (!$request->class_id && !$request->bootcamp_id) {
+            return back()->withErrors(['error' => 'Please select either a class or bootcamp.'])->withInput();
+        }
+
+        $data = $request->all();
+        $data['created_by'] = session('user_id');
+
+        // Handle thumbnail upload
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('video-thumbnails', 'public');
+            $data['thumbnail'] = $thumbnailPath;
+        }
+
+        VideoContent::create($data);
+
+        return redirect()->route('tutor.video-contents')->with('success', 'Video content created successfully.');
+    }
+    
+    public function videoContentsEdit($id)
+    {
+        $tutorId = session('user_id');
+        $video = VideoContent::where('created_by', $tutorId)->findOrFail($id);
+        $classes = Classes::where('tutor_id', $tutorId)->where('status', 'active')->get();
+        $bootcamps = Bootcamp::where('tutor_id', $tutorId)->get();
+        
+        return view('tutor.video-contents.edit', compact('video', 'classes', 'bootcamps'));
+    }
+    
+    public function videoContentsUpdate(Request $request, $id)
+    {
+        $tutorId = session('user_id');
+        $video = VideoContent::where('created_by', $tutorId)->findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'video_url' => 'required|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'duration' => 'nullable|integer|min:1',
+            'class_id' => 'nullable|exists:classes,id',
+            'bootcamp_id' => 'nullable|exists:bootcamps,id',
+            'order' => 'nullable|integer|min:0',
+            'status' => 'required|in:active,inactive'
+        ]);
+
+        // Ensure either class_id or bootcamp_id is provided
+        if (!$request->class_id && !$request->bootcamp_id) {
+            return back()->withErrors(['error' => 'Please select either a class or bootcamp.'])->withInput();
+        }
+
+        $data = $request->except(['thumbnail']);
+
+        // Handle thumbnail upload
+        if ($request->hasFile('thumbnail')) {
+            // Delete old thumbnail if exists
+            if ($video->thumbnail && Storage::disk('public')->exists($video->thumbnail)) {
+                Storage::disk('public')->delete($video->thumbnail);
+            }
+            
+            $thumbnailPath = $request->file('thumbnail')->store('video-thumbnails', 'public');
+            $data['thumbnail'] = $thumbnailPath;
+        }
+
+        $video->update($data);
+
+        return redirect()->route('tutor.video-contents')->with('success', 'Video content updated successfully.');
+    }
+    
+    public function videoContentsDestroy($id)
+    {
+        $tutorId = session('user_id');
+        $video = VideoContent::where('created_by', $tutorId)->findOrFail($id);
+        
+        // Delete thumbnail if exists
+        if ($video->thumbnail && Storage::disk('public')->exists($video->thumbnail)) {
+            Storage::disk('public')->delete($video->thumbnail);
+        }
+        
+        $video->delete();
+
+        return redirect()->route('tutor.video-contents')->with('success', 'Video content deleted successfully.');
     }
 }

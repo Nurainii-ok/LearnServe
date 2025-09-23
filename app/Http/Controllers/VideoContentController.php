@@ -28,7 +28,8 @@ class VideoContentController extends Controller
         
         $videos = $query->latest()->paginate(10);
         
-        return view('admin.video-contents.index', compact('videos'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
+        return view($viewPath, compact('videos'));
     }
 
     public function create()
@@ -49,7 +50,8 @@ class VideoContentController extends Controller
             $bootcamps = $bootcamps->where('tutor_id', $userId);
         }
         
-        return view('admin.video-contents.create', compact('classes', 'bootcamps'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.create' : 'tutor.video-contents.create';
+        return view($viewPath, compact('classes', 'bootcamps'));
     }
 
     public function store(Request $request)
@@ -61,25 +63,49 @@ class VideoContentController extends Controller
             return redirect()->route('auth')->with('error', 'Access denied.');
         }
 
-        $request->validate([
+        // Validate basic fields
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'video_url' => 'required|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'duration' => 'nullable|integer|min:1',
             'class_id' => 'nullable|exists:classes,id',
             'bootcamp_id' => 'nullable|exists:bootcamps,id',
             'order' => 'nullable|integer|min:0',
             'status' => 'required|in:active,inactive'
-        ]);
+        ];
+
+        // Add conditional validation for video source
+        if ($request->filled('video_url')) {
+            $rules['video_url'] = 'required|url';
+        } elseif ($request->hasFile('video_file')) {
+            $rules['video_file'] = 'required|file|mimes:mp4,webm,avi,mov,wmv|max:102400'; // 100MB max
+        } else {
+            return back()->withErrors(['error' => 'Please provide either a YouTube URL or upload a video file.'])->withInput();
+        }
+
+        $request->validate($rules);
 
         // Ensure either class_id or bootcamp_id is provided
         if (!$request->class_id && !$request->bootcamp_id) {
             return back()->withErrors(['error' => 'Please select either a class or bootcamp.'])->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->only(['title', 'description', 'duration', 'class_id', 'bootcamp_id', 'order', 'status']);
         $data['created_by'] = $userId;
+
+        // Handle video source
+        if ($request->filled('video_url')) {
+            // YouTube URL
+            $data['video_url'] = $request->video_url;
+            $data['video_type'] = 'youtube';
+        } elseif ($request->hasFile('video_file')) {
+            // Video file upload
+            $videoFile = $request->file('video_file');
+            $videoPath = $videoFile->store('video-uploads', 'public');
+            $data['video_url'] = $videoPath;
+            $data['video_type'] = 'upload';
+        }
 
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {
@@ -103,12 +129,13 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $videoContent->load(['class', 'bootcamp', 'creator']);
         
-        return view('admin.video-contents.show', compact('videoContent'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.show' : 'tutor.video-contents.show';
+        return view($viewPath, compact('videoContent'));
     }
 
     public function edit(VideoContent $videoContent)
@@ -122,7 +149,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $classes = Classes::where('status', 'active')->get();
@@ -134,7 +161,8 @@ class VideoContentController extends Controller
             $bootcamps = $bootcamps->where('tutor_id', $userId);
         }
         
-        return view('admin.video-contents.edit', compact('videoContent', 'classes', 'bootcamps'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.edit' : 'tutor.video-contents.edit';
+        return view($viewPath, compact('videoContent', 'classes', 'bootcamps'));
     }
 
     public function update(Request $request, VideoContent $videoContent)
@@ -148,7 +176,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $request->validate([
@@ -183,7 +211,8 @@ class VideoContentController extends Controller
 
         $videoContent->update($data);
 
-        return redirect()->route('admin.video-contents.index')->with('success', 'Video content updated successfully.');
+        $routeName = $userRole === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
+        return redirect()->route($routeName)->with('success', 'Video content updated successfully.');
     }
 
     public function destroy(VideoContent $videoContent)
@@ -197,7 +226,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         // Delete thumbnail if exists
