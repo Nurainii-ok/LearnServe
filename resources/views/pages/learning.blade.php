@@ -89,7 +89,7 @@
 
             <div class="row g-4">
                 @forelse($classes as $class)
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <a href="{{ route('detail_kursus', ['id' => $class->id]) }}" class="text-decoration-none">
                             <div class="card h-100 shadow-sm border-0 course-card">
                                 <img src="{{ $class->image ? asset($class->image) : asset('assets/Full Stack.jpg') }}" 

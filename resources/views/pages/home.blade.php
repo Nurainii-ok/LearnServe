@@ -82,8 +82,8 @@
           <div class="icon-box bg-soft-blue text-blue">
             <i class="bi bi-pen"></i>
           </div>
-          <h6 class="fw-semibold">Design & Development</h6>
-          <p class="small text-muted mb-0">250+ courses available</p>
+          <h6 class="fw-semibold">Desain & Pengembangan</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -112,8 +112,8 @@
           <div class="icon-box bg-soft-red text-red">
             <i class="bi bi-briefcase"></i>
           </div>
-          <h6 class="fw-semibold">Business & Consulting</h6>
-          <p class="small text-muted mb-0">170+ courses available</p>
+          <h6 class="fw-semibold">Bisnis & Konsultasi</h6>
+          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -122,8 +122,8 @@
           <div class="icon-box bg-soft-pink text-pink">
             <i class="bi bi-cash-coin"></i>
           </div>
-          <h6 class="fw-semibold">Finance Management</h6>
-          <p class="small text-muted mb-0">300+ courses available</p>
+          <h6 class="fw-semibold">Manajemen Keuangan</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -132,8 +132,8 @@
           <div class="icon-box bg-soft-green text-green">
             <i class="bi bi-person"></i>
           </div>
-          <h6 class="fw-semibold">Self Development</h6>
-          <p class="small text-muted mb-0">50+ courses available</p>
+          <h6 class="fw-semibold">Teknologi & IT</h6>
+          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@
             <img src="{{ asset('assets/img/illustrations/Financial Management.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
-            <span class="badge bg-light text-danger mb-2">Akutansi</span>
+            <span class="badge bg-light text-danger mb-2">Manajemen Keuangan</span>
             <h6 class="fw-semibold mb-3">Laporan Keuangan Dasar</h6>
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
