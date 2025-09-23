@@ -412,12 +412,8 @@ class AdminController extends Controller
         return view('admin.payments.index', compact('payments'));
     }
 
-    public function paymentsCreate()
-    {
-        $members = User::where('role', 'member')->get();
-        $classes = Classes::active()->get();
-        return view('admin.payments.create', compact('members', 'classes'));
-    }
+    // Payment creation is handled automatically by Midtrans webhook
+    // No manual payment creation needed
 
     public function paymentsStore(Request $request)
     {

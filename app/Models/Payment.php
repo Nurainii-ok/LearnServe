@@ -28,14 +28,31 @@ class Payment extends Model
         'status',
         'payment_date',
         'midtrans_paid_at',
-        'notes'
+        'notes',
+        // Midtrans automatic fields
+        'midtrans_transaction_id',
+        'midtrans_payment_type',
+        'midtrans_gross_amount',
+        'midtrans_transaction_time',
+        'midtrans_settlement_time',
+        'midtrans_signature_key',
+        'midtrans_fraud_status',
+        'midtrans_bank',
+        'midtrans_va_number',
+        'midtrans_biller_code',
+        'midtrans_bill_key',
+        'midtrans_raw_notification'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'payment_date' => 'datetime',
         'midtrans_paid_at' => 'datetime',
-        'midtrans_response' => 'array'
+        'midtrans_response' => 'array',
+        'midtrans_gross_amount' => 'decimal:2',
+        'midtrans_transaction_time' => 'datetime',
+        'midtrans_settlement_time' => 'datetime',
+        'midtrans_raw_notification' => 'array'
     ];
 
     // Relationships

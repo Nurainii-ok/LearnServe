@@ -41,7 +41,7 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/checkout/success', [PagesController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/form_pendaftaran', [PagesController::class, 'formPendaftaran'])->name('form_pendaftaran');
     Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
-    Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/{id?}', [PagesController::class, 'checkout'])->name('checkout');
     Route::get('/checkout-test', function() { return view('pages.checkout_test'); })->name('checkout.test');
 });
 
@@ -53,6 +53,8 @@ Route::prefix('payment')->name('payment.')->group(function () {
     Route::get('/success', [PaymentController::class, 'paymentSuccess'])->name('success');
     Route::get('/failed', [PaymentController::class, 'paymentFailed'])->name('failed');
     Route::get('/status/{orderId}', [PaymentController::class, 'checkStatus'])->name('status');
+    Route::post('/sync/{orderId}', [PaymentController::class, 'syncStatus'])->name('sync');
+    Route::post('/test-webhook', [PaymentController::class, 'testWebhook'])->name('test-webhook');
     Route::get('/test', [PaymentController::class, 'testMidtrans'])->name('test');
 });
 
@@ -201,6 +203,16 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::get('/account/edit', [TutorController::class, 'accountEdit'])->name('account.edit');
     Route::put('/account', [TutorController::class, 'accountUpdate'])->name('account.update');
     Route::put('/account/password', [TutorController::class, 'accountPasswordUpdate'])->name('account.password.update');
+});
 
-
+// E-Learning Routes (Member Access)
+Route::prefix('elearning')->name('elearning.')->group(function () {
+    Route::get('/', [ELearningController::class, 'index'])->name('index');
+    Route::get('/class/{classId}', [ELearningController::class, 'showClass'])->name('class');
+    Route::get('/bootcamp/{bootcampId}', [ELearningController::class, 'showBootcamp'])->name('bootcamp');
+    Route::get('/video/{videoId}', [ELearningController::class, 'watchVideo'])->name('video');
+    
+    // AJAX Routes for Progress Tracking
+    Route::post('/progress/update', [ELearningController::class, 'updateProgress'])->name('progress.update');
+    Route::post('/progress/complete', [ELearningController::class, 'markCompleted'])->name('progress.complete');
 });

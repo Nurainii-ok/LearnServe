@@ -28,7 +28,8 @@ class VideoContentController extends Controller
         
         $videos = $query->latest()->paginate(10);
         
-        return view('admin.video-contents.index', compact('videos'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
+        return view($viewPath, compact('videos'));
     }
 
     public function create()
@@ -49,7 +50,8 @@ class VideoContentController extends Controller
             $bootcamps = $bootcamps->where('tutor_id', $userId);
         }
         
-        return view('admin.video-contents.create', compact('classes', 'bootcamps'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.create' : 'tutor.video-contents.create';
+        return view($viewPath, compact('classes', 'bootcamps'));
     }
 
     public function store(Request $request)
@@ -103,12 +105,13 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $videoContent->load(['class', 'bootcamp', 'creator']);
         
-        return view('admin.video-contents.show', compact('videoContent'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.show' : 'tutor.video-contents.show';
+        return view($viewPath, compact('videoContent'));
     }
 
     public function edit(VideoContent $videoContent)
@@ -122,7 +125,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $classes = Classes::where('status', 'active')->get();
@@ -134,7 +137,8 @@ class VideoContentController extends Controller
             $bootcamps = $bootcamps->where('tutor_id', $userId);
         }
         
-        return view('admin.video-contents.edit', compact('videoContent', 'classes', 'bootcamps'));
+        $viewPath = $userRole === 'admin' ? 'admin.video-contents.edit' : 'tutor.video-contents.edit';
+        return view($viewPath, compact('videoContent', 'classes', 'bootcamps'));
     }
 
     public function update(Request $request, VideoContent $videoContent)
@@ -148,7 +152,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         $request->validate([
@@ -183,7 +187,8 @@ class VideoContentController extends Controller
 
         $videoContent->update($data);
 
-        return redirect()->route('admin.video-contents.index')->with('success', 'Video content updated successfully.');
+        $routeName = $userRole === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
+        return redirect()->route($routeName)->with('success', 'Video content updated successfully.');
     }
 
     public function destroy(VideoContent $videoContent)
@@ -197,7 +202,7 @@ class VideoContentController extends Controller
 
         // If tutor, check ownership
         if ($userRole === 'tutor' && $videoContent->created_by !== $userId) {
-            return redirect()->route('admin.video-contents.index')->with('error', 'Access denied.');
+            return redirect()->route('tutor.video-contents.index')->with('error', 'Access denied.');
         }
 
         // Delete thumbnail if exists

@@ -8,6 +8,8 @@
 
 @section('content')
 
+
+
 {{-- Hero Section --}}
 @if($class->price > 0)
 <div class="course-hero text-dark py-5" style="background-color: #d6baa361;">
@@ -109,11 +111,49 @@
               <p style="color:#944e25; font-weight:600;">Diskon {{ $class->discount }}%</p>
             @endif
 
-            <a href="{{ route('checkout', $class->id) }}" 
-               class="btn w-100 fw-bold mb-3" 
-               style="background-color:#944e25; color:white; border:none;">
-              <i class="fas fa-credit-card me-2"></i>Beli Sekarang
-            </a>
+            @php
+                $isEnrolled = false;
+                $hasValidPayment = false;
+                
+                if (session('user_id')) {
+                    // Check if user is enrolled
+                    $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                  ->where('class_id', $class->id)
+                                  ->where('type', 'class')
+                                  ->where('status', 'active')
+                                  ->exists();
+                    
+                    // Check if user has valid payment
+                    $hasValidPayment = \App\Models\Payment::where('user_id', session('user_id'))
+                                       ->where('class_id', $class->id)
+                                       ->where('status', 'settlement')
+                                       ->exists();
+                }
+            @endphp
+            
+            @if($isEnrolled && $hasValidPayment)
+                <a href="{{ route('elearning.class', $class->id) }}" 
+                   class="btn w-100 fw-bold mb-3" 
+                   style="background-color:#28a745; color:white; border:none;">
+                  <i class="fas fa-play-circle me-2"></i>Ikuti Classes
+                </a>
+            @elseif($hasValidPayment && !$isEnrolled)
+                <div class="alert alert-info text-center mb-3">
+                    <i class="fas fa-clock me-2"></i>
+                    <small>Enrollment sedang diproses. Silakan cek kembali dalam beberapa menit.</small>
+                </div>
+                <a href="{{ route('checkout', $class->id) }}" 
+                   class="btn w-100 fw-bold mb-3" 
+                   style="background-color:#944e25; color:white; border:none;">
+                  <i class="fas fa-credit-card me-2"></i>Beli Sekarang
+                </a>
+            @else
+                <a href="{{ route('checkout', $class->id) }}" 
+                   class="btn w-100 fw-bold mb-3" 
+                   style="background-color:#944e25; color:white; border:none;">
+                  <i class="fas fa-credit-card me-2"></i>Beli Sekarang
+                </a>
+            @endif
 
             <hr>
             <h6 class="fw-bold mb-3" style="color:#944e25;">Kursus ini mencakup:</h6>
