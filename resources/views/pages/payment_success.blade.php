@@ -78,7 +78,7 @@
                         @endif
                         
                         <a href="{{ route('home') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-home me-2"></i>Back to Home
+                            <i class="fas fa-home me-2"></i>kembali
                         </a>
                         
                         @if(session()->has('role'))

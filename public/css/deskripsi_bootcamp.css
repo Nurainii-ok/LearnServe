@@ -5,6 +5,35 @@
 }
 
 /* Hero */
+
+.hero-image-container {
+    width: 100%;
+    max-width: 450px;   /* batas maksimal */
+    height: 260px;      /* tinggi tetap */
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* biar proporsional */
+    border-radius: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-image-container {
+        max-width: 100%;
+        height: 200px; /* lebih kecil di HP */
+    }
+    .hero-content h1 {
+        font-size: 1.75rem;
+    }
+}
+
+
 .hero-section {
     background-color: #e6f7ff; /* biru muda segar */
 }

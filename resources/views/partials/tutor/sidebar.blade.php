@@ -1,3 +1,7 @@
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/tutor_sidebarHeader.css') }}">
+@endsection
+
 <div class="sidebar">
     <div class="sidebar-brand">
         <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" style="height:40px; margin-right:10px;">

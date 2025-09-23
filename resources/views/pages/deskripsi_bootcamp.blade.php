@@ -3,109 +3,154 @@
 @section('title', $bootcamp ? $bootcamp->title : 'Deskripsi Bootcamp')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/deskripsi_kelas.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/deskripsi_bootcamp.css') }}">
 @endpush
 
 @section('content')
 
 @if($bootcamp)
     {{-- Hero Section --}}
-    <section class="py-5 hero-section">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <!-- Gambar -->
-                <div class="col-md-6">
+{{-- Hero Section - Updated --}}
+<section class="py-5 hero-section">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <!-- Gambar dengan ukuran konsisten -->
+            <div class="col-md-6">
+                <div class="hero-image-container">
                     <img src="{{ $bootcamp->image ? asset($bootcamp->image) : asset('assets/Bootcamp.jpg') }}" 
                          alt="{{ $bootcamp->title }}" 
-                         class="img-fluid rounded-3 shadow-sm">
-                </div>
-
-                <!-- Konten -->
-                <div class="col-md-6">
-                    <h1 class="h3 mb-4">{{ $bootcamp->title }}</h1>
-
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <p class="fw-semibold mb-1 text-primary">
-                                {{ $bootcamp->title }}
-                            </p>
-                            @if($bootcamp->price > 0)
-                                <span class="text-primary small fw-bold">Rp {{ number_format($bootcamp->price, 0, ',', '.') }}</span>
-                            @else
-                                <span class="text-success small fw-bold">GRATIS!</span>
-                            @endif
-                            <p class="text-muted small mb-1">
-                                {{ $bootcamp->start_date->format('d M Y') }} – {{ $bootcamp->end_date->format('d M Y') }}
-                            </p>
-                            <p class="text-muted small mb-0">
-                                <i class="fas fa-clock me-1"></i> Durasi: {{ $bootcamp->duration }}
-                            </p>
-                            @if($bootcamp->tutor)
-                            <p class="text-muted small mb-0">
-                                <i class="fas fa-user me-1"></i> Tutor: {{ $bootcamp->tutor->name }}
-                            </p>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="d-flex gap-3 flex-wrap">
-                        @if(session('user_id'))
-                            @php
-                                $isEnrolled = false;
-                                if($bootcamp && session('user_id')) {
-                                    $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
-                                                  ->where('bootcamp_id', $bootcamp->id)
-                                                  ->where('type', 'bootcamp')
-                                                  ->exists();
-                                }
-                            @endphp
-                            
-                            @if($isEnrolled)
-                                <div class="alert alert-success w-100">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    Anda sudah terdaftar di bootcamp ini
-                                </div>
-                                <a href="{{ route('member.dashboard') }}" class="btn btn-success px-4">
-                                    <i class="fas fa-graduation-cap me-2"></i> Ke Dashboard Belajar
-                                </a>
-                            @else
-                                @if($bootcamp->price > 0)
-                                    {{-- Bootcamp berbayar - ke checkout --}}
-                                    <a href="{{ route('checkout') }}?bootcamp_id={{ $bootcamp->id }}" class="btn btn-warning px-4">
-                                        ⚡ Daftar Sekarang
-                                    </a>
-                                @else
-                                    {{-- Bootcamp gratis - langsung enrollment --}}
-                                    <form action="{{ route('enrollment.bootcamp', $bootcamp->id) }}" method="POST" class="w-100">
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning px-4">
-                                            ⚡ Daftar Sekarang (Gratis)
-                                        </button>
-                                    </form>
-                                @endif
-                            @endif
-                        @else
-                            <div class="alert alert-warning w-100">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Silakan <a href="{{ route('auth') }}" class="alert-link">login</a> untuk mendaftar bootcamp
-                            </div>
-                        @endif
-                    </div>
-
-                    <p class="mt-3 alumni-text">
-                        @if($bootcamp->capacity)
-                            Kapasitas: {{ $bootcamp->capacity }} peserta
-                            @if($bootcamp->enrolled)
-                                ({{ $bootcamp->enrolled }} terdaftar)
-                            @endif
-                        @else
-                            5.000+ Alumni Bootcamp Tiap Bulan
-                        @endif
-                    </p>
+                         class="img-fluid">
                 </div>
             </div>
+
+            <!-- Konten -->
+            <div class="col-md-6 hero-content">
+                <h1 class="mb-4">{{ $bootcamp->title }}</h1>
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <p class="text-primary fw-semibold mb-2">
+                            {{ $bootcamp->title }}
+                        </p>
+                        
+                        <!-- Pricing dengan styling yang lebih menarik -->
+                        @if($bootcamp->price > 0)
+                            <span class="price-tag">
+                                Rp {{ number_format($bootcamp->price, 0, ',', '.') }}
+                            </span>
+                        @else
+                            <span class="price-tag price-free">
+                                GRATIS!
+                            </span>
+                        @endif
+                        
+                        <!-- Meta Information dengan icon yang lebih terstruktur -->
+                        <div class="meta-info mt-3">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>{{ $bootcamp->start_date->format('d M Y') }} – {{ $bootcamp->end_date->format('d M Y') }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="meta-info">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Durasi: {{ $bootcamp->duration }}</span>
+                            </div>
+                            @if($bootcamp->tutor)
+                            <div class="meta-item">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Tutor: {{ $bootcamp->tutor->name }}</span>
+                            </div>
+                            @endif
+                        </div>
+
+                        @if($bootcamp->level)
+                        <div class="meta-info">
+                            <div class="meta-item">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Level: 
+                                    <span class="badge bg-{{ $bootcamp->level == 'beginner' ? 'success' : ($bootcamp->level == 'intermediate' ? 'warning' : 'danger') }}">
+                                        {{ ucfirst($bootcamp->level) }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($bootcamp->category)
+                        <div class="meta-info">
+                            <div class="meta-item">
+                                <i class="fas fa-tags"></i>
+                                <span>Kategori: <span class="badge bg-primary">{{ $bootcamp->category }}</span></span>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3 flex-wrap">
+                    @if(session('user_id'))
+                        @php
+                            $isEnrolled = false;
+                            if($bootcamp && session('user_id')) {
+                                $isEnrolled = \App\Models\Enrollment::where('user_id', session('user_id'))
+                                              ->where('bootcamp_id', $bootcamp->id)
+                                              ->where('type', 'bootcamp')
+                                              ->exists();
+                            }
+                        @endphp
+                        
+                        @if($isEnrolled)
+                            <div class="alert alert-success w-100">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Anda sudah terdaftar di bootcamp ini
+                            </div>
+                            <a href="{{ route('member.dashboard') }}" class="btn btn-success px-4">
+                                <i class="fas fa-graduation-cap me-2"></i> Ke Dashboard Belajar
+                            </a>
+                        @else
+                            @if($bootcamp->price > 0)
+                                {{-- Bootcamp berbayar - ke checkout --}}
+                                <a href="{{ route('checkout') }}?bootcamp_id={{ $bootcamp->id }}" class="btn btn-warning px-4">
+                                    <i class="fas fa-bolt me-2"></i> Daftar Sekarang
+                                </a>
+                            @else
+                                {{-- Bootcamp gratis - langsung enrollment --}}
+                                <form action="{{ route('enrollment.bootcamp', $bootcamp->id) }}" method="POST" class="w-100">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning px-4">
+                                        <i class="fas fa-bolt me-2"></i> Daftar Sekarang (Gratis)
+                                    </button>
+                                </form>
+                            @endif
+                        @endif
+                    @else
+                        <div class="alert alert-warning w-100">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Silakan <a href="{{ route('auth') }}" class="alert-link fw-semibold">login</a> untuk mendaftar bootcamp
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Alumni Info -->
+                <p class="alumni-text">
+                    @if($bootcamp->capacity)
+                        <i class="fas fa-users me-2"></i>
+                        Kapasitas: {{ $bootcamp->capacity }} peserta
+                        @if($bootcamp->enrolled)
+                            ({{ $bootcamp->enrolled }} terdaftar)
+                        @endif
+                    @else
+                        <i class="fas fa-star me-2"></i>
+                        5.000+ Alumni Bootcamp Tiap Bulan
+                    @endif
+                </p>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     {{-- Content Section --}}
     <section class="py-5">
@@ -396,7 +441,7 @@
                                     <div class="card shadow-sm h-100 text-center">
                                         <div class="card-body">
                                             <div class="mb-2">
-                                                <img src="{{ asset('assets/P1.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">
+                                                <!--<img src="{{ asset('assets/P1.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">
                                             </div>
                                             <p class="small text-muted">"Bootcamp yang sangat terstruktur dan praktis. Mentor sangat membantu dan materinya up-to-date dengan industri."</p>
                                             <span class="fw-semibold">Sarah Putri</span>
@@ -408,7 +453,7 @@
                                     <div class="card shadow-sm h-100 text-center">
                                         <div class="card-body">
                                             <div class="mb-2">
-                                                <img src="{{ asset('assets/P2.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">
+                                                <!--<img src="{{ asset('assets/P2.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">-->
                                             </div>
                                             <p class="small text-muted">"Dalam {{ $bootcamp->duration }}, saya berhasil career switch dari non-IT ke tech industry. Portfolio projects sangat membantu!"</p>
                                             <span class="fw-semibold">Ahmad Rizki</span>
@@ -420,7 +465,7 @@
                                     <div class="card shadow-sm h-100 text-center">
                                         <div class="card-body">
                                             <div class="mb-2">
-                                                <img src="{{ asset('assets/P3.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">
+                                               <!-- <img src="{{ asset('assets/P3.jpg') }}" alt="Alumni" class="rounded-circle" width="60" height="60">-->
                                             </div>
                                             <p class="small text-muted">"Job placement program membantu saya mendapat kerja di startup unicorn. Sangat recommended!"</p>
                                             <span class="fw-semibold">Maya Sari</span>

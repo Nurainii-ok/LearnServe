@@ -16,25 +16,17 @@
 }
 
 .course-hero h1 {
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .course-hero .lead {
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   font-weight: 400;
 }
 
 /* Cards */
 .card {
   border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
 }
 
 /* Sidebar Sticky */
@@ -45,15 +37,10 @@
 
 /* Learning Objectives */
 .list-unstyled li {
-  transition: all 0.2s ease;
   padding: 8px 0;
   border-radius: 6px;
   padding-left: 8px;
   margin-left: -8px;
-}
-
-.list-unstyled li:hover {
-  background-color: #f8f9fa;
 }
 
 /* Course Content Accordion */
@@ -67,12 +54,11 @@
 
 .accordion-button:not(.collapsed) {
   background-color: #e3f2fd !important;
-  box-shadow: none;
 }
 
 .accordion-button:focus {
-  box-shadow: none;
   border: 2px solid #2196f3;
+  box-shadow: none;
 }
 
 .accordion-body {
@@ -82,11 +68,6 @@
 
 .lesson-item {
   padding: 12px 20px;
-  transition: background-color 0.2s ease;
-}
-
-.lesson-item:hover {
-  background-color: #f0f0f0;
 }
 
 .lesson-item:last-child {
@@ -101,38 +82,61 @@
 }
 
 /* Buttons */
+/* Buttons */
 .btn-lg {
   padding: 12px 24px;
   font-size: 1.1rem;
   border-radius: 8px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  transition: all 0.3s ease;
+  border: none;
 }
 
+/* Primary Button */
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  background-color: #944e25; /* warna utama */
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  background-color: #7a3f1e; /* sedikit lebih gelap saat hover */
 }
 
+/* Success Button */
 .btn-success {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  border: none;
-  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+  background-color: #ecac57; /* warna keemasan */
+  color: #fff;
 }
 
 .btn-success:hover {
-  background: linear-gradient(135deg, #0e8478 0%, #32d96a 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
+  background-color: #d89743;
 }
+
+/* Outline Buttons */
+.btn-outline-primary, 
+.btn-outline-info, 
+.btn-outline-success, 
+.btn-outline-dark {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 2px solid #944e25;
+  color: #944e25;
+  background: transparent;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-info:hover,
+.btn-outline-success:hover,
+.btn-outline-dark:hover {
+  background-color: #944e25;
+  color: #fff;
+}
+
 
 /* Price Styling */
 .card-body h3 {
@@ -143,21 +147,14 @@
 
 /* Course Features */
 .course-features .d-flex {
-  transition: all 0.2s ease;
   padding: 8px 12px;
   border-radius: 6px;
   margin: 0 -12px;
 }
 
-.course-features .d-flex:hover {
-  background-color: #f8f9fa;
-  transform: translateX(5px);
-}
-
 /* Instructor Section */
 .instructor-card img {
   border: 4px solid #fff;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 /* Content Description */
@@ -207,38 +204,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
   font-size: 1.1rem;
-}
-
-.btn-outline-primary:hover {
-  background-color: #3b5998;
-  border-color: #3b5998;
-  transform: scale(1.1);
-}
-
-.btn-outline-info:hover {
-  background-color: #1da1f2;
-  border-color: #1da1f2;
-  transform: scale(1.1);
-}
-
-.btn-outline-success:hover {
-  background-color: #25d366;
-  border-color: #25d366;
-  transform: scale(1.1);
-}
-
-.btn-outline-dark:hover {
-  background-color: #343a40;
-  border-color: #343a40;
-  transform: scale(1.1);
 }
 
 /* Rating Stars */
 .text-warning {
   color: #ffc107 !important;
-  filter: drop-shadow(0 1px 2px rgba(255, 193, 7, 0.3));
 }
 
 /* Responsive Design */
@@ -287,34 +258,6 @@
     padding: 10px 20px;
     font-size: 1rem;
   }
-}
-
-/* Animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.card:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.card:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-.card:nth-child(4) {
-  animation-delay: 0.3s;
 }
 
 /* Scrollbar Styling */

@@ -16,7 +16,7 @@
         transition: all 0.3s ease;
     }
     .btn-action:hover {
-        background: #8c5a3d; /* lebih gelap sedikit saat hover */
+        background: #8c5a3d;
     }
 </style>
 @endsection
