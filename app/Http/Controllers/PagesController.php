@@ -92,7 +92,6 @@ class PagesController extends Controller
 
     public function detailKursus($id)
     {
-<<<<<<< HEAD
         // Get class details by ID if provided
         if (!$id) {
             return redirect()->route('learning')->with('error', 'ID kelas tidak ditemukan.');
@@ -107,13 +106,6 @@ class PagesController extends Controller
             return redirect()->route('learning')->with('error', 'Kelas tidak ditemukan atau sudah tidak tersedia.');
         }
         
-=======
-        // Ambil data berdasarkan id
-        $class = Classes::with(['tutor', 'payments', 'tasks'])
-            ->where('status', 'active')
-            ->findOrFail($id);
-
->>>>>>> e0ec30bcae333ffa259abdcc461d174a235a67c4
         return view('pages.detail_kursus', compact('class'));
     }
 
@@ -310,7 +302,6 @@ class PagesController extends Controller
         return view('pages.kelas', compact('classes', 'categories'));
     }
 
-<<<<<<< HEAD
     public function checkout(Request $request, $id = null)
     {
         $classId = $id ?: $request->input('class_id');
@@ -335,34 +326,29 @@ class PagesController extends Controller
             return redirect()->back()->with('error', 'Kursus atau bootcamp tidak ditemukan.');
         }
         
+        // Fallback: check if request has class_id or bootcamp_id
+        if (!$class && !$bootcamp) {
+            if ($request->filled('class_id')) {
+                $class = Classes::with('tutor')
+                    ->where('status', 'active')
+                    ->where('id', $request->class_id)
+                    ->first();
+            }
+            
+            if ($request->filled('bootcamp_id')) {
+                $bootcamp = Bootcamp::with('tutor')
+                    ->where('status', 'active')
+                    ->where('id', $request->bootcamp_id)
+                    ->first();
+            }
+        }
+        
+        if (!$class && !$bootcamp) {
+            return redirect()->route('home')
+                ->with('error', 'Data kursus atau bootcamp tidak ditemukan.');
+        }
+        
         return view('pages.checkout', compact('class', 'bootcamp'));
-=======
-    public function checkout(Request $request)
-{
-    $class = null;
-    $bootcamp = null;
-
-    if ($request->filled('class_id')) {
-        $class = Classes::with('tutor')
-            ->where('status', 'active')
-            ->where('id', $request->class_id)
-            ->first();
->>>>>>> e0ec30bcae333ffa259abdcc461d174a235a67c4
     }
-
-    if ($request->filled('bootcamp_id')) {
-        $bootcamp = Bootcamp::with('tutor')
-            ->where('status', 'active')
-            ->where('id', $request->bootcamp_id)
-            ->first();
-    }
-
-    if (!$class && !$bootcamp) {
-        return redirect()->route('home')
-            ->with('error', 'Data kursus atau bootcamp tidak ditemukan.');
-    }
-
-    return view('pages.checkout', compact('class', 'bootcamp'));
-}
 
 }
