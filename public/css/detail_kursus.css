@@ -1,18 +1,353 @@
+/* Course Hero Section */
 .course-hero {
-  background: #1c1d1f; /* gelap ala Udemy */
-  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="40%"><stop offset="0%" stop-color="%23fff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23fff" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+  pointer-events: none;
 }
 
 .course-hero h1 {
-  font-size: 2rem;
-  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .course-hero .lead {
-  font-size: 1.1rem;
-  color: #ddd;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  font-weight: 400;
 }
 
-.sidebar-card h3 {
-  color: #944e25; /* pakai warna brand kamu */
+/* Cards */
+.card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* Sidebar Sticky */
+.sticky-top {
+  position: sticky;
+  z-index: 10;
+}
+
+/* Learning Objectives */
+.list-unstyled li {
+  transition: all 0.2s ease;
+  padding: 8px 0;
+  border-radius: 6px;
+  padding-left: 8px;
+  margin-left: -8px;
+}
+
+.list-unstyled li:hover {
+  background-color: #f8f9fa;
+}
+
+/* Course Content Accordion */
+.accordion-button {
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+  border: none;
+  background-color: #f8f9fa !important;
+  color: #1c1d1f;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e3f2fd !important;
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  border: 2px solid #2196f3;
+}
+
+.accordion-body {
+  padding: 0;
+  background-color: #fafafa;
+}
+
+.lesson-item {
+  padding: 12px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.lesson-item:hover {
+  background-color: #f0f0f0;
+}
+
+.lesson-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+  border-radius: 6px;
+}
+
+/* Buttons */
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #0e8478 0%, #32d96a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
+}
+
+/* Price Styling */
+.card-body h3 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Course Features */
+.course-features .d-flex {
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 0 -12px;
+}
+
+.course-features .d-flex:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+}
+
+/* Instructor Section */
+.instructor-card img {
+  border: 4px solid #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Content Description */
+.content-description {
+  font-size: 1.05rem;
+  color: #4a5568;
+}
+
+.content-description h6 {
+  color: #2d3748;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.content-description ul {
+  padding-left: 1.2rem;
+}
+
+.content-description li {
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+}
+
+/* Alert Styling */
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: none;
+  border-left: 4px solid #28a745;
+  border-radius: 8px;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  border: none;
+  border-left: 4px solid #17a2b8;
+  border-radius: 8px;
+}
+
+/* Share Buttons */
+.btn-outline-primary, 
+.btn-outline-info, 
+.btn-outline-success, 
+.btn-outline-dark {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3b5998;
+  border-color: #3b5998;
+  transform: scale(1.1);
+}
+
+.btn-outline-info:hover {
+  background-color: #1da1f2;
+  border-color: #1da1f2;
+  transform: scale(1.1);
+}
+
+.btn-outline-success:hover {
+  background-color: #25d366;
+  border-color: #25d366;
+  transform: scale(1.1);
+}
+
+.btn-outline-dark:hover {
+  background-color: #343a40;
+  border-color: #343a40;
+  transform: scale(1.1);
+}
+
+/* Rating Stars */
+.text-warning {
+  color: #ffc107 !important;
+  filter: drop-shadow(0 1px 2px rgba(255, 193, 7, 0.3));
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+  .course-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .course-hero .lead {
+    font-size: 1.1rem;
+  }
+  
+  .sticky-top {
+    position: relative !important;
+    top: auto !important;
+  }
+  
+  .card-body h3 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .course-hero {
+    padding: 2rem 0 !important;
+  }
+  
+  .course-hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .course-hero .lead {
+    font-size: 1rem;
+  }
+  
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .btn-lg {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.card:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Loading Animation for Video */
+.ratio::before {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
