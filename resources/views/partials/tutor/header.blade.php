@@ -1,7 +1,3 @@
-@section('styles')
-  <link rel="stylesheet" href="{{ asset('css/Tutor/sidebar_header.css') }}">
-@endsection
-
 <header>
     <h1>
         <label for="nav-toggle">
@@ -14,6 +10,8 @@
             My Classes
         @elseif(request()->routeIs('tutor.tasks*'))
             Tasks & Assignments
+        @elseif(request()->routeIs('tutor.video-contents*'))
+            Video Contents
         @elseif(request()->routeIs('tutor.account*'))
             Profile & Settings
         @else
@@ -39,9 +37,9 @@
             @php
                 $currentUser = \App\Models\User::find(session('user_id'));
             @endphp
-            @if($currentUser && $currentUser->photo ?? false)
+            @if($currentUser && $currentUser->profile_photo)
                 <img 
-                    src="{{ asset('assets/tuktuk/' . $currentUser->photo) }}" 
+                    src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
                     width="40" 
                     height="40" 
                     alt="User Avatar"

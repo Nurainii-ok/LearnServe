@@ -91,8 +91,8 @@
           <div class="icon-box bg-soft-purple text-purple">
             <i class="bi bi-megaphone"></i>
           </div>
-          <h6 class="fw-semibold">Marketing & Communication</h6>
-          <p class="small text-muted mb-0">300+ courses available</p>
+          <h6 class="fw-semibold">Marketing dan Komunikasi</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -102,7 +102,7 @@
             <i class="bi bi-laptop"></i>
           </div>
           <h6 class="fw-semibold">Digital Marketing</h6>
-          <p class="small text-muted mb-0">150+ courses available</p>
+          <p class="small text-muted mb-0">300+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -239,11 +239,11 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
+            <img src="{{ asset('assets/img/illustrations/Financial Management.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
-            <span class="badge bg-light text-danger mb-2">Art</span>
-            <h6 class="fw-semibold mb-3">Advance Drawing</h6>
+            <span class="badge bg-light text-danger mb-2">Akutansi</span>
+            <h6 class="fw-semibold mb-3">Laporan Keuangan Dasar</h6>
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>

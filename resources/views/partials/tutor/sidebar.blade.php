@@ -1,7 +1,3 @@
-@section('styles')
-  <link rel="stylesheet" href="{{ asset('css/Tutor/sidebar_header.css') }}">
-@endsection
-
 <div class="sidebar">
     <div class="sidebar-brand">
         <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" style="height:40px; margin-right:10px;">
@@ -26,7 +22,7 @@
             <li>
                 <a href="{{ route('tutor.tasks') }}" class="{{ request()->routeIs('tutor.tasks*') ? 'active' : '' }}">
                     <span class="las la-clipboard-check"></span>
-                    <span>Tasks & Assignments</span>
+                    <span>Tasks</span>
                 </a>
             </li>
             <li>
@@ -38,7 +34,7 @@
             <li>
                 <a href="{{ route('tutor.account') }}" class="{{ request()->routeIs('tutor.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
-                    <span>Profile & Settings</span>
+                    <span>Account</span>
                 </a>
             </li>   
             <li>
@@ -46,7 +42,6 @@
                     <span class="las la-sign-out-alt"></span>
                     <span>Logout</span>
                 </a>
-
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                     @csrf
                 </form>
