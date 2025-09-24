@@ -46,6 +46,12 @@ class AdminController extends Controller
             ->latest()
             ->take(5)
             ->get();
+            
+        // Get recent task submissions
+        $recentTaskSubmissions = \App\Models\TaskSubmission::with(['task.class', 'student'])
+            ->latest()
+            ->take(10)
+            ->get();
         
         return view('admin.dashboard', compact(
             'totalMembers', 
@@ -59,7 +65,8 @@ class AdminController extends Controller
             'bootcampEnrollments',
             'recentEnrollments',
             'recentMembers', 
-            'recentTutors'
+            'recentTutors',
+            'recentTaskSubmissions'
         ));
     }
 
@@ -240,28 +247,62 @@ class AdminController extends Controller
 
     public function classesStore(Request $request)
     {
+        // Basic validation first
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
             'price' => 'required|numeric|min:0',
-            'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'status' => 'required|in:active,inactive,completed',
+            'category' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
-        $data = $request->all();
+        // Prepare data for create
+        $createData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'tutor_id' => $request->tutor_id,
+            'price' => $request->price,
+            'status' => $request->status ?? 'active',
+            'category' => $request->category,
+            'enrolled' => 0, // Default enrolled count
+        ];
         
-        // Handle image upload
+        // Handle image upload if present
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('storage/class_images'), $imageName);
-            $data['image'] = 'storage/class_images/' . $imageName;
+            
+            // Ensure upload directory exists
+            $uploadPath = public_path('storage/class_images');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            // Generate unique filename
+            $extension = $image->getClientOriginalExtension();
+            $filename = 'class_' . time() . '_' . uniqid() . '.' . $extension;
+            
+            // Move uploaded file
+            try {
+                $image->move($uploadPath, $filename);
+                $createData['image'] = 'storage/class_images/' . $filename;
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->withErrors(['image' => 'Failed to upload image: ' . $e->getMessage()])
+                    ->withInput();
+            }
         }
 
-        Classes::create($data);
-
-        return redirect()->route('admin.classes')->with('success', 'Class created successfully!');
+        // Create the class
+        try {
+            Classes::create($createData);
+            return redirect()->route('admin.classes')->with('success', 'Class created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Database error: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     public function classesEdit($id)
@@ -275,33 +316,66 @@ class AdminController extends Controller
     {
         $class = Classes::findOrFail($id);
         
+        // Basic validation first
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'tutor_id' => 'required|exists:users,id',
             'price' => 'required|numeric|min:0',
-            'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'status' => 'required|in:active,inactive,completed',
+            'category' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
-        $data = $request->all();
+        // Prepare data for update
+        $updateData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'tutor_id' => $request->tutor_id,
+            'price' => $request->price,
+            'status' => $request->status,
+            'category' => $request->category,
+        ];
         
-        // Handle image upload
+        // Handle image upload if present
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($class->image && file_exists(public_path($class->image))) {
-                unlink(public_path($class->image));
+            $image = $request->file('image');
+            
+            // Ensure upload directory exists
+            $uploadPath = public_path('storage/class_images');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
             }
             
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('storage/class_images'), $imageName);
-            $data['image'] = 'storage/class_images/' . $imageName;
+            // Delete old image if exists
+            if ($class->image && file_exists(public_path($class->image))) {
+                @unlink(public_path($class->image));
+            }
+            
+            // Generate unique filename
+            $extension = $image->getClientOriginalExtension();
+            $filename = 'class_' . time() . '_' . uniqid() . '.' . $extension;
+            
+            // Move uploaded file
+            try {
+                $image->move($uploadPath, $filename);
+                $updateData['image'] = 'storage/class_images/' . $filename;
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->withErrors(['image' => 'Failed to upload image: ' . $e->getMessage()])
+                    ->withInput();
+            }
         }
 
-        $class->update($data);
-
-        return redirect()->route('admin.classes')->with('success', 'Class updated successfully!');
+        // Update the class
+        try {
+            $class->update($updateData);
+            return redirect()->route('admin.classes')->with('success', 'Class updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Database error: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     public function classesDestroy($id)

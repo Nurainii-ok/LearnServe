@@ -41,7 +41,7 @@ class Task extends Model
 
     public function submissions()
     {
-        return $this->hasMany(TaskSubmission::class);
+        return $this->hasMany(TaskSubmission::class, 'task_id');
     }
 
     // Scopes

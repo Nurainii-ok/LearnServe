@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Classes;
 use App\Models\Task;
-use App\Models\TaskSubmission;
+use App\Models\Payment;
 use App\Models\Grade;
-use Illuminate\Support\Facades\Log;
 use App\Models\Enrollment;
 use App\Models\Bootcamp;
 use App\Models\VideoContent;
@@ -34,6 +33,7 @@ class TutorController extends Controller
         
         $totalClasses = Classes::where('tutor_id', $tutorId)->count();
         $totalBootcamps = Bootcamp::where('tutor_id', $tutorId)->count();
+        $activeClasses = Classes::where('tutor_id', $tutorId)->where('status', 'active')->count();
         
         $totalHours = ($totalClasses + $totalBootcamps) * 40; // Estimate 40 hours per course
         
@@ -50,33 +50,31 @@ class TutorController extends Controller
         // Get recent enrollments for tutor's courses
         $recentEnrollments = Enrollment::with(['user', 'class', 'bootcamp'])
             ->where(function($query) use ($tutorId) {
-                $query->whereHas('class', function($q) use ($tutorId) {
-                    $q->where('tutor_id', $tutorId);
-                })->orWhereHas('bootcamp', function($q) use ($tutorId) {
-                    $q->where('tutor_id', $tutorId);
+                $query->whereHas('class', function($subQ) use ($tutorId) {
+                    $subQ->where('tutor_id', $tutorId);
+                })->orWhereHas('bootcamp', function($subQ) use ($tutorId) {
+                    $subQ->where('tutor_id', $tutorId);
                 });
-            })
+            })->where('status', 'active')
             ->latest()
-            ->take(10)
+            ->take(5)
             ->get();
-        
-        // Get recent classes with enrollment count
+
+        // Get recent classes for dashboard display
         $recentClasses = Classes::where('tutor_id', $tutorId)
             ->where('status', 'active')
-            ->withCount(['enrollments' => function($query) {
-                $query->where('status', 'active');
-            }])
             ->latest()
             ->take(5)
             ->get()
             ->map(function($class) {
                 return [
-                    'name' => $class->title,
-                    'students' => $class->enrollments_count,
-                    'next_session' => now()->addDays(rand(1, 7))->format('Y-m-d H:i:s'), // Generate random future date
+                    'name' => $class->title, // Changed from 'title' to 'name' to match view
+                    'next_session' => $class->schedule ?? 'Self-paced learning',
+                    'students' => $class->payments()->where('status', 'completed')->count()
                 ];
             });
-        
+
+        // Get recent students for dashboard display
         $recentStudents = User::whereHas('enrollments', function($query) use ($tutorId) {
             $query->where(function($q) use ($tutorId) {
                 $q->whereHas('class', function($subQ) use ($tutorId) {
@@ -92,12 +90,13 @@ class TutorController extends Controller
         
         return view('tutor.dashboard', compact(
             'totalStudents', 
-            'totalClasses',
+            'totalClasses', 
             'totalBootcamps',
+            'activeClasses', 
             'totalHours', 
             'monthlyEarnings', 
-            'recentClasses',
             'recentEnrollments',
+            'recentClasses',
             'recentStudents'
         ));
     }
@@ -125,6 +124,8 @@ class TutorController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'capacity' => 'required|integer|min:1',
+            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
         ]);
 
@@ -150,6 +151,8 @@ class TutorController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'capacity' => 'required|integer|min:1',
+            'schedule' => 'nullable|string',
             'category' => 'nullable|string',
             'status' => 'required|in:active,inactive,completed'
         ]);
@@ -171,15 +174,33 @@ class TutorController extends Controller
     public function tasks()
     {
         $tutorId = session('user_id');
-        $tasks = Task::with(['class', 'submissions.user'])
-            ->where('assigned_by', $tutorId)
-            ->orWhereHas('class', function($query) use ($tutorId) {
-                $query->where('tutor_id', $tutorId);
+        
+        // Get tasks with submissions count - Fixed query
+        $tasks = Task::with(['class', 'submissions' => function($query) {
+                $query->with('student');
+            }])
+            ->where(function($query) use ($tutorId) {
+                $query->where('assigned_by', $tutorId)
+                    ->orWhereHas('class', function($subQuery) use ($tutorId) {
+                        $subQuery->where('tutor_id', $tutorId);
+                    });
             })
             ->latest()
-            ->get(); // Changed to get() to load all tasks with submissions
+            ->paginate(10);
         
-        return view('tutor.tasks', compact('tasks'));
+        // Get recent submissions for tutor's tasks
+        $recentSubmissions = \App\Models\TaskSubmission::with(['task.class', 'student'])
+            ->whereHas('task', function($query) use ($tutorId) {
+                $query->where('assigned_by', $tutorId)
+                    ->orWhereHas('class', function($subQuery) use ($tutorId) {
+                        $subQuery->where('tutor_id', $tutorId);
+                    });
+            })
+            ->latest()
+            ->take(10)
+            ->get();
+        
+        return view('tutor.tasks.index', compact('tasks', 'recentSubmissions'));
     }
     
     public function tasksCreate()
@@ -302,34 +323,35 @@ class TutorController extends Controller
 
         return redirect()->route('tutor.tasks')->with('success', 'Task deleted successfully!');
     }
-
-    public function gradeSubmission(Request $request, $submissionId)
+    
+    public function getTaskSubmissions($taskId)
     {
         $tutorId = session('user_id');
         
-        // Find the submission
-        $submission = TaskSubmission::with(['task.class', 'user'])->findOrFail($submissionId);
-        
-        // Check if tutor owns this task/class
-        if ($submission->task->assigned_by !== $tutorId && $submission->task->class->tutor_id !== $tutorId) {
-            return back()->withErrors(['error' => 'You are not authorized to grade this submission.']);
+        // Verify that this task belongs to the tutor
+        $task = Task::where('id', $taskId)
+            ->where(function($query) use ($tutorId) {
+                $query->where('assigned_by', $tutorId)
+                    ->orWhereHas('class', function($subQuery) use ($tutorId) {
+                        $subQuery->where('tutor_id', $tutorId);
+                    });
+            })
+            ->first();
+            
+        if (!$task) {
+            return response()->json(['error' => 'Task not found or access denied'], 404);
         }
         
-        // Validate input
-        $request->validate([
-            'grade' => 'required|integer|min:0|max:100',
-            'feedback' => 'nullable|string|max:1000',
+        // Get submissions for this task
+        $submissions = \App\Models\TaskSubmission::with(['student'])
+            ->where('task_id', $taskId)
+            ->latest()
+            ->get();
+            
+        return response()->json([
+            'task' => $task,
+            'submissions' => $submissions
         ]);
-        
-        // Update submission with grade
-        $submission->update([
-            'grade' => $request->grade,
-            'feedback' => $request->feedback,
-            'graded_at' => now(),
-            'graded_by' => $tutorId,
-        ]);
-        
-        return back()->with('success', 'Assignment graded successfully!');
     }
     
     // Grades CRUD for Tutors
@@ -710,5 +732,72 @@ class TutorController extends Controller
         $video->delete();
 
         return redirect()->route('tutor.video-contents')->with('success', 'Video content deleted successfully.');
+    }
+
+    // Bootcamp CRUD for Tutors
+    public function bootcamps()
+    {
+        $tutorId = session('user_id');
+        $bootcamps = Bootcamp::where('tutor_id', $tutorId)->withCount('payments')->get();
+        return view('tutor.bootcamps.index', compact('bootcamps'));
+    }
+    
+    public function bootcampsCreate()
+    {
+        return view('tutor.bootcamps.create');
+    }
+    
+    public function bootcampsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'capacity' => 'required|integer|min:1',
+            'duration' => 'required|integer|min:1',
+            'schedule' => 'nullable|string',
+            'category' => 'nullable|string',
+        ]);
+
+        Bootcamp::create(array_merge($request->all(), [
+            'tutor_id' => session('user_id'),
+            'status' => 'active'
+        ]));
+
+        return redirect()->route('tutor.bootcamps')->with('success', 'Bootcamp created successfully!');
+    }
+    
+    public function bootcampsEdit($id)
+    {
+        $bootcamp = Bootcamp::where('tutor_id', session('user_id'))->findOrFail($id);
+        return view('tutor.bootcamps.edit', compact('bootcamp'));
+    }
+    
+    public function bootcampsUpdate(Request $request, $id)
+    {
+        $bootcamp = Bootcamp::where('tutor_id', session('user_id'))->findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'capacity' => 'required|integer|min:1',
+            'duration' => 'required|integer|min:1',
+            'schedule' => 'nullable|string',
+            'category' => 'nullable|string',
+            'status' => 'required|in:active,inactive,completed'
+        ]);
+
+        $bootcamp->update($request->all());
+
+        return redirect()->route('tutor.bootcamps')->with('success', 'Bootcamp updated successfully!');
+    }
+    
+    public function bootcampsDestroy($id)
+    {
+        $bootcamp = Bootcamp::where('tutor_id', session('user_id'))->findOrFail($id);
+        $bootcamp->delete();
+
+        return redirect()->route('tutor.bootcamps')->with('success', 'Bootcamp deleted successfully!');
     }
 }

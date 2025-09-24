@@ -34,13 +34,13 @@
           <li class="nav-item">
             <a class="nav-link fw-semibold {{ request()->routeIs('home') ? 'active' : 'text-white' }}" 
               href="{{ route('home') }}">
-              Home
+              Beranda
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link fw-semibold {{ request()->routeIs('learning') ? 'active' : 'text-white' }}" 
               href="{{ route('learning') }}">
-              E-Learning
+              Kelas
             </a>
           </li>
           <li class="nav-item">

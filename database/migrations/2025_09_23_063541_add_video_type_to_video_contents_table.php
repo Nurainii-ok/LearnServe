@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('video_contents', function (Blueprint $table) {
-            $table->string('video_type')->nullable()->after('video_url'); // 'upload' or 'youtube'
+            //
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('video_contents', function (Blueprint $table) {
-            $table->dropColumn('video_type');
+            //
         });
     }
 };

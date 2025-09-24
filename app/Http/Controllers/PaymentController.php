@@ -285,7 +285,7 @@ class PaymentController extends Controller
             Log::error('Validation error in payment creation', ['errors' => $e->errors()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed: ' . implode(', ', array_flatten($e->errors())),
+                'message' => 'Validation failed: ' . implode(', ', \Illuminate\Support\Arr::flatten($e->errors())),
                 'debug' => config('app.debug') ? $e->errors() : null
             ], 422);
         } catch (\Exception $e) {
@@ -437,6 +437,7 @@ class PaymentController extends Controller
             Log::error('Notification data: ' . json_encode($request->all()));
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
+        
     }
     
     /**
@@ -487,18 +488,34 @@ class PaymentController extends Controller
     public function paymentSuccess(Request $request)
     {
         $orderId = $request->query('order_id');
-        $payment = Payment::where('transaction_id', $orderId)->with(['class', 'bootcamp'])->first();
+        $payment = Payment::where('transaction_id', $orderId)
+            ->with(['class', 'bootcamp'])
+            ->first();
 
         if (!$payment) {
             return redirect()->route('home')->with('error', 'Payment not found');
         }
 
-        // Ensure auto-enrollment is processed if payment is completed
-        if ($payment->status === 'completed') {
-            $this->autoEnrollUser($payment);
-            
-            // Refresh payment to get updated relationships
-            $payment = $payment->fresh(['class', 'bootcamp']);
+        try {
+            // Ambil status terbaru dari Midtrans (biar nggak hanya bergantung DB)
+            $midtransStatus = Transaction::status($orderId);
+
+            // Sync ke DB
+            $this->syncPaymentStatus($payment, $midtransStatus);
+
+            // Pastikan enrollment dibuat kalau pembayaran sukses/settlement
+            if (in_array($payment->status, ['success', 'settlement', 'completed'])) {
+                $this->autoEnrollUser($payment);
+
+                // Refresh relationship biar data terbaru
+                $payment->refresh()->load(['class', 'bootcamp']);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Payment success sync failed', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage()
+            ]);
         }
 
         return view('pages.payment_success', compact('payment'));
@@ -633,63 +650,63 @@ class PaymentController extends Controller
     /**
      * Sync payment status with Midtrans data
      */
-    private function syncPaymentStatus($payment, $midtransStatus)
+    private function syncPaymentStatus($payment, $midtransResponse)
     {
+        $transactionStatus = $midtransResponse->transaction_status;
+        $fraudStatus = $midtransResponse->fraud_status ?? 'accept';
+
         $updateData = [
-            'midtrans_transaction_id' => $midtransStatus->transaction_id ?? null,
-            'midtrans_payment_type' => $midtransStatus->payment_type ?? null,
-            'midtrans_gross_amount' => $midtransStatus->gross_amount ?? null,
-            'midtrans_transaction_time' => $midtransStatus->transaction_time ?? null,
-            'midtrans_settlement_time' => $midtransStatus->settlement_time ?? null,
-            'midtrans_fraud_status' => $midtransStatus->fraud_status ?? null,
-            'midtrans_signature_key' => $midtransStatus->signature_key ?? null,
+            'midtrans_transaction_id' => $midtransResponse->transaction_id ?? null,
+            'midtrans_payment_type' => $midtransResponse->payment_type ?? null,
+            'midtrans_gross_amount' => $midtransResponse->gross_amount ?? null,
+            'midtrans_transaction_time' => $midtransResponse->transaction_time ?? null,
+            'midtrans_settlement_time' => $midtransResponse->settlement_time ?? null,
+            'midtrans_fraud_status' => $fraudStatus,
+            'midtrans_signature_key' => $midtransResponse->signature_key ?? null,
         ];
-        
-        $transactionStatus = $midtransStatus->transaction_status;
-        $fraudStatus = $midtransStatus->fraud_status ?? 'accept';
-        
-        // Update status based on Midtrans status
+
         if ($transactionStatus == 'capture') {
             if ($fraudStatus == 'challenge') {
                 $updateData['status'] = 'pending';
                 $updateData['notes'] = 'Transaction is challenged by FDS';
-            } else if ($fraudStatus == 'accept') {
+            } else {
                 $updateData['status'] = 'completed';
-                $updateData['payment_date'] = $midtransStatus->settlement_time ? 
-                    date('Y-m-d H:i:s', strtotime($midtransStatus->settlement_time)) : now();
+                $updateData['payment_date'] = $midtransResponse->settlement_time
+                    ? date('Y-m-d H:i:s', strtotime($midtransResponse->settlement_time))
+                    : now();
                 $updateData['notes'] = 'Payment completed - synced from Midtrans';
-                
-                // Auto-enroll user
+
                 if ($payment->status !== 'completed') {
                     $this->autoEnrollUser($payment);
                 }
             }
-        } else if ($transactionStatus == 'settlement') {
+        } elseif ($transactionStatus == 'settlement') {
             $updateData['status'] = 'completed';
-            $updateData['payment_date'] = $midtransStatus->settlement_time ? 
-                date('Y-m-d H:i:s', strtotime($midtransStatus->settlement_time)) : now();
+            $updateData['payment_date'] = $midtransResponse->settlement_time
+                ? date('Y-m-d H:i:s', strtotime($midtransResponse->settlement_time))
+                : now();
             $updateData['notes'] = 'Payment settled - synced from Midtrans';
-            
-            // Auto-enroll user
+
             if ($payment->status !== 'completed') {
                 $this->autoEnrollUser($payment);
             }
-        } else if ($transactionStatus == 'pending') {
+        } elseif ($transactionStatus == 'pending') {
             $updateData['status'] = 'pending';
             $updateData['notes'] = 'Waiting for payment - synced from Midtrans';
-        } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
+        } elseif (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
             $updateData['status'] = 'failed';
             $updateData['notes'] = 'Payment ' . $transactionStatus . ' - synced from Midtrans';
         }
-        
+
         $payment->update($updateData);
-        
+
         Log::info('Payment synced successfully', [
             'order_id' => $payment->transaction_id,
             'new_status' => $updateData['status'],
             'midtrans_status' => $transactionStatus
         ]);
     }
+
 
     /**
      * Test webhook notification manually

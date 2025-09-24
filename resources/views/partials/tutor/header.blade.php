@@ -1,3 +1,7 @@
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/tutor_sidebarHeader.css') }}">
+@endsection
+
 <header>
     <h1>
         <label for="nav-toggle">
@@ -8,6 +12,8 @@
             Tutor Dashboard
         @elseif(request()->routeIs('tutor.classes*'))
             My Classes
+        @elseif(request()->routeIs('tutor.bootcamps*'))
+            My Bootcamps
         @elseif(request()->routeIs('tutor.tasks*'))
             Tasks & Assignments
         @elseif(request()->routeIs('tutor.video-contents*'))
@@ -38,9 +44,9 @@
             @php
                 $currentUser = \App\Models\User::find(session('user_id'));
             @endphp
-            @if($currentUser && $currentUser->photo ?? false)
+            @if($currentUser && $currentUser->profile_photo)
                 <img 
-                    src="{{ asset('assets/tuktuk/' . $currentUser->photo) }}" 
+                    src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
                     width="40" 
                     height="40" 
                     alt="User Avatar"
@@ -89,18 +95,12 @@
 </header>
 
 <style>
-/* CSS Variables untuk konsistensi */
+/* CSS Variables */
 :root {
     --primary-gold: #ecac57;
     --primary-brown: #944e25;
-    --light-cream: #f3efec;
-    --deep-brown: #6b3419;
-    --soft-gold: #f4d084;
-    --text-primary: #2c2c2c;
-    --text-secondary: #666666;
-    --background-light: #f8f8f8;
     --white: #ffffff;
-    --light-gray: #e5e5e5;
+    --text-primary: #2c2c2c;
     --border-color: #e0e0e0;
 }
 
@@ -108,19 +108,16 @@
 header {
     background: var(--white);
     display: flex;
-    justify-content: flex-start; /* Changed from space-between to flex-start */
+    justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 2rem;
+    padding: 1rem 2rem;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     position: sticky;
     top: 0;
-    z-index: 99;
+    z-index: 100;
     border-bottom: 1px solid var(--border-color);
-    width: calc(100vw - 280px); /* Full viewport width minus sidebar */
-    margin-left: -280px; /* Offset untuk sidebar width */
-    padding-left: calc(35px + 0.5rem); /* Minimal padding - sangat mepet ke sidebar */
-    padding-right: 2rem;
-    left: 280px; /* Position dari kanan sidebar */
+    width: 100%;
+    height: 80px; /* Fixed height for consistent alignment */
 }
 
 header h1 {
@@ -130,7 +127,6 @@ header h1 {
     font-weight: 600;
     font-size: 1.1rem;
     margin: 0;
-    margin-right: auto; /* Push other elements to the right */
 }
 
 header h1 label {
@@ -149,13 +145,6 @@ header h1 label span {
     header h1 label {
         display: block;
     }
-    
-    header {
-        width: 100vw;
-        margin-left: 0;
-        padding-left: 0.5rem; /* Consistent dengan desktop spacing */
-        left: 0;
-    }
 }
 
 /* Ensure proper spacing for content */
@@ -170,69 +159,70 @@ header h1 label span {
     margin-left: 0 !important;
 }
 
-/* Override sidebar z-index to be above header */
-.sidebar {
-    z-index: 101 !important;
+/* Header right section - proper alignment */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; /* Increased gap for better spacing */
+    height: 100%;
 }
 
 /* Search wrapper styling */
 .search-wrapper {
-    border: 1px solid var(--light-gray);
-    border-radius: 12px;
-    height: 45px;
     display: flex;
     align-items: center;
-    overflow: hidden;
-    width: 280px; /* Fixed width instead of flex */
-    background: var(--background-light);
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 300px; /* Fixed width instead of min-width */
+    height: 40px;
 }
 
 .search-wrapper span {
-    display: inline-block;
-    padding: 0 1rem;
-    font-size: 1.2rem;
-    color: var(--text-secondary);
+    color: #6c757d;
+    margin-right: 0.5rem;
+    font-size: 1rem;
 }
 
 .search-wrapper input {
     border: none;
-    outline: none;
     background: transparent;
-    height: 100%;
-    padding: 0 1rem 0 0;
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    width: 100%;
+    outline: none;
+    flex: 1;
+    font-size: 0.875rem;
+    color: #495057;
 }
 
-/* Header right section - group search, back button, and user info */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 5.2rem;
+.search-wrapper input::placeholder {
+    color: #6c757d;
 }
 
 /* Back to website button */
 .back-to-website {
-    margin-right: 0; /* Remove margin since we use gap in parent */
+    display: flex;
+    align-items: center;
 }
 
 .btn-back-to-website {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--primary-gold);
+    padding: 0.5rem 1.25rem; /* Slightly wider padding */
+    background: #ecac57;
     color: white;
     border-radius: 8px;
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.3s ease;
+    height: 40px;
+    white-space: nowrap;
+    min-width: 140px; /* Minimum width for consistency */
 }
 
 .btn-back-to-website:hover {
-    background: var(--primary-brown);
+    background: #944e25;
     color: white;
     text-decoration: none;
     transform: translateY(-1px);
@@ -243,27 +233,28 @@ header h1 label span {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    height: 40px;
+    min-width: 120px; /* Minimum width for user section */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .user-info h4 {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #495057;
+    line-height: 1.2;
 }
 
 .user-info small {
-    color: var(--text-secondary);
+    color: #6c757d;
     font-size: 0.75rem;
-}
-
-/* Content wrapper adjustments */
-.content-wrapper {
-    padding-top: 0 !important;
-}
-
-.container-xxl.flex-grow-1.container-p-y {
-    padding-top: 1.5rem !important;
+    line-height: 1;
 }
 
 /* Responsive adjustments */
@@ -280,18 +271,16 @@ header h1 label span {
         display: none;
     }
     
-    header {
-        padding: 1rem 1.5rem;
+    .header-right {
+        gap: 0.5rem;
     }
 }
 
 @media only screen and (max-width: 480px) {
-    header {
-        padding: 0.75rem 1rem;
-    }
-    
-    header h1 {
-        font-size: 1rem;
+    .btn-back-to-website {
+        padding: 0.5rem;
+        min-width: 40px;
+        justify-content: center;
     }
 }
 </style>

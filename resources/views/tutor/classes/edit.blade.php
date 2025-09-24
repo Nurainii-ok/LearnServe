@@ -23,18 +23,6 @@
     padding-top: 1rem;
 }
 
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
-
 .form-container {
     background: white;
     border-radius: 12px;
@@ -256,7 +244,15 @@ textarea.form-control {
             <div class="form-row">
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <input type="text" id="category" name="category" class="form-control" value="{{ old('category', $class->category) }}" placeholder="e.g., Web Development, Programming">
+                    <select id="category" name="category" class="form-control">
+                        <option value="">-- Select Category --</option>
+                        <option value="Design & Development" {{ old('category', $class->category) == 'Design & Development' ? 'selected' : '' }}>Design & Development</option>
+                        <option value="Marketing & Communication" {{ old('category', $class->category) == 'Marketing & Communication' ? 'selected' : '' }}>Marketing & Communication</option>
+                        <option value="Digital Marketing" {{ old('category', $class->category) == 'Digital Marketing' ? 'selected' : '' }}>Digital Marketing</option>
+                        <option value="Business & Consulting" {{ old('category', $class->category) == 'Business & Consulting' ? 'selected' : '' }}>Business & Consulting</option>
+                        <option value="Finance Management" {{ old('category', $class->category) == 'Finance Management' ? 'selected' : '' }}>Finance Management</option>
+                        <option value="Self Development" {{ old('category', $class->category) == 'Self Development' ? 'selected' : '' }}>Self Development</option>
+                    </select>
                     @error('category')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
@@ -281,6 +277,18 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
+                    <label for="schedule">Schedule</label>
+                    <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule', $class->schedule) }}" placeholder="e.g., Mon,Wed,Fri 10:00-12:00">
+                    @error('schedule')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Date fields removed as requested -->
+
+            <div class="form-row">
+                <div class="form-group">
                     <label for="status">Status *</label>
                     <select id="status" name="status" class="form-control" required>
                         <option value="active" {{ old('status', $class->status) == 'active' ? 'selected' : '' }}>Active</option>
@@ -290,6 +298,10 @@ textarea.form-control {
                     @error('status')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
+                </div>
+
+                <div class="form-group">
+                    <!-- Empty space for layout balance -->
                 </div>
             </div>
 

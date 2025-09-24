@@ -37,6 +37,11 @@ class TaskSubmission extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function gradedBy()
     {
         return $this->belongsTo(User::class, 'graded_by');

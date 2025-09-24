@@ -6,16 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('video_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('video_content_id')->constrained()->onDelete('cascade');
-            $table->foreignId('class_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('class_id'); 
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
+            
             $table->integer('watch_time')->default(0); // in seconds
             $table->integer('total_duration')->default(0); // in seconds
             $table->decimal('progress_percentage', 5, 2)->default(0); // 0.00 to 100.00
@@ -28,9 +27,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('video_progress');

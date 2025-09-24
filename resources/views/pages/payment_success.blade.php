@@ -78,21 +78,21 @@
                         @endif
                         
                         <a href="{{ route('home') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-home me-2"></i>Back to Home
+                            <i class="fas fa-home me-2"></i>kembali
                         </a>
                         
                         @if(session()->has('role'))
                             @if(session('role') === 'admin')
                                 <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                                    <i class="fas fa-tachometer-alt me-2"></i>Masuk ke Dashboard
                                 </a>
                             @elseif(session('role') === 'tutor')
                                 <a href="{{ route('tutor.dashboard') }}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                                    <i class="fas fa-tachometer-alt me-2"></i>Masuk ke Dashboard
                                 </a>
                             @elseif(session('role') === 'member')
                                 <a href="{{ route('member.dashboard') }}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-tachometer-alt me-2"></i>My Dashboard
+                                    <i class="fas fa-tachometer-alt me-2"></i>Masuk ke profil
                                 </a>
                             @endif
                         @endif

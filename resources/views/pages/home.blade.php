@@ -31,38 +31,39 @@
     <!-- Item 1 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/3b82f6/books.png" alt="courses" loading="lazy">
+        <i class="bi bi-journal-bookmark-fill fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>10k+</h2>
-        <p>Total Courses</p>
+        <h2 style="color:#944E25;">100+</h2>
+        <p>Total Kelas</p>
       </div>
     </div>
 
     <!-- Item 2 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/f97316/classroom.png" alt="mentors" loading="lazy">
+        <i class="bi bi-person-workspace fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>500+</h2>
-        <p>Expert Mentors</p>
+        <h2 style="color:#944E25;">50+</h2>
+        <p>Tutor Berpengalaman</p>
       </div>
     </div>
 
     <!-- Item 3 -->
     <div class="stat-item">
       <div class="stat-icon">
-        <img src="https://img.icons8.com/ios-filled/50/8b5cf6/conference.png" alt="students" loading="lazy">
+        <i class="bi bi-people-fill fs-2" style="color:ECAC57;"></i>
       </div>
       <div class="stat-text">
-        <h2>300k+</h2>
-        <p>Students Globally</p>
+        <h2 style="color:#944E25;">500+</h2>
+        <p>Member</p>
       </div>
     </div>
 
   </div>
 </section>
+
 
 <!--<div class="container-fluid px-4">-->
 <!-- Explore Courses by Category -->
@@ -81,8 +82,8 @@
           <div class="icon-box bg-soft-blue text-blue">
             <i class="bi bi-pen"></i>
           </div>
-          <h6 class="fw-semibold">Design & Development</h6>
-          <p class="small text-muted mb-0">250+ courses available</p>
+          <h6 class="fw-semibold">Desain & Pengembangan</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -91,8 +92,8 @@
           <div class="icon-box bg-soft-purple text-purple">
             <i class="bi bi-megaphone"></i>
           </div>
-          <h6 class="fw-semibold">Marketing & Communication</h6>
-          <p class="small text-muted mb-0">300+ courses available</p>
+          <h6 class="fw-semibold">Marketing dan Komunikasi</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -102,7 +103,7 @@
             <i class="bi bi-laptop"></i>
           </div>
           <h6 class="fw-semibold">Digital Marketing</h6>
-          <p class="small text-muted mb-0">150+ courses available</p>
+          <p class="small text-muted mb-0">300+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -111,8 +112,8 @@
           <div class="icon-box bg-soft-red text-red">
             <i class="bi bi-briefcase"></i>
           </div>
-          <h6 class="fw-semibold">Business & Consulting</h6>
-          <p class="small text-muted mb-0">170+ courses available</p>
+          <h6 class="fw-semibold">Bisnis & Konsultasi</h6>
+          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -121,8 +122,8 @@
           <div class="icon-box bg-soft-pink text-pink">
             <i class="bi bi-cash-coin"></i>
           </div>
-          <h6 class="fw-semibold">Finance Management</h6>
-          <p class="small text-muted mb-0">300+ courses available</p>
+          <h6 class="fw-semibold">Manajemen Keuangan</h6>
+          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
         </div>
       </div>
 
@@ -131,8 +132,8 @@
           <div class="icon-box bg-soft-green text-green">
             <i class="bi bi-person"></i>
           </div>
-          <h6 class="fw-semibold">Self Development</h6>
-          <p class="small text-muted mb-0">50+ courses available</p>
+          <h6 class="fw-semibold">Teknologi & IT</h6>
+          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
         </div>
       </div>
     </div>
@@ -194,7 +195,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 500.000</span>
             </div>
           </div>
         </div>
@@ -212,7 +213,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 150.000</span>
             </div>
           </div>
         </div>
@@ -230,7 +231,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 500.000</span>
             </div>
           </div>
         </div>
@@ -239,15 +240,15 @@
       <div class="col-lg-4 col-md-6">
         <div class="course-card border-0 shadow-sm h-100">
           <div class="course-img">
-            <img src="{{ asset('assets/course6.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
+            <img src="{{ asset('assets/img/illustrations/Financial Management.jpg') }}" alt="Course" class="w-100 rounded-top" loading="lazy">
           </div>
           <div class="p-3">
-            <span class="badge bg-light text-danger mb-2">Art</span>
-            <h6 class="fw-semibold mb-3">Advance Drawing</h6>
+            <span class="badge bg-light text-danger mb-2">Manajemen Keuangan</span>
+            <h6 class="fw-semibold mb-3">Laporan Keuangan Dasar</h6>
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 250.000</span>
             </div>
           </div>
         </div>
@@ -264,7 +265,7 @@
             <div class="d-flex justify-content-between small text-muted">
               <span>500k+</span>
               <span>⭐ 4.9</span>
-              <span class="fw-semibold text-dark">$105.00</span>
+              <span class="fw-semibold text-dark">Rp 350.000</span>
             </div>
           </div>
         </div>

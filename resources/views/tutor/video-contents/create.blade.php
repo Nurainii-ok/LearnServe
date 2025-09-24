@@ -18,7 +18,7 @@
 }
 
 .video-upload-card {
-    background: var(--white);
+    background: linear-gradient(135deg, var(--light-cream) 0%, #ffffff 100%);
     border: 2px solid var(--border-color);
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
@@ -32,7 +32,7 @@
 }
 
 .card-header-custom {
-    background: var(--primary-brown);
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--deep-brown) 100%);
     color: white;
     padding: 1.5rem 2rem;
     border: none;
@@ -81,19 +81,19 @@
     border-radius: 12px;
     padding: 2rem;
     text-align: center;
-    background: var(--light-cream);
+    background: linear-gradient(135deg, rgba(236, 172, 87, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .upload-zone:hover {
     border-color: var(--primary-brown);
-    background: rgba(148, 78, 37, 0.05);
+    background: linear-gradient(135deg, rgba(148, 78, 37, 0.05) 0%, rgba(255, 255, 255, 0.9) 100%);
 }
 
 .upload-zone.dragover {
     border-color: var(--success-green);
-    background: rgba(74, 124, 89, 0.1);
+    background: linear-gradient(135deg, rgba(74, 124, 89, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
 }
 
 .upload-icon {
@@ -116,44 +116,17 @@
 }
 
 .btn-primary-custom {
-    background: var(--primary-brown);
+    background: linear-gradient(135deg, var(--primary-brown) 0%, var(--deep-brown) 100%);
     border: none;
     border-radius: 10px;
-    color: white;
     padding: 0.75rem 2rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .btn-primary-custom:hover {
-    background: var(--deep-brown);
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(148, 78, 37, 0.4);
-}
-
-/* Ensure submit button is always clickable */
-#submitBtn {
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    cursor: pointer !important;
-    background: var(--primary-brown) !important;
-    border: none !important;
-    color: white !important;
-}
-
-#submitBtn:hover {
-    background: var(--deep-brown) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 15px rgba(148, 78, 37, 0.4) !important;
-}
-
-/* Override any disabled state */
-#submitBtn:disabled {
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    cursor: pointer !important;
-    background: var(--primary-brown) !important;
-    color: white !important;
 }
 
 .btn-secondary-custom {
@@ -235,24 +208,10 @@
                                 <strong>Please fix the following errors:</strong>
                             </div>
                             <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
+                                @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger border-0 rounded-3">
-                            <i class="bx bx-error-circle me-2"></i>
-                            {{ session('error') }}
-                        </div>
-                    @endif
-
-                    @if (session('success'))
-                        <div class="alert alert-success border-0 rounded-3">
-                            <i class="bx bx-check-circle me-2"></i>
-                            {{ session('success') }}
                         </div>
                     @endif
 
@@ -381,41 +340,53 @@
                             </h5>
                             
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="class_id" class="form-label fw-semibold">Select Class <span class="text-danger">*</span></label>
-                                        <select class="form-select form-control-modern" id="class_id" name="class_id" required>
+                                        <label class="form-label fw-semibold">Course Type <span class="text-danger">*</span></label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="course_type" id="course_type_class" 
+                                                       value="class" {{ old('course_type') === 'class' ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="course_type_class">
+                                                    <i class="bx bx-chalkboard me-1"></i>
+                                                    Class
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="course_type" id="course_type_bootcamp" 
+                                                       value="bootcamp" {{ old('course_type') === 'bootcamp' ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="course_type_bootcamp">
+                                                    <i class="bx bx-rocket me-1"></i>
+                                                    Bootcamp
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="mb-3" id="class_select" style="display: none;">
+                                        <label for="class_id" class="form-label fw-semibold">Select Class</label>
+                                        <select class="form-select form-control-modern" id="class_id" name="class_id">
                                             <option value="">Choose a class...</option>
-                                            @forelse($classes as $class)
+                                            @foreach($classes as $class)
                                                 <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
                                                     {{ $class->title }}
                                                 </option>
-                                            @empty
-                                                <option value="" disabled>No classes available</option>
-                                            @endforelse
+                                            @endforeach
                                         </select>
-                                        
-                                        @if($classes->count() == 0)
-                                            <div class="alert alert-warning mt-2">
-                                                <i class="bx bx-info-circle me-1"></i>
-                                                <strong>No classes found.</strong> 
-                                                You need to create a class first before adding video content.
-                                                <div class="mt-2">
-                                                    <a href="{{ route('tutor.classes.create') }}" class="btn btn-sm btn-primary">
-                                                        <i class="bx bx-plus"></i> Create New Class
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="alert alert-info mt-2">
-                                                <i class="bx bx-info-circle me-1"></i>
-                                                Found {{ $classes->count() }} class(es) available for video content.
-                                            </div>
-                                        @endif
-                                        <div class="form-text">
-                                            <i class="bx bx-info-circle me-1"></i>
-                                            Video content can only be assigned to classes
-                                        </div>
+                                    </div>
+
+                                    <div class="mb-3" id="bootcamp_select" style="display: none;">
+                                        <label for="bootcamp_id" class="form-label fw-semibold">Select Bootcamp</label>
+                                        <select class="form-select form-control-modern" id="bootcamp_id" name="bootcamp_id">
+                                            <option value="">Choose a bootcamp...</option>
+                                            @foreach($bootcamps as $bootcamp)
+                                                <option value="{{ $bootcamp->id }}" {{ old('bootcamp_id') == $bootcamp->id ? 'selected' : '' }}>
+                                                    {{ $bootcamp->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -522,7 +493,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Simplified - no course type toggle needed since only classes are supported
+    // Course Type Toggle
+    const courseTypeRadios = document.querySelectorAll('input[name="course_type"]');
+    const classSelect = document.getElementById('class_select');
+    const bootcampSelect = document.getElementById('bootcamp_select');
+    
+    function toggleCourseSelects() {
+        const selectedType = document.querySelector('input[name="course_type"]:checked');
+        
+        if (selectedType) {
+            if (selectedType.value === 'class') {
+                classSelect.style.display = 'block';
+                bootcampSelect.style.display = 'none';
+                document.getElementById('bootcamp_id').value = '';
+            } else if (selectedType.value === 'bootcamp') {
+                classSelect.style.display = 'none';
+                bootcampSelect.style.display = 'block';
+                document.getElementById('class_id').value = '';
+            }
+        } else {
+            classSelect.style.display = 'none';
+            bootcampSelect.style.display = 'none';
+        }
+    }
+    
+    courseTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleCourseSelects);
+    });
     
     // File Upload Handling
     const uploadZone = document.getElementById('uploadZone');
@@ -611,83 +608,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form Validation
     const form = document.getElementById('videoForm');
     form.addEventListener('submit', function(e) {
-        console.log('Form submit triggered');
-        
-        // Check if title is filled
-        const titleInput = document.getElementById('title');
-        if (!titleInput || !titleInput.value.trim()) {
-            e.preventDefault();
-            alert('Please enter a video title');
-            if (titleInput) titleInput.focus();
-            return false;
-        }
-        
-        const activeType = document.querySelector('.video-type-btn.active')?.dataset.type;
-        console.log('Active video type:', activeType);
+        const activeType = document.querySelector('.video-type-btn.active').dataset.type;
         
         if (activeType === 'youtube') {
             if (!videoUrlInput.value.trim()) {
                 e.preventDefault();
                 alert('Please enter a YouTube URL');
                 videoUrlInput.focus();
-                return false;
+                return;
             }
-        } else if (activeType === 'upload') {
+        } else {
             if (!videoFileInput.files.length) {
                 e.preventDefault();
                 alert('Please select a video file to upload');
-                return false;
+                return;
             }
         }
         
-        // Check class selection - only if classes are available
-        const classSelect = document.getElementById('class_id');
-        if (classSelect && !classSelect.value) {
+        // Check course type selection
+        const courseType = document.querySelector('input[name="course_type"]:checked');
+        if (!courseType) {
             e.preventDefault();
-            alert('Please select a class');
-            classSelect.focus();
-            return false;
+            alert('Please select a course type (Class or Bootcamp)');
+            return;
         }
         
-        console.log('Form validation passed, submitting...');
-        return true;
+        // Check course selection
+        if (courseType.value === 'class' && !document.getElementById('class_id').value) {
+            e.preventDefault();
+            alert('Please select a class');
+            return;
+        }
+        
+        if (courseType.value === 'bootcamp' && !document.getElementById('bootcamp_id').value) {
+            e.preventDefault();
+            alert('Please select a bootcamp');
+            return;
+        }
     });
     
-    // Ensure submit button is always enabled
-    function ensureButtonEnabled() {
-        const submitBtn = document.getElementById('submitBtn');
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.removeAttribute('disabled');
-            submitBtn.style.pointerEvents = 'auto';
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-        }
-    }
-    
-    // Run on page load and periodically
-    ensureButtonEnabled();
-    setInterval(ensureButtonEnabled, 1000);
-    
-    // Also run when DOM changes
-    const observer = new MutationObserver(ensureButtonEnabled);
-    observer.observe(document.body, { childList: true, subtree: true });
-    
-    // Add event listeners to ensure button stays enabled
-    document.addEventListener('click', ensureButtonEnabled);
-    document.addEventListener('change', ensureButtonEnabled);
-    document.addEventListener('input', ensureButtonEnabled);
-    
-    // Force enable button on any interaction
-    const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) {
-        submitBtn.addEventListener('click', function(e) {
-            // Remove any disabled state before processing
-            this.disabled = false;
-            this.removeAttribute('disabled');
-            console.log('Submit button clicked - ensuring enabled state');
-        });
-    }
+    // Initialize on page load
+    toggleCourseSelects();
 });
 </script>
 @endsection

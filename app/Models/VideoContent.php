@@ -14,11 +14,11 @@ class VideoContent extends Model
         'description',
         'video_url',
         'youtube_url',
-        // 'video_type', // Temporarily removed until migration is run
+        'video_type', // 'upload' or 'youtube'
         'thumbnail',
         'duration',
         'class_id',
-        // 'bootcamp_id', // Removed since we only support classes now
+        'bootcamp_id',
         'order',
         'status',
         'created_by'

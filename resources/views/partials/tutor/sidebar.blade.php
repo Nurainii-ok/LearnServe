@@ -1,8 +1,9 @@
 <div class="sidebar">
     <div class="sidebar-brand">
-        <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" style="height:40px; margin-right:10px;">
-        <span>LearnServe</span>
-        <small style="color: var(--soft-gold); font-size: 0.8rem; margin-left: 0.5rem;">Tutor</small>
+        <h1>
+            <span class="las la-graduation-cap"></span>
+            <span>LearnServe</span>
+        </h1>
     </div>
 
     <div class="sidebar-menu">
@@ -20,6 +21,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('tutor.bootcamps') }}" class="{{ request()->routeIs('tutor.bootcamps*') ? 'active' : '' }}">
+                    <span class="las la-graduation-cap"></span>
+                    <span>My Bootcamps</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('tutor.tasks') }}" class="{{ request()->routeIs('tutor.tasks*') ? 'active' : '' }}">
                     <span class="las la-clipboard-check"></span>
                     <span>Tasks & Assignments</span>
@@ -34,7 +41,7 @@
             <li>
                 <a href="{{ route('tutor.account') }}" class="{{ request()->routeIs('tutor.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
-                    <span>Profile & Settings</span>
+                    <span>Account</span>
                 </a>
             </li>   
             <li>
@@ -42,7 +49,6 @@
                     <span class="las la-sign-out-alt"></span>
                     <span>Logout</span>
                 </a>
-
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                     @csrf
                 </form>

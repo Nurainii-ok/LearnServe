@@ -581,6 +581,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Recent Task Submissions -->
+    @if(isset($recentTaskSubmissions) && $recentTaskSubmissions->count() > 0)
+    <div class="dashboard-card" style="margin-top: 2rem;">
+        <div class="card-header">
+            <h3>Recent Task Submissions</h3>
+            <a href="{{ route('admin.tasks') }}" class="btn-secondary">
+                View All Tasks <i class="las la-arrow-right"></i>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Task</th>
+                            <th>Class</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentTaskSubmissions as $submission)
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar" style="background: var(--primary-gold);">
+                                        {{ strtoupper(substr($submission->student->name ?? 'S', 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">{{ $submission->student->name ?? 'Unknown Student' }}</span>
+                                        <small style="display: block; color: #6b7280;">{{ $submission->student->email ?? '' }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>{{ $submission->task->title ?? 'N/A' }}</strong>
+                                    @if($submission->content)
+                                    <small style="color: #6b7280; display: block; margin-top: 0.25rem;">
+                                        {{ Str::limit($submission->content, 50) }}
+                                    </small>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <span style="color: var(--primary-brown); font-weight: 500;">
+                                    {{ $submission->task->class->title ?? 'N/A' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.875rem;">
+                                    {{ $submission->created_at->format('M d, Y') }}
+                                    <small style="color: #6b7280; display: block;">
+                                        {{ $submission->created_at->format('H:i') }}
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge" style="background: {{ $submission->grade ? 'var(--success-green)' : 'rgba(16, 185, 129, 0.1)' }}; color: {{ $submission->grade ? 'white' : 'var(--success-green)' }};">
+                                    {{ $submission->grade ? 'Graded' : 'Submitted' }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 @endsection
 

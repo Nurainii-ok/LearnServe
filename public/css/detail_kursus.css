@@ -1,18 +1,296 @@
+/* Course Hero Section */
 .course-hero {
-  background: #1c1d1f; /* gelap ala Udemy */
-  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="40%"><stop offset="0%" stop-color="%23fff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23fff" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+  pointer-events: none;
 }
 
 .course-hero h1 {
-  font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .course-hero .lead {
-  font-size: 1.1rem;
-  color: #ddd;
+  font-weight: 400;
 }
 
-.sidebar-card h3 {
-  color: #944e25; /* pakai warna brand kamu */
+/* Cards */
+.card {
+  border-radius: 12px;
+}
+
+/* Sidebar Sticky */
+.sticky-top {
+  position: sticky;
+  z-index: 10;
+}
+
+/* Learning Objectives */
+.list-unstyled li {
+  padding: 8px 0;
+  border-radius: 6px;
+  padding-left: 8px;
+  margin-left: -8px;
+}
+
+/* Course Content Accordion */
+.accordion-button {
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+  border: none;
+  background-color: #f8f9fa !important;
+  color: #1c1d1f;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e3f2fd !important;
+}
+
+.accordion-button:focus {
+  border: 2px solid #2196f3;
+  box-shadow: none;
+}
+
+.accordion-body {
+  padding: 0;
+  background-color: #fafafa;
+}
+
+.lesson-item {
+  padding: 12px 20px;
+}
+
+.lesson-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+  border-radius: 6px;
+}
+
+/* Buttons */
+/* Buttons */
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: #944e25; /* warna utama */
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #7a3f1e; /* sedikit lebih gelap saat hover */
+}
+
+/* Success Button */
+.btn-success {
+  background-color: #ecac57; /* warna keemasan */
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #d89743;
+}
+
+/* Outline Buttons */
+.btn-outline-primary, 
+.btn-outline-info, 
+.btn-outline-success, 
+.btn-outline-dark {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 2px solid #944e25;
+  color: #944e25;
+  background: transparent;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-info:hover,
+.btn-outline-success:hover,
+.btn-outline-dark:hover {
+  background-color: #944e25;
+  color: #fff;
+}
+
+
+/* Price Styling */
+.card-body h3 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Course Features */
+.course-features .d-flex {
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 0 -12px;
+}
+
+/* Instructor Section */
+.instructor-card img {
+  border: 4px solid #fff;
+}
+
+/* Content Description */
+.content-description {
+  font-size: 1.05rem;
+  color: #4a5568;
+}
+
+.content-description h6 {
+  color: #2d3748;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.content-description ul {
+  padding-left: 1.2rem;
+}
+
+.content-description li {
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+}
+
+/* Alert Styling */
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: none;
+  border-left: 4px solid #28a745;
+  border-radius: 8px;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  border: none;
+  border-left: 4px solid #17a2b8;
+  border-radius: 8px;
+}
+
+/* Share Buttons */
+.btn-outline-primary, 
+.btn-outline-info, 
+.btn-outline-success, 
+.btn-outline-dark {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+/* Rating Stars */
+.text-warning {
+  color: #ffc107 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+  .course-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .course-hero .lead {
+    font-size: 1.1rem;
+  }
+  
+  .sticky-top {
+    position: relative !important;
+    top: auto !important;
+  }
+  
+  .card-body h3 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .course-hero {
+    padding: 2rem 0 !important;
+  }
+  
+  .course-hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .course-hero .lead {
+    font-size: 1rem;
+  }
+  
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .btn-lg {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Loading Animation for Video */
+.ratio::before {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
