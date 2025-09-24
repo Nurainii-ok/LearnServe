@@ -271,7 +271,7 @@
       {{-- Instruktur --}}
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
-          <h4 class="fw-bold mb-4" style="color: #1c1d1f;">Instruktur</h4>
+          <h4 class="fw-bold mb-4" style="color: #1c1d1f;">Tutor</h4>
           <div class="d-flex align-items-start">
             <img src="{{ $class->instructor_image ?? 'https://via.placeholder.com/120x120' }}" 
                  class="rounded-circle me-4 flex-shrink-0" 
@@ -287,7 +287,7 @@
                 <div class="d-flex align-items-center mb-2">
                   <i class="bi bi-star-fill text-warning me-2"></i>
                   <span class="fw-semibold">{{ $class->rating }}</span>
-                  <span class="text-muted ms-2">Peringkat Instruktur</span>
+                  <span class="text-muted ms-2">Peringkat Tutor</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
                   <i class="bi bi-award me-2"></i>

@@ -65,36 +65,74 @@
                     <!-- Program {{ $loop->iteration }} -->
                     <div class="col-md-4">
                         <a href="{{ route('deskripsi_bootcamp', ['id' => $bootcamp->id]) }}" class="text-decoration-none">
-                            <div class="card course-card h-100">
-                                <img src="{{ $bootcamp->image ? asset($bootcamp->image) : asset('assets/Bootcamp.jpg') }}" 
-                                     class="card-img-top" alt="{{ $bootcamp->title }}" 
-                                     style="height: 200px; object-fit: cover;">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{ $bootcamp->title }}</h6>
-                                    <div class="mb-2 text-muted small">
-                                        <i class="fas fa-calendar me-1"></i> 
-                                        Mulai: {{ $bootcamp->start_date->format('d M Y') }}
-                                    </div>
-                                    <div class="mb-2 text-muted small">
-                                        <i class="fas fa-clock me-1"></i> 
-                                        Durasi: {{ $bootcamp->duration }}
-                                    </div>
-                                    <div class="mb-2 text-muted small">
-                                        <i class="fas fa-user me-1"></i> 
-                                        Tutor: {{ $bootcamp->tutor->name }}
-                                    </div>
-                                    <div class="mb-2">
-                                        <span class="badge bg-{{ $bootcamp->level == 'beginner' ? 'success' : ($bootcamp->level == 'intermediate' ? 'warning' : 'danger') }}">
-                                            {{ ucfirst($bootcamp->level) }}
+                            <div class="card course-card h-100 border-0 shadow-sm">
+                                <!-- Image with consistent height -->
+                                <div class="position-relative">
+                                    <img src="{{ $bootcamp->image ? asset($bootcamp->image) : asset('assets/Bootcamp.jpg') }}" 
+                                         class="card-img-top" alt="{{ $bootcamp->title }}" 
+                                         style="height: 200px; object-fit: cover;">
+                                    
+                                    <!-- Rating badge (optional) -->
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-star"></i> Rating 4.5/5
                                         </span>
                                     </div>
-                                    <div class="fw-bold">
-                                        <span class="text-primary">Rp {{ number_format($bootcamp->price, 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="mt-2 small text-muted">
-                                        {{ Str::limit($bootcamp->description, 100) }}
+                                    
+                                    <!-- Alumni count badge -->
+                                    <div class="position-absolute top-0 start-0 m-2">
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-users"></i> 10.000+ Alumni
+                                        </span>
                                     </div>
                                 </div>
+
+                                <div class="card-body p-4">
+                                    <!-- Title -->
+                                    <h6 class="card-title fw-bold text-dark mb-3" style="min-height: 48px; line-height: 1.4;">
+                                        {{ Str::upper($bootcamp->title) }}
+                                    </h6>
+                                    
+                                    <!-- Date -->
+                                    <div class="mb-3 text-muted">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>
+                                        <span class="fw-medium">{{ $bootcamp->start_date->format('d M Y') }}</span>
+                                    </div>
+                                    
+                                    <!-- Price -->
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @if($bootcamp->price > 0)
+                                                <div class="text-primary fw-bold fs-5">
+                                                    Rp {{ number_format($bootcamp->price, 0, ',', '.') }}
+                                                </div>
+                                                <!-- Optional: Show original price if there's a discount -->
+                                                @if($bootcamp->original_price && $bootcamp->original_price > $bootcamp->price)
+                                                    <small class="text-muted text-decoration-line-through">
+                                                        Rp {{ number_format($bootcamp->original_price, 0, ',', '.') }}
+                                                    </small>
+                                                @endif
+                                            @else
+                                                <div class="text-success fw-bold fs-5">
+                                                    GRATIS
+                                                </div>
+                                            @endif
+                                        </div>
+                                        
+                                        <!-- CTA Arrow or Icon -->
+                                        <!--<div class="text-primary">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </div>-->
+                                    </div>
+                                </div>
+                                
+                                <!-- Bottom CTA Button -->
+                                <!--<div class="card-footer border-0 bg-transparent p-4 pt-0">
+                                    <div class="btn btn-primary w-100 fw-medium">
+                                        <i class="fas fa-bolt me-2"></i>
+                                        Daftar Sekarang
+                                    </div>
+                                </div>-->
                             </div>
                         </a>
                     </div>
@@ -108,9 +146,9 @@
                 @endforelse
             </div>
 
-            <div class="text-center mt-5">
+            <!--<div class="text-center mt-5">
                 <a href="#" class="btn btn-outline-primary btn-lg">Lihat Semua Program <i class="fas fa-arrow-right ms-2"></i></a>
-            </div>
+            </div>-->
         </div>
     </section>
 
