@@ -40,6 +40,7 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
     margin: 0 2rem;
+    padding: 0 !important; /* tambahkan */
 }
 
 .card-header {
@@ -122,11 +123,14 @@
 
 .table-responsive {
     overflow-x: auto;
+    padding: 0 !important; /* tambahkan */
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    margin: 0 !important; /* pastikan nempel */
+    padding: 0 !important;
 }
 
 .data-table thead th {
@@ -231,10 +235,10 @@
     @endif
 
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>Bootcamp Management</h1>
         <p>Manage intensive bootcamp programs and training courses.</p>
-    </div>
+    </div>-->
 
     <!-- Main Content -->
     <div class="content-card">

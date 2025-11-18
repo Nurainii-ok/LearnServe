@@ -137,10 +137,78 @@ class MemberController extends Controller
             
         // Get tasks for enrolled classes
         $tasks = Task::whereIn('class_id', $enrolledClassIds)
-            ->with(['class', 'assignedBy'])
+            ->with(['class', 'assignedBy', 'submissions'])
             ->orderBy('due_date')
             ->paginate(10);
             
         return view('member.tasks', compact('tasks'));
+    }
+    
+    public function submitTask(Request $request, $taskId)
+    {
+        $memberId = session('user_id');
+        
+        if (!$memberId) {
+            return redirect()->route('auth')->with('error', 'Session expired. Please login again.');
+        }
+        
+        // Find the task
+        $task = Task::findOrFail($taskId);
+        
+        // Check if member is enrolled in the class
+        $enrollment = Enrollment::where('user_id', $memberId)
+            ->where('class_id', $task->class_id)
+            ->where('status', 'active')
+            ->first();
+            
+        if (!$enrollment) {
+            return redirect()->back()->with('error', 'You are not enrolled in this class.');
+        }
+        
+        // Validate the submission
+        $request->validate([
+            'submission_text' => 'nullable|string|max:2000',
+            'submission_file' => 'nullable|file|max:10240|mimes:pdf,doc,docx,txt,zip,rar,jpg,jpeg,png'
+        ]);
+        
+        // Check if at least one field is provided
+        if (!$request->submission_text && !$request->hasFile('submission_file')) {
+            return redirect()->back()->with('error', 'Please provide either a description or upload a file.');
+        }
+        
+        // Handle file upload
+        $filePath = null;
+        if ($request->hasFile('submission_file')) {
+            $file = $request->file('submission_file');
+            $fileName = time() . '_' . $memberId . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('task-submissions', $fileName, 'public');
+        }
+        
+        // Check if user already submitted this task
+        $existingSubmission = \App\Models\TaskSubmission::where('task_id', $taskId)
+            ->where('user_id', $memberId)
+            ->first();
+            
+        if ($existingSubmission) {
+            // Update existing submission
+            $existingSubmission->update([
+                'content' => $request->submission_text,
+                'file_path' => $filePath ?: $existingSubmission->file_path, // Keep old file if no new file
+                'original_filename' => $request->hasFile('submission_file') ? $request->file('submission_file')->getClientOriginalName() : $existingSubmission->original_filename
+            ]);
+            
+            return redirect()->back()->with('success', 'Task submission updated successfully! Your tutor will review the updated version.');
+        } else {
+            // Create new submission
+            \App\Models\TaskSubmission::create([
+                'task_id' => $taskId,
+                'user_id' => $memberId,
+                'content' => $request->submission_text,
+                'file_path' => $filePath,
+                'original_filename' => $request->hasFile('submission_file') ? $request->file('submission_file')->getClientOriginalName() : null
+            ]);
+            
+            return redirect()->back()->with('success', 'Task submitted successfully! Your tutor will review it soon.');
+        }
     }
 }

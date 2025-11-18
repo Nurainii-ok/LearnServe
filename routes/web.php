@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\VideoContentController;
 use App\Http\Controllers\ELearningController;
+use Illuminate\Support\Facades\Schema;
 
 // Halaman Auth (Login & Register dalam 1 file)
 Route::get('/auth', function () {
@@ -63,6 +64,223 @@ Route::prefix('payment')->name('payment.')->group(function () {
     Route::get('/test', [PaymentController::class, 'testMidtrans'])->name('test');
 });
 
+// Test routes (remove in production)
+Route::get('/test-payment', function() {
+    return view('test-payment');
+});
+
+Route::get('/test-midtrans', [PaymentController::class, 'testMidtrans']);
+Route::post('/payment/test-webhook', [PaymentController::class, 'testWebhook']);
+
+// Debug route for class update
+Route::get('/debug-class-update/{id}', function($id) {
+    $class = App\Models\Classes::findOrFail($id);
+    $tutors = App\Models\User::where('role', 'tutor')->get();
+    
+    return response()->json([
+        'class' => $class,
+        'tutors_count' => $tutors->count(),
+        'upload_dir_exists' => is_dir(public_path('storage/class_images')),
+        'upload_dir_writable' => is_writable(public_path('storage/class_images')),
+        'php_settings' => [
+            'upload_max_filesize' => ini_get('upload_max_filesize'),
+            'post_max_size' => ini_get('post_max_size'),
+            'max_execution_time' => ini_get('max_execution_time'),
+            'memory_limit' => ini_get('memory_limit'),
+        ]
+    ]);
+});
+
+// Test route for class update without middleware
+Route::post('/test-class-update/{id}', function(Illuminate\Http\Request $request, $id) {
+    try {
+        $class = App\Models\Classes::findOrFail($id);
+        
+        // Test update without image
+        $updateData = [
+            'title' => $request->title ?? 'Test Title',
+            'description' => $request->description ?? 'Test Description',
+            'tutor_id' => $request->tutor_id ?? 1,
+            'price' => $request->price ?? 100000,
+            'status' => $request->status ?? 'active',
+            'category' => $request->category ?? 'Test Category',
+        ];
+        
+        $class->update($updateData);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Class updated successfully',
+            'updated_data' => $updateData,
+            'class' => $class->fresh()
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
+// Test form route without CSRF
+Route::any('/test-form-update/{id}', function(Illuminate\Http\Request $request, $id) {
+    if ($request->isMethod('get')) {
+        return view('test-form-update', ['id' => $id]);
+    }
+    
+    // Handle POST/PUT
+    try {
+        $class = App\Models\Classes::findOrFail($id);
+        
+        $updateData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'tutor_id' => $request->tutor_id,
+            'price' => $request->price,
+            'status' => $request->status,
+            'category' => $request->category,
+        ];
+        
+        // Handle image if present
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $uploadPath = public_path('storage/class_images');
+            
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            $filename = 'test_' . time() . '.' . $image->getClientOriginalExtension();
+            
+            if ($image->move($uploadPath, $filename)) {
+                $updateData['image'] = 'storage/class_images/' . $filename;
+            }
+        }
+        
+        $class->update($updateData);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Class updated successfully via test route',
+            'data' => $updateData
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ], 500);
+    }
+})->withoutMiddleware(['web', 'csrf']);
+
+// Test routes for model debugging
+Route::post('/test-model-fillable', function() {
+    try {
+        $class = new App\Models\Classes();
+        $fillable = $class->getFillable();
+        
+        // Get database columns
+        $columns = Schema::getColumnListing('classes');
+        
+        return response()->json([
+            'success' => true,
+            'fillable' => $fillable,
+            'columns' => $columns,
+            'match' => array_intersect($fillable, $columns)
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+})->withoutMiddleware(['web', 'csrf']);
+
+Route::post('/test-create-class', function(Illuminate\Http\Request $request) {
+    try {
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'tutor_id' => $request->tutor_id,
+            'price' => $request->price,
+            'status' => $request->status,
+            'category' => $request->category,
+            'enrolled' => 0
+        ];
+        
+        $class = App\Models\Classes::create($data);
+        
+        return response()->json([
+            'success' => true,
+            'class' => $class,
+            'data_sent' => $data
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]);
+    }
+})->withoutMiddleware(['web', 'csrf']);
+
+Route::post('/test-update-class/{id}', function(Illuminate\Http\Request $request, $id) {
+    try {
+        $class = App\Models\Classes::findOrFail($id);
+        
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'tutor_id' => $request->tutor_id,
+            'price' => $request->price,
+            'status' => $request->status,
+            'category' => $request->category
+        ];
+        
+        $class->update($data);
+        
+        return response()->json([
+            'success' => true,
+            'class' => $class->fresh(),
+            'data_sent' => $data
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]);
+    }
+})->withoutMiddleware(['web', 'csrf']);
+
+Route::get('/test-database-structure', function() {
+    try {
+        $columns = Schema::getColumnListing('classes');
+        $sampleClass = App\Models\Classes::first();
+        
+        return response()->json([
+            'columns' => $columns,
+            'sample_class' => $sampleClass,
+            'table_exists' => Schema::hasTable('classes')
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ]);
+    }
+})->withoutMiddleware(['web', 'csrf']);
+
+// Payment routes
+Route::post('/payment/notification', [PaymentController::class, 'handleNotification']);
+Route::get('/payment/status/{orderId}', [PaymentController::class, 'checkStatus']);
+Route::post('/payment/sync/{orderId}', [PaymentController::class, 'syncStatus'])->name('payment.sync');
+
 // Member
 Route::middleware(['role:member','prevent-back'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -83,6 +301,7 @@ Route::prefix('member')->middleware(['role:member','prevent-back'])->name('membe
     Route::get('/enrollments', [MemberController::class, 'enrollments'])->name('enrollments');
     Route::get('/grades', [MemberController::class, 'grades'])->name('grades');
     Route::get('/tasks', [MemberController::class, 'tasks'])->name('tasks');
+    Route::post('/tasks/{task}/submit', [MemberController::class, 'submitTask'])->name('tasks.submit');
 });
 
 // E-Learning Routes for Members
@@ -178,6 +397,14 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::put('/classes/{id}', [TutorController::class, 'classesUpdate'])->name('classes.update');
     Route::delete('/classes/{id}', [TutorController::class, 'classesDestroy'])->name('classes.destroy');
     
+    // Bootcamps CRUD
+    Route::get('/bootcamps', [TutorController::class, 'bootcamps'])->name('bootcamps');
+    Route::get('/bootcamps/create', [TutorController::class, 'bootcampsCreate'])->name('bootcamps.create');
+    Route::post('/bootcamps', [TutorController::class, 'bootcampsStore'])->name('bootcamps.store');
+    Route::get('/bootcamps/{id}/edit', [TutorController::class, 'bootcampsEdit'])->name('bootcamps.edit');
+    Route::put('/bootcamps/{id}', [TutorController::class, 'bootcampsUpdate'])->name('bootcamps.update');
+    Route::delete('/bootcamps/{id}', [TutorController::class, 'bootcampsDestroy'])->name('bootcamps.destroy');
+    
     // Tasks CRUD
     Route::get('/tasks', [TutorController::class, 'tasks'])->name('tasks');
     Route::get('/tasks/create', [TutorController::class, 'tasksCreate'])->name('tasks.create');
@@ -185,6 +412,7 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::get('/tasks/{id}/edit', [TutorController::class, 'tasksEdit'])->name('tasks.edit');
     Route::put('/tasks/{id}', [TutorController::class, 'tasksUpdate'])->name('tasks.update');
     Route::delete('/tasks/{id}', [TutorController::class, 'tasksDestroy'])->name('tasks.destroy');
+    Route::get('/tasks/{id}/submissions', [TutorController::class, 'getTaskSubmissions'])->name('tasks.submissions');
     
     // Grades CRUD 6
     Route::get('/grades', [TutorController::class, 'grades'])->name('grades');

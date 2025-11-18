@@ -5,37 +5,36 @@
 @section('styles')
 <style>
 .dashboard-content {
-    padding: 2rem;
+    padding: 0px;
     margin: 0;
 }
 
+/* ========== STAT CARDS ========== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
 .stat-card {
-    background: white;
+    background: #fff;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: all 0.3s ease;
+    transition: all .3s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
 }
 
 .stat-card.featured {
-    background: linear-gradient(135deg, var(--primary-gold) 0%, #e59f4f 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--primary-gold, #d4a457) 0%, #e59f4f 100%);
+    color: #fff;
     border: none;
 }
 
@@ -43,14 +42,12 @@
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
-    line-height: 1;
 }
 
 .stat-info p {
-    margin: 0.5rem 0 0 0;
-    font-size: 0.875rem;
-    opacity: 0.8;
-    font-weight: 500;
+    margin-top: .5rem;
+    font-size: .875rem;
+    opacity: .8;
 }
 
 .stat-icon {
@@ -60,16 +57,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--light-cream, #f5efe7);
+    color: var(--primary-brown, #5c3d2e);
     font-size: 1.75rem;
-    background: var(--light-cream);
-    color: var(--primary-brown);
 }
 
 .stat-card.featured .stat-icon {
     background: rgba(255, 255, 255, 0.2);
-    color: white;
+    color: #fff;
 }
 
+/* ========== GRID LAYOUT ========== */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -78,55 +76,51 @@
 }
 
 .dashboard-card {
-    background: white;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
     overflow: hidden;
 }
 
+/* ========== CARD HEADER ========== */
 .card-header {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
+    background: #fafafa;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fafafa;
 }
 
 .card-header h3 {
     margin: 0;
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-primary, #1f2937);
 }
 
-.card-body {
-    padding: 0;
-}
-
+/* ========== BUTTON ========== */
 .btn-secondary {
-    background: var(--primary-brown);
-    color: white;
-    padding: 0.5rem 1rem;
+    background: var(--primary-brown, #5c3d2e);
+    color: #fff;
+    padding: .5rem 1rem;
     border: none;
     border-radius: 8px;
-    font-size: 0.875rem;
+    font-size: .875rem;
     font-weight: 500;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
+    gap: .5rem;
+    text-decoration: none;
+    transition: all .3s ease;
     cursor: pointer;
 }
 
 .btn-secondary:hover {
-    background: var(--deep-brown);
-    color: white;
-    text-decoration: none;
+    background: var(--deep-brown, #3b2418);
 }
 
+/* ========== TABLE ========== */
 .table-responsive {
     overflow-x: auto;
 }
@@ -140,8 +134,8 @@
     background: #f8fafc;
     padding: 1rem;
     text-align: left;
+    font-size: .875rem;
     font-weight: 600;
-    font-size: 0.875rem;
     color: #374151;
     border-bottom: 1px solid #e5e7eb;
 }
@@ -149,119 +143,78 @@
 .data-table tbody td {
     padding: 1rem;
     border-bottom: 1px solid #f3f4f6;
-    vertical-align: middle;
 }
 
 .data-table tbody tr:hover {
     background: #f9fafb;
 }
 
+/* ========== USER INFO ========== */
 .user-info {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: .75rem;
 }
 
 .user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--primary-gold);
-    color: white;
+    background: var(--primary-gold, #d4a457);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: .875rem;
 }
 
+/* ========== STATUS BADGE ========== */
 .status-badge {
-    padding: 0.25rem 0.75rem;
+    padding: .25rem .75rem;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 500;
-    background: #dcfce7;
-    color: #166534;
+    color: #fff;
 }
 
+.status-active { background: #10b981; }
+.status-completed { background: #3b82f6; }
+.status-paused { background: #f59e0b; }
+.status-dropped { background: #ef4444; }
+
+/* ========== TUTOR LIST ========== */
 .tutor-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #f3f4f6;
-    transition: background 0.2s ease;
-}
-
-.tutor-item:hover {
-    background: #f9fafb;
-}
-
-.tutor-item:last-child {
-    border-bottom: none;
 }
 
 .tutor-contact {
     display: flex;
-    gap: 0.5rem;
+    gap: .5rem;
 }
 
 .contact-btn {
     width: 32px;
     height: 32px;
     border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: #f3f4f6;
     color: #6b7280;
     text-decoration: none;
-    transition: all 0.2s ease;
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .contact-btn:hover {
-    background: var(--primary-brown);
-    color: white;
+    background: var(--primary-brown, #5c3d2e);
+    color: #fff;
 }
 
-.quick-actions {
-    margin-top: 2rem;
-}
-
-.actions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-}
-
-.action-btn {
-    background: var(--primary-brown);
-    color: white;
-    padding: 1rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    color: white;
-    text-decoration: none;
-}
-
-.action-btn.gold { background: var(--primary-gold); }
-.action-btn.green { background: var(--success-green); }
-.action-btn.blue { background: var(--info-blue); }
-
+/* ========== EMPTY STATE ========== */
 .empty-state {
     text-align: center;
     padding: 3rem 1.5rem;
@@ -270,41 +223,25 @@
 
 .empty-state i {
     font-size: 3rem;
+    opacity: .5;
     margin-bottom: 1rem;
-    opacity: 0.5;
 }
 
-.status-badge {
-    background: var(--success-green);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.status-badge.status-active { background: #10b981; }
-.status-badge.status-completed { background: #3b82f6; }
-.status-badge.status-paused { background: #f59e0b; }
-.status-badge.status-dropped { background: #ef4444; }
-
+/* ========== BADGE TYPE ========== */
 .badge {
-    padding: 0.25rem 0.5rem;
+    padding: .25rem .5rem;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 500;
 }
 
-.badge.badge-info { background: #17a2b8; color: white; }
-.badge.badge-primary { background: #944e25; color: white; }
+.badge-info { background: #17a2b8; color: #fff; }
+.badge-primary { background: #944e25; color: #fff; }
 
+/* ========== RESPONSIVE FIXES ========== */
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }
 
@@ -312,11 +249,9 @@
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
-    .actions-grid {
-        grid-template-columns: 1fr;
-    }
 }
+
+
 </style>
 @endsection
 
@@ -334,7 +269,7 @@
             </div>
         </div>
         
-        <div class="stat-card">
+        <!--<div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalTutors }}</h3>
                 <p>Total Tutors</p>
@@ -342,7 +277,7 @@
             <div class="stat-icon">
                 <i class="las la-chalkboard-teacher"></i>
             </div>
-        </div>
+        </div>-->
         
         <div class="stat-card">
             <div class="stat-info">
@@ -374,7 +309,7 @@
             </div>
         </div>
         
-        <div class="stat-card">
+        <!--<div class="stat-card">
             <div class="stat-info">
                 <h3>Rp{{ number_format($totalRevenue, 0, ',', '.') }}</h3>
                 <p>Monthly Revenue</p>
@@ -382,7 +317,7 @@
             <div class="stat-icon">
                 <i class="las la-chart-line"></i>
             </div>
-        </div>
+        </div>-->
     </div>
 
     <!-- Main Dashboard Grid -->
@@ -551,7 +486,7 @@
     </div>
 
     <!-- Quick Actions -->
-    <div class="quick-actions">
+    <!--<div class="quick-actions">
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Quick Actions</h3>
@@ -580,7 +515,79 @@
                 </div>
             </div>
         </div>
+    </div>-->
+
+    <!-- Recent Task Submissions -->
+    @if(isset($recentTaskSubmissions) && $recentTaskSubmissions->count() > 0)
+    <div class="dashboard-card" style="margin-top: 2rem;">
+        <div class="card-header">
+            <h3>Recent Task Submissions</h3>
+            <a href="{{ route('admin.tasks') }}" class="btn-secondary">
+                View All Tasks <i class="las la-arrow-right"></i>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Task</th>
+                            <th>Class</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentTaskSubmissions as $submission)
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar" style="background: var(--primary-gold);">
+                                        {{ strtoupper(substr($submission->student->name ?? 'S', 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">{{ $submission->student->name ?? 'Unknown Student' }}</span>
+                                        <small style="display: block; color: #6b7280;">{{ $submission->student->email ?? '' }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>{{ $submission->task->title ?? 'N/A' }}</strong>
+                                    @if($submission->content)
+                                    <small style="color: #6b7280; display: block; margin-top: 0.25rem;">
+                                        {{ Str::limit($submission->content, 50) }}
+                                    </small>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <span style="color: var(--primary-brown); font-weight: 500;">
+                                    {{ $submission->task->class->title ?? 'N/A' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.875rem;">
+                                    {{ $submission->created_at->format('M d, Y') }}
+                                    <small style="color: #6b7280; display: block;">
+                                        {{ $submission->created_at->format('H:i') }}
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge" style="background: {{ $submission->grade ? 'var(--success-green)' : 'rgba(16, 185, 129, 0.1)' }}; color: {{ $submission->grade ? 'white' : 'var(--success-green)' }};">
+                                    {{ $submission->grade ? 'Graded' : 'Submitted' }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    @endif
 </div>
 @endsection
 

@@ -22,7 +22,7 @@
     padding: 2rem;
     border-radius: 12px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    /*box-shadow: 0 4px 15px rgba(0,0,0,0.1);*/
 }
 
 .page-header h1 {
@@ -47,7 +47,7 @@
     background: white;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    /*box-shadow: 0 2px 10px rgba(0,0,0,0.08);*/
     border: 1px solid #e5e7eb;
     text-align: center;
     transition: transform 0.3s ease;
@@ -70,7 +70,7 @@
     font-weight: 500;
 }
 
-.enrollment-card {
+/*.enrollment-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
@@ -92,9 +92,9 @@
     display: flex;
     justify-content: between;
     align-items: center;
-}
+}*/
 
-.student-info {
+/*.student-info {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -220,7 +220,7 @@
     display: flex;
     gap: 0.75rem;
     justify-content: flex-end;
-}
+}*/
 
 .btn-action {
     padding: 0.5rem 1rem;
@@ -356,6 +356,96 @@
     margin-top: 2rem;
 }
 
+/* TABEL ENROLLMENT*/
+.enrollment-table-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+}
+
+.enrollment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.enrollment-table thead {
+    background: var(--light-cream);
+}
+
+.enrollment-table th,
+.enrollment-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.enrollment-table th {
+    color: var(--primary-brown);
+    font-weight: 600;
+}
+
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-avatar-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-brown);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.progress-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-sm {
+    height: 8px;
+    background: linear-gradient(90deg, var(--primary-gold), var(--soft-gold));
+    border-radius: 4px;
+}
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.table-btn {
+    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+}
+
+.table-btn-view {
+    background: var(--info-blue);
+    color: white;
+}
+
+.table-btn-delete {
+    background: var(--error-red);
+    color: white;
+}
+
+
 @media (max-width: 768px) {
     .enrollment-header {
         flex-direction: column;
@@ -383,10 +473,10 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>Enrollments Management</h1>
         <p>Manage student enrollments and track their progress</p>
-    </div>
+    </div>-->
 
     <!-- Statistics Cards -->
     <div class="stats-cards">
@@ -459,167 +549,104 @@
 
     <!-- Enrollments List -->
     @if($enrollments->count() > 0)
+        <div class="enrollment-table-container">
+<table class="enrollment-table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Progress</th>
+            <th>Enrolled</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
         @foreach($enrollments as $enrollment)
-        <div class="enrollment-card">
-            <div class="enrollment-header">
-                <div class="student-info">
-                    <div class="student-avatar">
+        <tr>
+            <!-- Student -->
+            <td>
+                <div class="student-cell">
+                    <div class="student-avatar-sm">
                         {{ strtoupper(substr($enrollment->user->name, 0, 1)) }}
                     </div>
-                    <div class="student-details">
-                        <h6>{{ $enrollment->user->name }}</h6>
+                    <div>
+                        <strong>{{ $enrollment->user->name }}</strong><br>
                         <small>{{ $enrollment->user->email }}</small>
                     </div>
                 </div>
-                <div class="enrollment-status">
-                    <span class="type-badge type-{{ $enrollment->type }}">
-                        {{ ucfirst($enrollment->type) }}
-                    </span>
-                    <span class="status-badge status-{{ $enrollment->status }}">
-                        {{ ucfirst($enrollment->status) }}
-                    </span>
-                </div>
-            </div>
-            
-            <div class="enrollment-body">
-                <div class="course-info">
-                    @if($enrollment->type == 'class' && $enrollment->class)
-                        <div class="course-title">{{ $enrollment->class->title }}</div>
-                        <div class="course-meta">
-                            <span><i class="bx bx-user"></i> {{ $enrollment->class->tutor->name ?? 'Unknown Tutor' }}</span>
-                            <span><i class="bx bx-calendar"></i> Enrolled {{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</span>
-                            @if($enrollment->completed_at)
-                                <span><i class="bx bx-check-circle"></i> Completed {{ $enrollment->completed_at->format('M d, Y') }}</span>
-                            @endif
-                        </div>
-                    @elseif($enrollment->type == 'bootcamp' && $enrollment->bootcamp)
-                        <div class="course-title">{{ $enrollment->bootcamp->title }}</div>
-                        <div class="course-meta">
-                            <span><i class="bx bx-user"></i> {{ $enrollment->bootcamp->tutor->name ?? 'Unknown Tutor' }}</span>
-                            <span><i class="bx bx-calendar"></i> Enrolled {{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</span>
-                            @if($enrollment->completed_at)
-                                <span><i class="bx bx-check-circle"></i> Completed {{ $enrollment->completed_at->format('M d, Y') }}</span>
-                            @endif
-                        </div>
-                    @else
-                        <div class="course-title text-muted">Course not found</div>
-                        <div class="course-meta">
-                            <span><i class="bx bx-error-circle"></i> Course may have been deleted</span>
-                        </div>
-                    @endif
-                </div>
+            </td>
 
-                <div class="progress-section">
-                    <div class="progress-header">
-                        <span class="progress-label">Learning Progress</span>
-                        <span class="progress-percentage">{{ number_format($enrollment->progress, 1) }}%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ $enrollment->progress }}%"></div>
-                    </div>
-                </div>
-
-                @if($enrollment->notes)
-                <div class="notes-section">
-                    <strong>Notes:</strong> {{ $enrollment->notes }}
-                </div>
+            <!-- Course Title -->
+            <td>
+                @if($enrollment->type == 'class' && $enrollment->class)
+                    {{ $enrollment->class->title }}
+                @elseif($enrollment->type == 'bootcamp' && $enrollment->bootcamp)
+                    {{ $enrollment->bootcamp->title }}
+                @else
+                    <span class="text-muted">Course not found</span>
                 @endif
+            </td>
 
-                <div class="enrollment-actions">
-                    <button type="button" class="btn-action btn-view" data-bs-toggle="modal" data-bs-target="#viewModal{{ $enrollment->id }}">
-                        <i class="bx bx-show"></i> View Details
+            <!-- Type -->
+            <td>
+                <span class="type-badge type-{{ $enrollment->type }}">
+                    {{ ucfirst($enrollment->type) }}
+                </span>
+            </td>
+
+            <!-- Status -->
+            <td>
+                <span class="status-badge status-{{ $enrollment->status }}">
+                    {{ ucfirst($enrollment->status) }}
+                </span>
+            </td>
+
+            <!-- Progress -->
+            <td style="min-width:140px;">
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-sm" style="width: {{ $enrollment->progress }}%"></div>
+                </div>
+                <small>{{ number_format($enrollment->progress, 1) }}%</small>
+            </td>
+
+            <!-- Enrolled Date -->
+            <td>{{ $enrollment->enrolled_at? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</td>
+
+            <!-- Completed Date -->
+            <td>
+                @if($enrollment->completed_at)
+                    {{ $enrollment->completed_at->format('M d, Y') }}
+                @else
+                    -
+                @endif
+            </td>
+
+            <!-- Actions -->
+            <td>
+                <div class="table-actions">
+                    <button class="table-btn table-btn-view" data-bs-toggle="modal" data-bs-target="#viewModal{{ $enrollment->id }}">
+                        <i class="bx bx-show"></i>
                     </button>
-                    <form action="{{ route('admin.enrollments.destroy', $enrollment->id) }}" method="POST" class="d-inline">
+
+                    <form action="{{ route('admin.enrollments.destroy', $enrollment->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-action btn-delete" 
-                                onclick="return confirm('Are you sure you want to delete this enrollment?')">
-                            <i class="bx bx-trash"></i> Delete
+                        <button class="table-btn table-btn-delete" onclick="return confirm('Delete this enrollment?')">
+                            <i class="bx bx-trash"></i>
                         </button>
                     </form>
                 </div>
-            </div>
-        </div>
-
-        <!-- View Modal -->
-        <div class="modal fade" id="viewModal{{ $enrollment->id }}" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Enrollment Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-borderless">
-                                    <tr>
-                                        <th width="40%">Student:</th>
-                                        <td>{{ $enrollment->user->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email:</th>
-                                        <td>{{ $enrollment->user->email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Course:</th>
-                                        <td>
-                                            @if($enrollment->type == 'class' && $enrollment->class)
-                                                {{ $enrollment->class->title }}
-                                            @elseif($enrollment->type == 'bootcamp' && $enrollment->bootcamp)
-                                                {{ $enrollment->bootcamp->title }}
-                                            @else
-                                                Course not found
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Type:</th>
-                                        <td>{{ ucfirst($enrollment->type) }}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <table class="table table-borderless">
-                                    <tr>
-                                        <th width="40%">Status:</th>
-                                        <td>
-                                            <span class="status-badge status-{{ $enrollment->status }}">
-                                                {{ ucfirst($enrollment->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Progress:</th>
-                                        <td>{{ number_format($enrollment->progress, 1) }}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Enrolled Date:</th>
-                                        <td>{{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('M d, Y H:i') : 'N/A' }}</td>
-                                    </tr>
-                                    @if($enrollment->completed_at)
-                                    <tr>
-                                        <th>Completed Date:</th>
-                                        <td>{{ $enrollment->completed_at->format('M d, Y H:i') }}</td>
-                                    </tr>
-                                    @endif
-                                </table>
-                            </div>
-                        </div>
-                        @if($enrollment->notes)
-                        <div class="mt-3">
-                            <strong>Notes:</strong>
-                            <p class="mt-2">{{ $enrollment->notes }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </td>
+        </tr>
         @endforeach
+    </tbody>
+</table>
+</div>
+
 
         <!-- Pagination -->
         @if($enrollments->hasPages())

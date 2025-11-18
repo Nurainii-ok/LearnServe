@@ -5,7 +5,7 @@
 @section('styles')
 <style>
 .page-container {
-    padding: 2rem;
+    padding: 0px;
     margin: 0;
 }
 
@@ -162,10 +162,10 @@
     @endif
 
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>Tutors Management</h1>
         <p>Manage all tutors, view their details, and handle tutor-related operations.</p>
-    </div>
+    </div>-->
 
     <!-- Main Content -->
     <div class="content-card">

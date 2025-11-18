@@ -257,7 +257,15 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
-                    <!-- This space reserved for future fields if needed -->
+                    <label for="status">Status *</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                    </select>
+                    @error('status')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
@@ -265,8 +273,10 @@ textarea.form-control {
 
             <div class="form-group">
                 <label for="image">Class Image</label>
-                <input type="file" id="image" name="image" class="form-control" accept="image/*">
-                <small class="text-muted">Upload an image for the class (JPEG, PNG, JPG, GIF, max 2MB)</small>
+                <input type="file" id="image" name="image" class="form-control" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
+                <small class="text-muted">Upload an image for the class (JPEG, PNG, JPG, GIF, WebP, max 10MB)</small>
+                <div id="file-size-error" class="error-message" style="display: none;">File size must be less than 10MB</div>
+                <div id="file-type-error" class="error-message" style="display: none;">Please select a valid image file (JPEG, PNG, JPG, GIF, WebP)</div>
                 @error('image')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -286,6 +296,69 @@ textarea.form-control {
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-focus first input
     document.getElementById('title').focus();
+    
+    // File size validation
+    const imageInput = document.getElementById('image');
+    const fileSizeError = document.getElementById('file-size-error');
+    const submitButton = document.querySelector('.btn-primary');
+    
+    imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        const fileTypeError = document.getElementById('file-type-error');
+        
+        // Reset errors
+        fileSizeError.style.display = 'none';
+        fileTypeError.style.display = 'none';
+        
+        if (file) {
+            console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+            
+            // Check file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                fileTypeError.style.display = 'block';
+                this.value = '';
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+                submitButton.style.cursor = 'not-allowed';
+                console.log('Invalid file type:', file.type);
+                return;
+            }
+            
+            // Check file size (10MB = 10 * 1024 * 1024 bytes)
+            const maxSize = 10 * 1024 * 1024;
+            
+            if (file.size > maxSize) {
+                fileSizeError.style.display = 'block';
+                this.value = ''; // Clear the input
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+                submitButton.style.cursor = 'not-allowed';
+                console.log('File too large:', file.size, 'Max:', maxSize);
+            } else {
+                // File is valid
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.cursor = 'pointer';
+                console.log('File is valid');
+            }
+        } else {
+            // No file selected, enable submit
+            submitButton.disabled = false;
+            submitButton.style.opacity = '1';
+            submitButton.style.cursor = 'pointer';
+        }
+    });
+    
+    // Form submission validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const file = imageInput.files[0];
+        if (file && file.size > 10 * 1024 * 1024) {
+            e.preventDefault();
+            alert('Please select an image smaller than 10MB');
+            return false;
+        }
+    });
 });
 </script>
 @endsection

@@ -23,17 +23,7 @@
     padding-top: 1rem;
 }
 
-.main-content {
-    margin-left: 0 !important;
-}
-
-header {
-    position: relative !important;
-    left: auto !important;
-    width: 100% !important;
-    top: auto !important;
-    z-index: auto !important;
-}
+/* Remove conflicting header overrides - let global header styling work */
 
 .form-container {
     background: white;
@@ -260,9 +250,15 @@ textarea.form-control {
                 </div>
 
                 <div class="form-group">
-                    <!-- This space reserved for future fields if needed -->
+                    <label for="schedule">Schedule</label>
+                    <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Mon,Wed,Fri 10:00-12:00">
+                    @error('schedule')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
+
+            <!-- Date fields removed as requested -->
 
             <div class="form-actions">
                 <a href="{{ route('tutor.classes') }}" class="btn-secondary">Cancel</a>

@@ -5,7 +5,7 @@
 @section('styles')
 <style>
 .page-container {
-    padding: 2rem;
+    padding: 0px;
     margin: 0;
 }
 
@@ -15,7 +15,6 @@
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
 .page-header h1 {
@@ -33,8 +32,8 @@
 .content-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
+    padding: 0; /* <-- padding table container = 0 */
 }
 
 .card-header {
@@ -70,7 +69,6 @@
 .btn-primary:hover {
     background: var(--deep-brown);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(148, 78, 37, 0.3);
     color: white;
     text-decoration: none;
 }
@@ -101,8 +99,10 @@
     gap: 0.25rem;
 }
 
+/* TABLE FIX — padding kiri & kanan full 0 */
 .table-responsive {
     overflow-x: auto;
+    padding: 0; /* ← penting */
 }
 
 .data-table {
@@ -149,6 +149,8 @@
     background: #f8fafc;
 }
 </style>
+
+
 @endsection
 
 @section('content')
@@ -162,10 +164,10 @@
     @endif
 
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>Members Management</h1>
         <p>Manage all registered members, view their details, and handle member-related operations.</p>
-    </div>
+    </div>-->
 
     <!-- Main Content -->
     <div class="content-card">

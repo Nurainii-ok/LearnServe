@@ -5,7 +5,7 @@
 @section('styles')
 <style>
 .page-container {
-    padding: 0;
+    padding: 0px;
     margin: 0;
     max-width: 1200px;
     margin: 0 auto;
@@ -209,10 +209,10 @@
     @endif
 
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>Classes Management</h1>
         <p>Manage all classes, schedules, and educational content.</p>
-    </div>
+    </div>-->
 
     <!-- Main Content -->
     <div class="content-card">

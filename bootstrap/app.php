@@ -22,6 +22,19 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Handle PostTooLargeException
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => 'File upload too large',
+                    'message' => 'The uploaded file exceeds the maximum allowed size. Please upload a file smaller than 10MB.',
+                    'max_size' => '10MB'
+                ], 413);
+            }
+            
+            return back()->withInput()->withErrors([
+                'image' => 'The uploaded file is too large. Please upload a file smaller than 10MB.'
+            ])->with('error', 'Upload failed: File size exceeds 10MB limit.');
+        });
     })
     ->create();

@@ -70,7 +70,7 @@
 <section class="popular-category py-5">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold">Jelajahi kursus berdasarkan kategori</h3>
+      <h3 class="fw-bold">Kategori kelas</h3>
       <!--<a href="#" class="btn btn-outline-primary btn-sm">All Category</a>-->
     </div>
     <p class="text-muted mb-5">Jelajahi kursus terbaik melalui kategori yang tersedia agar lebih mudah menemukan yang sesuai.</p>
@@ -83,7 +83,7 @@
             <i class="bi bi-pen"></i>
           </div>
           <h6 class="fw-semibold">Desain & Pengembangan</h6>
-          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">20+ Kelas Tersedia</p>-->
         </div>
       </div>
 
@@ -93,7 +93,7 @@
             <i class="bi bi-megaphone"></i>
           </div>
           <h6 class="fw-semibold">Marketing dan Komunikasi</h6>
-          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">20+ kelas Tersedia</p>-->
         </div>
       </div>
 
@@ -103,7 +103,7 @@
             <i class="bi bi-laptop"></i>
           </div>
           <h6 class="fw-semibold">Digital Marketing</h6>
-          <p class="small text-muted mb-0">300+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">300+ kelas Tersedia</p>-->
         </div>
       </div>
 
@@ -113,7 +113,7 @@
             <i class="bi bi-briefcase"></i>
           </div>
           <h6 class="fw-semibold">Bisnis & Konsultasi</h6>
-          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">50+ Kelas Tersedia</p>-->
         </div>
       </div>
 
@@ -123,7 +123,7 @@
             <i class="bi bi-cash-coin"></i>
           </div>
           <h6 class="fw-semibold">Manajemen Keuangan</h6>
-          <p class="small text-muted mb-0">20+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">20+ Kelas Tersedia</p>-->
         </div>
       </div>
 
@@ -133,7 +133,7 @@
             <i class="bi bi-person"></i>
           </div>
           <h6 class="fw-semibold">Teknologi & IT</h6>
-          <p class="small text-muted mb-0">50+ Kursus Tersedia</p>
+          <!--<p class="small text-muted mb-0">50+ Kelas Tersedia</p>-->
         </div>
       </div>
     </div>
@@ -148,7 +148,7 @@
     <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
       <div>
-        <h3 class="fw-bold mb-1">Kursus Populer untuk Anda</h3>
+        <h3 class="fw-bold mb-1">Kelas Populer untuk Anda</h3>
         <p class="text-muted small mb-0">Dapatkan kursus terbaik dengan harga terbaik bersama tutor terbaik</p>
       </div>
         <a href="{{ route('learning') }}" 

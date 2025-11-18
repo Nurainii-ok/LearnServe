@@ -17,7 +17,7 @@
 }
 
 .page-container {
-    padding: 2rem;
+    padding: 0px;
     margin: 0;
 }
 

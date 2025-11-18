@@ -39,6 +39,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'assigned_by');
     }
 
+    public function submissions()
+    {
+        return $this->hasMany(TaskSubmission::class, 'task_id');
+    }
+
     // Scopes
     public function scopePending($query)
     {

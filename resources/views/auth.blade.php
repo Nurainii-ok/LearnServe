@@ -11,10 +11,7 @@
 <body>
     <!-- Back to Website Button -->
     <div class="back-to-website-auth">
-        <a href="{{ route('home') }}" class="btn-back-to-website-auth" title="Back to Website">
-            <i class='bx bx-globe'></i>
-            <span>Back to Website</span>
-        </a>
+        <a href="{{ route('home') }}" class="back-link">← Back to Website</a>
     </div>
     
     <!-- Logo di pojok -->
@@ -129,4 +126,21 @@
 </script>
 
 </body>
+
+<style>
+    .back-link {
+        text-decoration: none;
+        font-size: 0.95rem;
+        color: #4c4037;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+    /* Hover: underline halus */
+    .back-link:hover {
+        text-decoration: underline;
+        color: #332b26;
+    }
+</style>
+
 </html>

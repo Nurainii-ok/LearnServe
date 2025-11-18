@@ -29,12 +29,12 @@
     </div>
 
     <!-- Back to Website Button -->
-    <div class="back-to-website">
+    <!--<div class="back-to-website">
         <a href="{{ route('home') }}" class="btn-back-to-website" title="Back to Website">
             <span class="las la-globe"></span>
             <span class="back-text">Back to Website</span>
         </a>
-    </div>
+    </div>-->
 
     <div class="user-wrapper">
         @if(session('user_id'))
