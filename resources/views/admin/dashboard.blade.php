@@ -17,6 +17,11 @@
     margin-bottom: 2rem;
 }
 
+.dashboard-content {
+    padding-top: 70px; /* biar aman, lebih tinggi dari header */
+}
+
+
 .stat-card {
     background: #fff;
     border-radius: 12px;

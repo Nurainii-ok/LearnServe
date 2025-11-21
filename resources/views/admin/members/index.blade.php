@@ -36,6 +36,10 @@
     padding: 0; /* <-- padding table container = 0 */
 }
 
+.page-container {
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
 .card-header {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -173,10 +177,10 @@
     <div class="content-card">
         <div class="card-header">
             <h2>All Members ({{ $members->total() }})</h2>
-            <a href="{{ route('admin.members.create') }}" class="btn-primary">
+            <!--<a href="{{ route('admin.members.create') }}" class="btn-primary">
                 <i class="las la-user-plus"></i>
                 Add New Member
-            </a>
+            </a>-->
         </div>
         
         @if($members->count() > 0)
@@ -207,10 +211,10 @@
                         <td>{{ $member->created_at->format('M d, Y') }}</td>
                         <td>
                             <div style="display: flex; gap: 0.5rem;">
-                                <a href="{{ route('admin.members.edit', $member->id) }}" class="btn-edit">
+                                <!--<a href="{{ route('admin.members.edit', $member->id) }}" class="btn-edit">
                                     <i class="las la-edit"></i>
                                     Edit
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.members.destroy', $member->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this member?')">
                                     @csrf
                                     @method('DELETE')
@@ -244,3 +248,4 @@
     </div>
 </div>
 @endsection
+

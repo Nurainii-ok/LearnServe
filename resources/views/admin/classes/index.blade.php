@@ -34,6 +34,10 @@
     font-size: 1rem;
 }
 
+.page-container {
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
 .content-card {
     background: white;
     border-radius: 12px;
@@ -218,10 +222,10 @@
     <div class="content-card">
         <div class="card-header">
             <h2>All Classes ({{ $classes->total() }})</h2>
-            <a href="{{ route('admin.classes.create') }}" class="btn-primary">
+            <!--<a href="{{ route('admin.classes.create') }}" class="btn-primary">
                 <i class="las la-plus-circle"></i>
                 Create New Class
-            </a>
+            </a>-->
         </div>
         
         @if($classes->count() > 0)
@@ -290,9 +294,9 @@
                         </td>
                         <td>
                             <div style="display: flex; gap: 0.375rem; justify-content: center;">
-                                <a href="{{ route('admin.classes.edit', $class->id) }}" class="btn-edit" title="Edit Class">
+                                <!--<a href="{{ route('admin.classes.edit', $class->id) }}" class="btn-edit" title="Edit Class">
                                     <i class="las la-edit"></i>
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.classes.destroy', $class->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this class? This action cannot be undone.')">
                                     @csrf
                                     @method('DELETE')

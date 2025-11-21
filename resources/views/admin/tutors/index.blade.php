@@ -37,6 +37,11 @@
     border: 1px solid #e5e7eb;
 }
 
+.page-container {
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
+
 .card-header {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -171,10 +176,10 @@
     <div class="content-card">
         <div class="card-header">
             <h2>All Tutors ({{ $tutors->total() }})</h2>
-            <a href="{{ route('admin.tutors.create') }}" class="btn-primary">
+            <!--<a href="{{ route('admin.tutors.create') }}" class="btn-primary">
                 <i class="las la-user-plus"></i>
                 Add New Tutor
-            </a>
+            </a>-->
         </div>
         
         @if($tutors->count() > 0)
@@ -207,10 +212,10 @@
                         <td>{{ $tutor->created_at->format('M d, Y') }}</td>
                         <td>
                             <div style="display: flex; gap: 0.5rem;">
-                                <a href="{{ route('admin.tutors.edit', $tutor->id) }}" class="btn-edit">
+                                <!--<a href="{{ route('admin.tutors.edit', $tutor->id) }}" class="btn-edit">
                                     <i class="las la-edit"></i>
                                     Edit
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.tutors.destroy', $tutor->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this tutor? This will also remove all their classes.')">
                                     @csrf
                                     @method('DELETE')

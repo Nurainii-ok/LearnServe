@@ -349,9 +349,9 @@
                         <td>{{ $bootcamp->start_date ? $bootcamp->start_date->format('M d, Y') : 'Not set' }}</td>
                         <td>
                             <div style="display: flex; gap: 0.375rem; justify-content: center;">
-                                <a href="{{ route('admin.bootcamps.edit', $bootcamp->id) }}" class="btn-edit" title="Edit Bootcamp">
+                                <!--<a href="{{ route('admin.bootcamps.edit', $bootcamp->id) }}" class="btn-edit" title="Edit Bootcamp">
                                     <i class="las la-edit"></i>
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.bootcamps.destroy', $bootcamp->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this bootcamp? This action cannot be undone.')">
                                     @csrf
                                     @method('DELETE')

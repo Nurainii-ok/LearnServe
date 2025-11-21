@@ -10,9 +10,9 @@
 </head>
 <body>
     <!-- Back to Website Button -->
-    <div class="back-to-website-auth">
+    <!--<div class="back-to-website-auth">
         <a href="{{ route('home') }}" class="back-link">← Back to Website</a>
-    </div>
+    </div>-->
     
     <!-- Logo di pojok -->
     <!--<img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="auth-logo">-->
