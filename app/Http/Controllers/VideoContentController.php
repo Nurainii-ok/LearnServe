@@ -247,4 +247,23 @@ class VideoContentController extends Controller
     {
         return session('role') === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
     }
+
+    /**
+ * Convert YouTube URL to Embed format
+ */
+private function convertYoutubeUrlToEmbed($url)
+{
+    // Format: https://youtu.be/VIDEO_ID
+    if (preg_match('/youtu\.be\/([^\?]+)/', $url, $matches)) {
+        return 'https://www.youtube.com/embed/' . $matches[1];
+    }
+
+    // Format: https://www.youtube.com/watch?v=VIDEO_ID
+    if (preg_match('/watch\?v=([^&]+)/', $url, $matches)) {
+        return 'https://www.youtube.com/embed/' . $matches[1];
+    }
+
+    return $url; // fallback
+}
+
 }

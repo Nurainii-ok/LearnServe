@@ -41,6 +41,7 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
+    padding-top: 70px; /* biar aman, lebih tinggi dari header */
 }
 
 .stat-card {

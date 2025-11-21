@@ -4,11 +4,15 @@
 
 @section('content')
 <style>
+    .container-fluid {
+        padding-top: 70px !important; /* Sesuaikan tinggi header */
+    }
     .profile-sidebar {
         background: #fff;
         border-radius: 12px;
         padding: 20px 0;
         border: 1px solid #e5e7eb;
+        
     }
     .profile-sidebar a {
         display: flex;

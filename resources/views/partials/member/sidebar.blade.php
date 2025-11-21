@@ -1,119 +1,180 @@
-<!-- Menu -->
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-  <div class="app-brand demo">
-    <a href="{{ route('home') }}" class="app-brand-link">
-      <span class="app-brand-logo demo">
-        <img src="{{ asset('assets/Logo.jpg') }}" alt="LearnServe" style="height: 32px; width: auto;">
-      </span>
-      <span class="app-brand-text demo menu-text fw-bolder ms-2" style="color: var(--primary-brown);">LearnServe</span>
+<aside class="sidebar">
+
+    <!-- BRAND -->
+    <a href="{{ route('home') }}" class="sidebar-brand">
+        <img src="{{ asset('assets/LOGO.png') }}" alt="Logo" class="brand-logo">
+
+        <div class="brand-text">
+            <span class="brand-title">LearnServe</span>
+            <small class="brand-role">Member</small>
+        </div>
     </a>
 
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-      <i class="bx bx-chevron-left bx-sm align-middle"></i>
-    </a>
-  </div>
+    <!-- MENU -->
+    <div class="sidebar-menu">
+        <ul>
 
-  <div class="menu-inner-shadow"></div>
+            <li>
+                <a href="{{ route('member.dashboard') }}" class="{{ request()->routeIs('member.dashboard*') ? 'active' : '' }}">
+                    <span class="las la-home"></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
 
-  <ul class="menu-inner py-1">
+            <li>
+                <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile*') ? 'active' : '' }}">
+                    <span class="las la-user"></span>
+                    <span>Profile</span>
+                </a>
+            </li>
 
-    <!-- Dashboard -->
-    <li class="menu-item {{ request()->routeIs('member.dashboard*') ? 'active' : '' }}">
-      <a href="{{ route('member.dashboard') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
-        <div data-i18n="Dashboard">Dashboard</div>
-      </a>
-    </li>
+            <li>
+                <a href="{{ route('member.enrollments') }}" class="{{ request()->routeIs('member.enrollments*') ? 'active' : '' }}">
+                    <span class="las la-book"></span>
+                    <span>My Enrollments</span>
+                </a>
+            </li>
 
-    <!-- Profile -->
-    <li class="menu-item {{ request()->routeIs('profile*') ? 'active' : '' }}">
-      <a href="{{ route('profile') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-user"></i>
-        <div data-i18n="Profile">Profile</div>
-      </a>
-    </li>
+            <li>
+                <a href="{{ route('member.grades') }}" class="{{ request()->routeIs('member.grades*') ? 'active' : '' }}">
+                    <span class="las la-medal"></span>
+                    <span>My Grades</span>
+                </a>
+            </li>
 
-    <!-- Divider -->
-    <li class="menu-header small text-uppercase">
-      <span class="menu-header-text">Learning</span>
-    </li>
+            <li>
+                <a href="{{ route('member.tasks') }}" class="{{ request()->routeIs('member.tasks*') ? 'active' : '' }}">
+                    <span class="las la-clipboard-list"></span>
+                    <span>My Tasks</span>
+                </a>
+            </li>
 
-    <!-- My Enrollments -->
-    <li class="menu-item {{ request()->routeIs('member.enrollments*') ? 'active' : '' }}">
-      <a href="{{ route('member.enrollments') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
-        <div data-i18n="Enrollments">My Enrollments</div>
-      </a>
-    </li>
+            <li>
+                <a href="{{ route('elearning.index') }}" class="{{ request()->routeIs('elearning*') ? 'active' : '' }}">
+                    <span class="las la-play-circle"></span>
+                    <span>E-Learning</span>
+                </a>
+            </li>
 
-    <!-- My Grades -->
-    <li class="menu-item {{ request()->routeIs('member.grades*') ? 'active' : '' }}">
-      <a href="{{ route('member.grades') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-trophy"></i>
-        <div data-i18n="Grades">My Grades</div>
-      </a>
-    </li>
+            <li>
+                <a href="{{ route('learning') }}">
+                    <span class="las la-book-open"></span>
+                    <span>Explore Learning</span>
+                </a>
+            </li>
 
-    <!-- My Tasks -->
-    <li class="menu-item {{ request()->routeIs('member.tasks*') ? 'active' : '' }}">
-      <a href="{{ route('member.tasks') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-task"></i>
-        <div data-i18n="Tasks">My Tasks</div>
-      </a>
-    </li>
+            <li>
+                <a href="{{ route('bootcamp') }}">
+                    <span class="las la-rocket"></span>
+                    <span>Bootcamp</span>
+                </a>
+            </li>
 
-    <!-- E-Learning -->
-    <li class="menu-item {{ request()->routeIs('elearning*') ? 'active' : '' }}">
-      <a href="{{ route('elearning.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-play-circle"></i>
-        <div data-i18n="E-Learning">E-Learning</div>
-      </a>
-    </li>
+            <li>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="las la-sign-out-alt"></span>
+                    <span>Logout</span>
+                </a>
 
-    <!-- Divider -->
-    <li class="menu-header small text-uppercase">
-      <span class="menu-header-text">Explore</span>
-    </li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+            </li>
 
-    <!-- Home/Learning -->
-    <li class="menu-item">
-      <a href="{{ route('home') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-home"></i>
-        <div data-i18n="Home">Home</div>
-      </a>
-    </li>
+        </ul>
+    </div>
 
-    <!-- E-Learning -->
-    <li class="menu-item">
-      <a href="{{ route('learning') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-book"></i>
-        <div data-i18n="Learning">E-Learning</div>
-      </a>
-    </li>
-
-    <!-- Bootcamp -->
-    <li class="menu-item">
-      <a href="{{ route('bootcamp') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-code-alt"></i>
-        <div data-i18n="Bootcamp">Bootcamp</div>
-      </a>
-    </li>
-
-    <!-- Divider -->
-    <li class="menu-header small text-uppercase">
-      <span class="menu-header-text">Account</span>
-    </li>
-
-    <!-- Logout -->
-    <li class="menu-item">
-      <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-        @csrf
-        <button type="submit" class="menu-link border-0 bg-transparent w-100 text-start" style="color: inherit;">
-          <i class="menu-icon tf-icons bx bx-power-off"></i>
-          <div data-i18n="Logout">Logout</div>
-        </button>
-      </form>
-    </li>
-
-  </ul>
 </aside>
+
+<style>
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    background: #FAFAF7;
+    padding: 22px;
+    border-right: 1px solid #e8e4df;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brand */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.brand-logo {
+    height: 40px;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.brand-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #4c4037;
+}
+
+.brand-role {
+    font-size: 0.8rem;
+    color: #ECAC57;
+}
+
+/* Menu */
+.sidebar-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-menu ul li {
+    margin-bottom: 8px;
+}
+
+.sidebar-menu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+
+    color: #4c4037;
+    font-weight: 500;
+    font-size: 0.95rem;
+
+    transition: 0.25s ease;
+}
+
+/* Hover */
+.sidebar-menu ul li a:hover {
+    background: #F3EFEC;
+    color: #3a332e;
+}
+
+/* Active */
+.sidebar-menu ul li a.active {
+    background: #EADFD9;
+    font-weight: 600;
+    color: #3a332e;
+}
+
+.sidebar-menu span.las {
+    font-size: 1.2rem;
+}
+
+</style>

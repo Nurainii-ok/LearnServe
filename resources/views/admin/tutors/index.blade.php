@@ -15,7 +15,7 @@
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    
 }
 
 .page-header h1 {
@@ -33,7 +33,6 @@
 .content-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
 }
 
@@ -75,7 +74,6 @@
 .btn-primary:hover {
     background: var(--deep-brown);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(148, 78, 37, 0.3);
     color: white;
     text-decoration: none;
 }

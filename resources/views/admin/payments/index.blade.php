@@ -19,12 +19,13 @@
 .page-container {
     padding: 0px;
     margin: 0;
+    padding-top: 70px; /* Atur sesuai tinggi header */
+
 }
 
 .data-table-container {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
     overflow: hidden;
 }
