@@ -7,15 +7,21 @@
         @if(request()->routeIs('admin.dashboard'))
             Admin Dashboard
         @elseif(request()->routeIs('admin.members*'))
-            Member Management
+            Member
         @elseif(request()->routeIs('admin.tutors*'))
-            Tutor Management
+            Tutor
         @elseif(request()->routeIs('admin.classes*'))
-            Class Management
+            Kelas
+        @elseif(request()->routeIs('admin.bootcamp*'))
+            Bootcamp
         @elseif(request()->routeIs('admin.payments*'))
-            Payment Management
+            Pembayaran
         @elseif(request()->routeIs('admin.tasks*'))
-            Task Management
+            Tugas
+        @elseif(request()->routeIs('admin.video-contents*'))
+            Konten Video
+        @elseif(request()->routeIs('admin.enrollment*'))
+            Pendaftaran
         @elseif(request()->routeIs('admin.account*'))
             Account Settings
         @else

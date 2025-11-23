@@ -174,10 +174,10 @@
     <div class="content-card">
         <div class="card-header">
             <h2>All Tutors ({{ $tutors->total() }})</h2>
-            <!--<a href="{{ route('admin.tutors.create') }}" class="btn-primary">
+            <a href="{{ route('admin.tutors.create') }}" class="btn-primary">
                 <i class="las la-user-plus"></i>
                 Add New Tutor
-            </a>-->
+            </a>
         </div>
         
         @if($tutors->count() > 0)

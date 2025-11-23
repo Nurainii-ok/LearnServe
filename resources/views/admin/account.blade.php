@@ -118,8 +118,8 @@
                 <a data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                     <i class="fas fa-lock"></i> Password
                 </a>
-                <a><i class="fas fa-bell"></i> Notifications</a>
-                <a><i class="fas fa-check-circle"></i> Verification</a>
+                <!--<a><i class="fas fa-bell"></i> Notifications</a>
+                <a><i class="fas fa-check-circle"></i> Verification</a>-->
             </div>
         </div>
 

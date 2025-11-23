@@ -559,9 +559,9 @@
             <th>Type</th>
             <th>Status</th>
             <th>Progress</th>
-            <th>Enrolled</th>
-            <th>Completed</th>
-            <th>Actions</th>
+            <th>Tanggal Pendaftaran</th>
+            <!--<th>Completed</th>-->
+            <!--<th>Actions</th>-->
         </tr>
     </thead>
 
@@ -618,16 +618,16 @@
             <td>{{ $enrollment->enrolled_at? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</td>
 
             <!-- Completed Date -->
-            <td>
+            <!--<td>
                 @if($enrollment->completed_at)
                     {{ $enrollment->completed_at->format('M d, Y') }}
                 @else
                     -
                 @endif
-            </td>
+            </td>-->
 
             <!-- Actions -->
-            <td>
+            <!--<td>
                 <div class="table-actions">
                     <button class="table-btn table-btn-view" data-bs-toggle="modal" data-bs-target="#viewModal{{ $enrollment->id }}">
                         <i class="bx bx-show"></i>
@@ -641,7 +641,7 @@
                         </button>
                     </form>
                 </div>
-            </td>
+            </td>-->
         </tr>
         @endforeach
     </tbody>

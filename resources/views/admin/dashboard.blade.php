@@ -267,7 +267,7 @@
         <div class="stat-card featured">
             <div class="stat-info">
                 <h3>{{ $totalMembers }}</h3>
-                <p>Total Members</p>
+                <p>Total Member</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-users"></i>
@@ -287,7 +287,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalClasses }}</h3>
-                <p>Active Classes</p>
+                <p>Kelas Aktif</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-graduation-cap"></i>
@@ -297,7 +297,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalBootcamps }}</h3>
-                <p>Active Bootcamps</p>
+                <p>Bootcamp Aktif</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-rocket"></i>
@@ -307,7 +307,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalEnrollments ?? 0 }}</h3>
-                <p>Total Enrollments</p>
+                <p>Jumlah Pendaftaran</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-user-check"></i>
@@ -330,7 +330,7 @@
         <!-- Recent Members Table -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h3>Recent Members</h3>
+                <h3>Member Terkini</h3>
                 <a href="{{ route('admin.members') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
                 </a>
@@ -381,7 +381,7 @@
         <!-- Recent Tutors -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h3>Recent Tutors</h3>
+                <h3>Tutor Terkini</h3>
                 <a href="{{ route('admin.tutors') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
                 </a>
@@ -399,7 +399,7 @@
                                 <div class="text-sm text-gray-500">{{ $tutor->email }}</div>
                             </div>
                         </div>
-                        <div class="tutor-contact">
+                        <!--<div class="tutor-contact">
                             <a href="#" class="contact-btn" title="Send Email">
                                 <i class="las la-envelope"></i>
                             </a>
@@ -409,7 +409,7 @@
                             <a href="#" class="contact-btn" title="Message">
                                 <i class="las la-comment"></i>
                             </a>
-                        </div>
+                        </div>-->
                     </div>
                     @endforeach
                 @else
@@ -421,11 +421,12 @@
                 @endif
             </div>
         </div>
-        
-        <!-- Recent Enrollments -->
+    </div>
+
+    <!-- Recent Enrollments -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h3>Recent Enrollments</h3>
+                <h3>Pendaftaran Terbaru</h3>
                 <a href="{{ route('admin.enrollments') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
                 </a>
@@ -488,7 +489,6 @@
                 @endif
             </div>
         </div>
-    </div>
 
     <!-- Quick Actions -->
     <!--<div class="quick-actions">
