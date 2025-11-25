@@ -95,7 +95,7 @@
     </div>
 </div>
 
-<!--<style>
+<<style>
 
     .main-content {
         margin-left: 260px;
@@ -263,22 +263,6 @@
     TOGGLE SIDEBAR (LEWAT #nav-toggle)
     ========================================================= */
 
-    /* Jika sidebar ditutup */
-    #nav-toggle:checked ~ .sidebar {
-        width: 1000px !important;
-        padding: 20px 10px !important;
-    }
-
-    /* Header ikut menyesuaikan */
-    #nav-toggle:checked ~ .main-content header {
-        left: 1000px !important;
-        width: calc(100% - 1000px) !important;
-    }
-
-    /* Main content bergeser */
-    #nav-toggle:checked ~ .main-content {
-        margin-left: 1000px !important;
-    }
 
     /* Sembunyikan brand text saat collapse */
     #nav-toggle:checked ~ .sidebar .brand-text {
@@ -294,6 +278,6 @@
     #nav-toggle:checked ~ .sidebar .sidebar-menu ul li a {
         justify-content: center !important;
     }
-</style>-->
+</style>
 
 

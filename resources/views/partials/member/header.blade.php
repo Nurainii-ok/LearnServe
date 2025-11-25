@@ -268,7 +268,5 @@ header h1 {
         justify-content: flex-start;
     }
 }
-
-
 </style>
 
