@@ -4,9 +4,6 @@
 
 @section('content')
 <style>
-    .container-fluid {
-        padding-top: 70px !important; /* Sesuaikan tinggi header */
-    }
     .profile-sidebar {
         background: #fff;
         border-radius: 12px;

@@ -56,7 +56,7 @@
                 </a>
             </li>
 
-            <li>
+            <!--<li>
                 <a href="{{ route('learning') }}">
                     <span class="las la-book-open"></span>
                     <span>Explore Learning</span>
@@ -68,7 +68,7 @@
                     <span class="las la-rocket"></span>
                     <span>Bootcamp</span>
                 </a>
-            </li>
+            </li>-->
 
             <li>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

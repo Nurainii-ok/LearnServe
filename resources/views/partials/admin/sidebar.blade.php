@@ -95,10 +95,29 @@
     </div>
 </div>
 
-<style>
+<!--<style>
+
+    .main-content {
+        margin-left: 260px;
+        padding-top: 90px; /* supaya konten tidak tertutup header */
+        transition: 0.3s ease;
+    }
+
+    @media (max-width: 992px) {
+        .main-content {
+            margin-left: 70px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .main-content {
+            margin-left: 60px;
+        }
+    }
+
     /* Sidebar */
     .sidebar {
-        width: 260px;
+        width: 250px;
         height: 100vh;
         position: fixed;
         left: 0;
@@ -186,4 +205,95 @@
     .sidebar-menu span.las {
         font-size: 1.2rem;
     }
-</style>
+
+    /* ===================== RESPONSIVE SIDEBAR ====================== */
+    @media (max-width: 992px) {
+        .sidebar {
+            width: 85px !important;
+            padding: 20px 14px !important;
+            transition: 0.3s ease-in-out;
+        }
+
+        .brand-logo {
+            height: 34px;
+        }
+
+        .brand-text {
+            display: none !important;
+        }
+
+        .sidebar-menu ul li a {
+            justify-content: flex-start !important; 
+            padding: 14px 10px !important;
+            border-radius: 10px;
+        }
+
+        .sidebar-menu span.las {
+            font-size: 1.45rem !important;
+            margin-left: 6px !important; /* beri jarak dari pinggir */
+        }
+
+        /* sembunyikan teks menu */
+        .sidebar-menu ul li a span:not(.las) {
+            display: none !important;
+        }
+
+        /* konten bergeser */
+        .main-content {
+            margin-left: 85px !important;
+        }
+    }
+
+
+    /* Extra: layar sangat kecil (mobile) */
+    @media (max-width: 576px) {
+        .sidebar {
+            width: 60px;
+            padding: 18px 8px;
+        }
+
+        .sidebar-menu span.las {
+            font-size: 1.1rem;
+        }
+    }
+
+
+
+    /* =========================================================
+    TOGGLE SIDEBAR (LEWAT #nav-toggle)
+    ========================================================= */
+
+    /* Jika sidebar ditutup */
+    #nav-toggle:checked ~ .sidebar {
+        width: 1000px !important;
+        padding: 20px 10px !important;
+    }
+
+    /* Header ikut menyesuaikan */
+    #nav-toggle:checked ~ .main-content header {
+        left: 1000px !important;
+        width: calc(100% - 1000px) !important;
+    }
+
+    /* Main content bergeser */
+    #nav-toggle:checked ~ .main-content {
+        margin-left: 1000px !important;
+    }
+
+    /* Sembunyikan brand text saat collapse */
+    #nav-toggle:checked ~ .sidebar .brand-text {
+        display: none !important;
+    }
+
+    /* Sembunyikan menu text (kecuali ikon) */
+    #nav-toggle:checked ~ .sidebar .sidebar-menu ul li a span:not(.las) {
+        display: none !important;
+    }
+
+    /* Menu rata tengah */
+    #nav-toggle:checked ~ .sidebar .sidebar-menu ul li a {
+        justify-content: center !important;
+    }
+</style>-->
+
+

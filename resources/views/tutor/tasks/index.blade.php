@@ -235,7 +235,7 @@
                     <thead>
                         <tr>
                             <th>Task</th>
-                            <th>Class</th>
+                            <th>Bootcamp</th>
                             <th>Priority</th>
                             <th>Due Date</th>
                             <th>Submissions</th>
@@ -256,7 +256,7 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <strong>{{ $task->class->title }}</strong>
+                                        <strong>{{ $task->bootcamp->title }}</strong>
                                     </div>
                                 </td>
                                 <td>
@@ -340,7 +340,7 @@
                     <tr>
                         <th>Student</th>
                         <th>Task</th>
-                        <th>Class</th>
+                        <th>Bootcamp</th>
                         <th>Submitted</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -364,7 +364,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <strong>{{ $submission->task->title }}</strong>
+                                    <strong>{{ $submission->task->bootcamp->title ?? 'N/A' }}</strong>
                                     @if($submission->content)
                                     <div style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem;">
                                         {{ Str::limit($submission->content, 50) }}
@@ -374,7 +374,7 @@
                             </td>
                             <td>
                                 <span style="color: var(--primary-brown); font-weight: 500;">
-                                    {{ $submission->task->class->title ?? 'N/A' }}
+                                    {{ $submission->task->bootcamp->title ?? 'N/A' }}
                                 </span>
                             </td>
                             <td>

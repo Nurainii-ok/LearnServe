@@ -36,10 +36,6 @@
     border: 1px solid #e5e7eb;
 }
 
-.page-container {
-    padding-top: 70px; /* Atur sesuai tinggi header */
-}
-
 
 .card-header {
     padding: 1.5rem;

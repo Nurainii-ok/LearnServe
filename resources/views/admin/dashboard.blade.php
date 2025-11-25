@@ -17,11 +17,6 @@
     margin-bottom: 2rem;
 }
 
-.dashboard-content {
-    padding-top: 70px; /* biar aman, lebih tinggi dari header */
-}
-
-
 .stat-card {
     background: #fff;
     border-radius: 12px;
@@ -331,9 +326,9 @@
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Member Terkini</h3>
-                <a href="{{ route('admin.members') }}" class="btn-secondary">
+                <!--<a href="{{ route('admin.members') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
-                </a>
+                </a>-->
             </div>
             <div class="card-body">
                 @if($recentMembers->count() > 0)
@@ -382,9 +377,9 @@
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Tutor Terkini</h3>
-                <a href="{{ route('admin.tutors') }}" class="btn-secondary">
+                <!--<a href="{{ route('admin.tutors') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
-                </a>
+                </a>-->
             </div>
             <div class="card-body">
                 @if($recentTutors->count() > 0)
@@ -427,9 +422,9 @@
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Pendaftaran Terbaru</h3>
-                <a href="{{ route('admin.enrollments') }}" class="btn-secondary">
+                <!--<a href="{{ route('admin.enrollments') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
-                </a>
+                </a>-->
             </div>
             <div class="card-body">
                 @if(isset($recentEnrollments) && $recentEnrollments->count() > 0)

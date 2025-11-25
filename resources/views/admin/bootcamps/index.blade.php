@@ -33,10 +33,6 @@
     font-size: 1rem;
 }
 
-.page-container {
-    padding-top: 70px; /* Atur sesuai tinggi header */
-}
-
 .content-card {
     background: white;
     border-radius: 12px;

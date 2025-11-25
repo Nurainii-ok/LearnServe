@@ -36,9 +36,9 @@
     padding: 0; /* <-- padding table container = 0 */
 }
 
-.page-container {
-    padding-top: 70px; /* Atur sesuai tinggi header */
-}
+/*.page-container {
+    padding-top: 70px; 
+}*/
 
 .card-header {
     padding: 1.5rem;
@@ -47,6 +47,8 @@
     justify-content: space-between;
     align-items: center;
     background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    margin-bottom: 0;
+    padding-bottom: 0.75rem; /* atau 0 kalau mau benar-benar mepet */
 }
 
 .card-header h2 {

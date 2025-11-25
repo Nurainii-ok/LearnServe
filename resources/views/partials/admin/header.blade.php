@@ -1,3 +1,7 @@
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+@endsection
+
 <header>
     <h1>
         <label for="nav-toggle">
@@ -96,7 +100,7 @@
     </div>
 </header>
 
-<style>
+<!--<style>
 /* =======================================
    FIXED HEADER YANG TIDAK BERPINDA-PINDAH
 =========================================*/
@@ -104,17 +108,38 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: 20px 50px;
     background: #FAFAF7;
-    position: fixed; /* FIXED supaya tidak gerak */
+
+    position: fixed;
     top: 0;
-    left: 260px; /* LEBAR SIDEBAR */
-    width: calc(100% - 260px);
+    left: 250px; /* default width */
+    width: calc(100% - 250px);
     height: 70px;
+
     z-index: 200;
     border-bottom: 1px solid #eee;
+
     transition: 0.3s ease;
 }
+
+
+@media (max-width: 992px) {
+    header {
+        left: 70px;
+        width: calc(100% - 70px);
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        left: 60px;
+        width: calc(100% - 60px);
+    }
+}
+
 
 /* Judul */
 header h1 {
@@ -183,5 +208,42 @@ header h1 {
     }
 }
 
+/* =========================================================
+   TOGGLE SIDEBAR (LEWAT #nav-toggle)
+   ========================================================= */
 
-</style>
+/* Jika sidebar ditutup */
+#nav-toggle:checked ~ .sidebar {
+    width: 70px !important;
+    padding: 20px 10px !important;
+}
+
+/* Header ikut menyesuaikan */
+#nav-toggle:checked ~ .main-content header {
+    left: 70px !important;
+    width: calc(100% - 70px) !important;
+}
+
+/* Main content bergeser */
+#nav-toggle:checked ~ .main-content {
+    margin-left: 70px !important;
+}
+
+/* Sembunyikan brand text saat collapse */
+#nav-toggle:checked ~ .sidebar .brand-text {
+    display: none !important;
+}
+
+/* Sembunyikan menu text (kecuali ikon) */
+#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a span:not(.las) {
+    display: none !important;
+}
+
+/* Menu rata tengah */
+#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a {
+    justify-content: center !important;
+}
+
+
+
+</style>-->

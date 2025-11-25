@@ -124,10 +124,3 @@
     </div>
 </div>
 @endsection
-
-<style>
-    .container-p-y {
-    padding-top: 70px !important;
-}
-
-</style>

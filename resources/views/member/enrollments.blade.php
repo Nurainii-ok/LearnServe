@@ -16,6 +16,11 @@
     --text-secondary: #6b7280;
 }
 
+.container-xxl {
+    margin-top: 40px;
+}
+
+
 .page-header {
     background: white;
     padding: 2rem;
@@ -217,10 +222,10 @@
 @section('content')
 <div class="container-xxl">
     <!-- Page Header -->
-    <div class="page-header">
+    <!--<div class="page-header">
         <h1>My Enrollments</h1>
         <p>Track all your enrolled classes and payment history</p>
-    </div>
+    </div>-->
 
     @if($enrollments->count() > 0)
         <!-- Enrollments List -->

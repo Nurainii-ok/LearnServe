@@ -379,7 +379,7 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::delete('/video-contents/{videoContent}', [VideoContentController::class, 'destroy'])->name('video-contents.destroy');
     
     // Account Management
-    Route::get('/account', [AdminController::class, 'account'])->name('account');
+    Route::get('/account', [AdminController:: class, 'account'])->name('account');
     Route::get('/account/edit', [AdminController::class, 'accountEdit'])->name('account.edit');
     Route::put('/account', [AdminController::class, 'accountUpdate'])->name('account.update');
     Route::put('/account/password', [AdminController::class, 'accountPasswordUpdate'])->name('account.password.update');

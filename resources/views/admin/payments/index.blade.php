@@ -19,8 +19,6 @@
 .page-container {
     padding: 0px;
     margin: 0;
-    padding-top: 70px; /* Atur sesuai tinggi header */
-
 }
 
 .data-table-container {

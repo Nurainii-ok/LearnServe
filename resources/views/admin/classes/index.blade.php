@@ -33,9 +33,9 @@
     font-size: 1rem;
 }
 
-.page-container {
-    padding-top: 70px; /* Atur sesuai tinggi header */
-}
+/*.page-container {
+    padding-top: 70px; 
+}*/
 
 .content-card {
     background: white;
