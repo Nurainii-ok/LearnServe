@@ -17,6 +17,11 @@
     margin-bottom: 2rem;
 }
 
+.dashboard-content {
+    padding-top: 70px; /* biar aman, lebih tinggi dari header */
+}
+
+
 .stat-card {
     background: #fff;
     border-radius: 12px;
@@ -199,7 +204,7 @@
         <div class="stat-card featured">
             <div class="stat-info">
                 <h3>{{ $totalMembers }}</h3>
-                <p>Total Members</p>
+                <p>Total Member</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-users"></i>
@@ -209,7 +214,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalClasses }}</h3>
-                <p>Active Classes</p>
+                <p>Kelas Aktif</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-graduation-cap"></i>
@@ -219,7 +224,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalBootcamps }}</h3>
-                <p>Active Bootcamps</p>
+                <p>Bootcamp Aktif</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-rocket"></i>
@@ -229,7 +234,7 @@
         <div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalEnrollments ?? 0 }}</h3>
-                <p>Total Enrollments</p>
+                <p>Jumlah Pendaftaran</p>
             </div>
             <div class="stat-icon">
                 <i class="las la-user-check"></i>
@@ -341,7 +346,7 @@
         <!-- Recent Members Table -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h3>Recent Members</h3>
+                <h3>Member Terkini</h3>
                 <a href="{{ route('admin.members') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
                 </a>
@@ -388,11 +393,67 @@
                 @endif
             </div>
         </div>
+<<<<<<< HEAD
 
         <!-- Recent Enrollments -->
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Recent Enrollments</h3>
+=======
+        
+        <!-- Recent Tutors -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Tutor Terkini</h3>
+                <a href="{{ route('admin.tutors') }}" class="btn-secondary">
+                    See all <i class="las la-arrow-right"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                @if($recentTutors->count() > 0)
+                    @foreach($recentTutors as $tutor)
+                    <div class="tutor-item">
+                        <div class="user-info">
+                            <div class="user-avatar" style="background: var(--primary-gold);">
+                                {{ strtoupper(substr($tutor->name, 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="font-medium">{{ $tutor->name }}</div>
+                                <div class="text-sm text-gray-500">{{ $tutor->email }}</div>
+                            </div>
+                        </div>
+                        <!--<div class="tutor-contact">
+                            <a href="#" class="contact-btn" title="Send Email">
+                                <i class="las la-envelope"></i>
+                            </a>
+                            <a href="#" class="contact-btn" title="Call">
+                                <i class="las la-phone"></i>
+                            </a>
+                            <a href="#" class="contact-btn" title="Message">
+                                <i class="las la-comment"></i>
+                            </a>
+                        </div>-->
+                    </div>
+                    @endforeach
+                @else
+                    <div class="empty-state">
+                        <i class="las la-chalkboard-teacher"></i>
+                        <h4>No tutors found</h4>
+                        <p>No tutors have registered yet.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Enrollments -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Pendaftaran Terbaru</h3>
+                <a href="{{ route('admin.enrollments') }}" class="btn-secondary">
+                    See all <i class="las la-arrow-right"></i>
+                </a>
+>>>>>>> 6b8d8d75a398d844b6c63b83ea914317d1dedead
             </div>
             <div class="card-body">
                 @if($recentEnrollments->count() > 0)
@@ -418,6 +479,113 @@
                 @endif
             </div>
         </div>
+<<<<<<< HEAD
     </div>
+=======
+
+    <!-- Quick Actions -->
+    <!--<div class="quick-actions">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="card-body">
+                <div class="actions-grid">
+                    <a href="{{ route('admin.members') }}" class="action-btn">
+                        <i class="las la-user-plus"></i>
+                        Manage Members
+                    </a>
+                    
+                    <a href="{{ route('admin.classes') }}" class="action-btn gold">
+                        <i class="las la-graduation-cap"></i>
+                        Manage Classes
+                    </a>
+                    
+                    <a href="{{ route('admin.payments') }}" class="action-btn green">
+                        <i class="las la-credit-card"></i>
+                        View Payments
+                    </a>
+                    
+                    <a href="{{ route('admin.tasks') }}" class="action-btn blue">
+                        <i class="las la-tasks"></i>
+                        Manage Tasks
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- Recent Task Submissions -->
+    @if(isset($recentTaskSubmissions) && $recentTaskSubmissions->count() > 0)
+    <div class="dashboard-card" style="margin-top: 2rem;">
+        <div class="card-header">
+            <h3>Recent Task Submissions</h3>
+            <a href="{{ route('admin.tasks') }}" class="btn-secondary">
+                View All Tasks <i class="las la-arrow-right"></i>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Task</th>
+                            <th>Class</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentTaskSubmissions as $submission)
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar" style="background: var(--primary-gold);">
+                                        {{ strtoupper(substr($submission->student->name ?? 'S', 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">{{ $submission->student->name ?? 'Unknown Student' }}</span>
+                                        <small style="display: block; color: #6b7280;">{{ $submission->student->email ?? '' }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>{{ $submission->task->title ?? 'N/A' }}</strong>
+                                    @if($submission->content)
+                                    <small style="color: #6b7280; display: block; margin-top: 0.25rem;">
+                                        {{ Str::limit($submission->content, 50) }}
+                                    </small>
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <span style="color: var(--primary-brown); font-weight: 500;">
+                                    {{ $submission->task->class->title ?? 'N/A' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.875rem;">
+                                    {{ $submission->created_at->format('M d, Y') }}
+                                    <small style="color: #6b7280; display: block;">
+                                        {{ $submission->created_at->format('H:i') }}
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge" style="background: {{ $submission->grade ? 'var(--success-green)' : 'rgba(16, 185, 129, 0.1)' }}; color: {{ $submission->grade ? 'white' : 'var(--success-green)' }};">
+                                    {{ $submission->grade ? 'Graded' : 'Submitted' }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+>>>>>>> 6b8d8d75a398d844b6c63b83ea914317d1dedead
 </div>
 @endsection

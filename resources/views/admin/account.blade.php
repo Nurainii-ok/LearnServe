@@ -3,270 +3,237 @@
 @section('title', 'Account Settings')
 
 @section('content')
+<style>
+    .container-fluid {
+        padding-top: 70px !important; /* Sesuaikan tinggi header */
+    }
+    .profile-sidebar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px 0;
+        border: 1px solid #e5e7eb;
+        
+    }
+    .profile-sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: #555;
+        font-weight: 500;
+        text-decoration: none;
+        transition: .2s;
+    }
+    .profile-sidebar a.active,
+    .profile-sidebar a:hover {
+        background: #FAFAF7;
+        color: #ECAC57;
+    }
+    .profile-sidebar a i {
+        margin-right: 10px;
+    }
+
+    .profile-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .profile-photo-wrapper {
+        position: relative;
+        width: 140px;
+        height: 140px;
+    }
+    .profile-photo-wrapper img {
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #e5e7eb;
+    }
+    .camera-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #4f46e5;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        border: 3px solid #fff;
+        cursor: pointer;
+    }
+
+    .form-control {
+        padding: 12px 14px;
+        border-radius: 8px;
+    }
+
+    .btn-primary-custom {
+        background: #4f46e5;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 600;
+    }
+</style>
+
 <div class="container-fluid px-4">
-    <h1 class="mt-4" style="color: #944e25;">Account Settings</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" style="color: #944e25;">Dashboard</a></li>
+    <!--<ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" style="color: #4f46e5;">Dashboard</a></li>
         <li class="breadcrumb-item active">Account Settings</li>
-    </ol>
+    </ol>-->
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show">
             {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     @if(!$admin)
         <div class="alert alert-danger">
-            <h4>Access Error</h4>
-            <p>Unable to load account information. Please try logging in again.</p>
-            <a href="{{ route('auth') }}" class="btn btn-primary">Login</a>
+            <h4>Error</h4>
+            <p>Unable to load admin profile. Please login again.</p>
+            <a href="{{ route('auth') }}" class="btn btn-primary-custom">Login</a>
         </div>
     @else
+
     <div class="row">
-        <!-- Profile Information -->
-        <div class="col-xl-8">
-            <!-- Profile Photo & Basic Info -->
-            <div class="card mb-4" style="border-color: #ecac57;">
-                <div class="card-header" style="background-color: #944e25; color: white;">
-                    <i class="fas fa-user me-1"></i>
-                    Profile Information
-                    <a href="{{ route('admin.account.edit') }}" class="btn btn-sm btn-light float-end">
-                        <i class="fas fa-edit me-1"></i>Edit Profile
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="row align-items-center mb-4">
-                        <!-- Profile Photo -->
-                        <div class="col-md-3 text-center">
-                            <div class="position-relative d-inline-block">
-                                @if($admin && $admin->profile_photo)
-                                    <img src="{{ asset('storage/profile_photos/' . $admin->profile_photo) }}" 
-                                         alt="Profile Photo" 
-                                         class="rounded-circle border shadow"
-                                         style="width: 120px; height: 120px; object-fit: cover; border-color: #ecac57 !important; border-width: 3px !important;">
-                                @else
-                                    <div class="rounded-circle border shadow d-flex align-items-center justify-content-center"
-                                         style="width: 120px; height: 120px; background: linear-gradient(135deg, #944e25, #ecac57); border-color: #ecac57 !important; border-width: 3px !important;">
-                                        <i class="fas fa-user text-white" style="font-size: 2.5rem;"></i>
-                                    </div>
-                                @endif
-                                <div class="position-absolute bottom-0 end-0">
-                                    <a href="{{ route('admin.account.edit') }}" class="btn btn-sm text-white rounded-circle shadow" style="background-color: #944e25; width: 35px; height: 35px; padding: 0;">
-                                        <i class="fas fa-camera" style="font-size: 12px;"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Basic Info -->
-                        <div class="col-md-9">
-                            <h3 class="mb-2" style="color: #944e25;">{{ $admin->name ?? 'N/A' }}</h3>
-                            <p class="text-muted mb-2">{{ $admin->email ?? 'N/A' }}</p>
-                            <span class="badge px-3 py-2" style="background-color: #944e25; font-size: 0.9rem;">
-                                <i class="fas fa-shield-alt me-1"></i>Administrator
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Detailed Information -->
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="border-start border-3 ps-3 mb-3" style="border-color: #944e25 !important;">
-                                <label class="form-label text-muted small fw-bold">FULL NAME</label>
-                                <p class="h6 mb-0">{{ $admin->name ?? 'N/A' }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border-start border-3 ps-3 mb-3" style="border-color: #ecac57 !important;">
-                                <label class="form-label text-muted small fw-bold">EMAIL ADDRESS</label>
-                                <p class="h6 mb-0">{{ $admin->email ?? 'N/A' }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border-start border-3 ps-3 mb-3" style="border-color: #944e25 !important;">
-                                <label class="form-label text-muted small fw-bold">MEMBER SINCE</label>
-                                <p class="h6 mb-0">{{ $admin->created_at ? $admin->created_at->format('M d, Y') : 'N/A' }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border-start border-3 ps-3 mb-3" style="border-color: #ecac57 !important;">
-                                <label class="form-label text-muted small fw-bold">LAST ACTIVE</label>
-                                <p class="h6 mb-0">{{ $admin->updated_at ? $admin->updated_at->format('M d, Y') : 'N/A' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Security Settings -->
-            <div class="card mb-4" style="border-color: #ecac57;">
-                <div class="card-header" style="background-color: #944e25; color: white;">
-                    <i class="fas fa-shield-alt me-1"></i>
-                    Security Settings
-                </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #944e25;">
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #944e25;">
-                                    <i class="fas fa-key text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h6 class="mb-1" style="color: #944e25;">Password Security</h6>
-                                <p class="text-muted mb-0 small">Last updated: {{ $admin->updated_at ? $admin->updated_at->format('M d, Y') : 'N/A' }}</p>
-                            </div>
-                        </div>
-                        <button type="button" class="btn text-white" style="background-color: #944e25;" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                            <i class="fas fa-edit me-1"></i>Change Password
-                        </button>
-                    </div>
-                </div>
+        <!-- LEFT SIDEBAR -->
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <a class="active"><i class="fas fa-user"></i> Profile Settings</a>
+                <a data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <i class="fas fa-lock"></i> Password
+                </a>
+                <!--<a><i class="fas fa-bell"></i> Notifications</a>
+                <a><i class="fas fa-check-circle"></i> Verification</a>-->
             </div>
         </div>
 
-        <!-- Account Statistics & Quick Actions -->
-        <div class="col-xl-4">
-            <!-- Account Overview -->
-            <div class="card mb-4 shadow-sm" style="border-color: #ecac57; border-width: 2px;">
-                <div class="card-header text-center" style="background: linear-gradient(135deg, #ecac57, #f4d084); color: #944e25;">
-                    <i class="fas fa-chart-line me-2" style="font-size: 1.2rem;"></i>
-                    <strong>Account Overview</strong>
-                </div>
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <div class="mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: linear-gradient(135deg, #944e25, #6b3419);">
-                            <i class="fas fa-user-shield text-white" style="font-size: 2rem;"></i>
-                        </div>
-                        <h4 class="fw-bold" style="color: #944e25;">Admin Panel</h4>
-                        <p class="text-muted small mb-0">System Administrator</p>
-                    </div>
-                    
-                    <!-- Statistics Grid -->
-                    <div class="row g-2 mb-4">
-                        <div class="col-6">
-                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 3px solid #944e25;">
-                                <h4 class="mb-1 fw-bold" style="color: #944e25;">{{ \App\Models\User::where('role', 'member')->count() }}</h4>
-                                <small class="text-muted">Members</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 3px solid #ecac57;">
-                                <h4 class="mb-1 fw-bold" style="color: #944e25;">{{ \App\Models\User::where('role', 'tutor')->count() }}</h4>
-                                <small class="text-muted">Tutors</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 3px solid #944e25;">
-                                <h4 class="mb-1 fw-bold" style="color: #944e25;">{{ \App\Models\Classes::count() }}</h4>
-                                <small class="text-muted">Classes</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 3px solid #ecac57;">
-                                <h4 class="mb-1 fw-bold" style="color: #944e25;">${{ number_format(\App\Models\Payment::where('status', 'completed')->sum('amount'), 0) }}</h4>
-                                <small class="text-muted">Revenue</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- MAIN CONTENT -->
+        <div class="col-md-9">
+            <div class="profile-card">
 
-            <!-- Quick Actions -->
-            <div class="card shadow-sm" style="border-color: #ecac57; border-width: 2px;">
-                <div class="card-header text-center" style="background: linear-gradient(135deg, #944e25, #6b3419); color: white;">
-                    <i class="fas fa-bolt me-2" style="font-size: 1.2rem;"></i>
-                    <strong>Quick Actions</strong>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-3">
-                        <a href="{{ route('admin.members') }}" class="btn btn-outline-primary d-flex align-items-center justify-content-start p-3 rounded" style="border-color: #944e25; color: #944e25; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#944e25'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#944e25';">
-                            <i class="fas fa-users me-3" style="font-size: 1.2rem;"></i>
-                            <span class="fw-semibold">Manage Members</span>
-                        </a>
-                        <a href="{{ route('admin.tutors') }}" class="btn btn-outline-primary d-flex align-items-center justify-content-start p-3 rounded" style="border-color: #944e25; color: #944e25; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#944e25'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#944e25';">
-                            <i class="fas fa-chalkboard-teacher me-3" style="font-size: 1.2rem;"></i>
-                            <span class="fw-semibold">Manage Tutors</span>
-                        </a>
-                        <a href="{{ route('admin.classes') }}" class="btn btn-outline-primary d-flex align-items-center justify-content-start p-3 rounded" style="border-color: #944e25; color: #944e25; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#944e25'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#944e25';">
-                            <i class="fas fa-graduation-cap me-3" style="font-size: 1.2rem;"></i>
-                            <span class="fw-semibold">Manage Classes</span>
-                        </a>
-                        <a href="{{ route('admin.payments') }}" class="btn btn-outline-primary d-flex align-items-center justify-content-start p-3 rounded" style="border-color: #944e25; color: #944e25; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#944e25'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#944e25';">
-                            <i class="fas fa-credit-card me-3" style="font-size: 1.2rem;"></i>
-                            <span class="fw-semibold">View Payments</span>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="profile-photo-wrapper">
+                        @if($admin->profile_photo)
+                            <img src="{{ asset('storage/profile_photos/'.$admin->profile_photo) }}" alt="Profile Photo">
+                        @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($admin->name) }}&background=6366f1&color=fff">
+                        @endif
+
+                        <a href="{{ route('admin.account.edit') }}" class="camera-btn">
+                            <i class="fas fa-camera"></i>
                         </a>
                     </div>
+
+                    <div class="ms-4">
+                        <h3 class="mb-1">{{ $admin->name }}</h3>
+                        <p class="text-muted mb-2">{{ $admin->email }}</p>
+                        <span class="badge bg-primary">Administrator</span>
+                    </div>
                 </div>
+
+                <hr>
+
+                <div class="row g-4 mt-1">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">Full Name</label>
+                        <input class="form-control" value="{{ $admin->name }}" disabled>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">Email Address</label>
+                        <input class="form-control" value="{{ $admin->email }}" disabled>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">Member Since</label>
+                        <input class="form-control" 
+                               value="{{ $admin->created_at ? $admin->created_at->format('M d, Y') : 'N/A' }}" disabled>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">Last Active</label>
+                        <input class="form-control"
+                               value="{{ $admin->updated_at ? $admin->updated_at->format('M d, Y') : 'N/A' }}" disabled>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <a href="{{ route('admin.account.edit') }}" class="btn btn-primary-custom">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
+
     </div>
+
+    @endif
 </div>
 
 <!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #944e25; color: white;">
-                <h5 class="modal-title" id="changePasswordModalLabel">
-                    <i class="fas fa-key me-1"></i>Change Password
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="modal-header" style="background:#4f46e5; color:#fff;">
+                <h5 class="modal-title"><i class="fas fa-key me-2"></i>Change Password</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
+
             <form action="{{ route('admin.account.password.update') }}" method="POST">
                 @csrf
                 @method('PUT')
+
                 <div class="modal-body">
+
                     @if ($errors->any())
                         <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                            <ul class="m-0">
+                                @foreach ($errors->all() as $err)
+                                    <li>{{ $err }}</li>
                                 @endforeach
                             </ul>
                         </div>
                     @endif
 
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label">Current Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control" id="current_password" name="current_password" required>
-                        @error('current_password')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <label class="form-label">Current Password</label>
+                    <input type="password" name="current_password" class="form-control mb-3" required>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">New Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <div class="form-text">Password must be at least 4 characters long.</div>
-                        @error('password')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <label class="form-label">New Password</label>
+                    <input type="password" name="password" class="form-control mb-3" required>
 
-                    <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm New Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                    </div>
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" name="password_confirmation" class="form-control mb-1" required>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn text-white" style="background-color: #944e25;">
-                        <i class="fas fa-save me-1"></i>Update Password
-                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary-custom">Update Password</button>
                 </div>
+
             </form>
+
         </div>
     </div>
 </div>
-@endif
-</div>
+
 @endsection

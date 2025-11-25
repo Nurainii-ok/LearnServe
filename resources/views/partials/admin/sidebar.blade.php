@@ -21,21 +21,21 @@
             <li>
                 <a href="{{ route('admin.members') }}" class="{{ request()->routeIs('admin.members*') ? 'active' : '' }}">
                     <span class="las la-users"></span>
-                    <span>Members</span>
+                    <span>Member</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.tutors') }}" class="{{ request()->routeIs('admin.tutors*') ? 'active' : '' }}">
                     <span class="las la-chalkboard-teacher"></span>
-                    <span>Tutors</span>
+                    <span>Tutor</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.classes') }}" class="{{ request()->routeIs('admin.classes*') ? 'active' : '' }}">
                     <span class="las la-graduation-cap"></span>
-                    <span>Classes</span>
+                    <span>Kelas</span>
                 </a>
             </li>
 
@@ -49,35 +49,35 @@
             <li>
                 <a href="{{ route('admin.payments') }}" class="{{ request()->routeIs('admin.payments*') ? 'active' : '' }}">
                     <span class="las la-credit-card"></span>
-                    <span>Payments</span>
+                    <span>Pembayaran</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.tasks') }}" class="{{ request()->routeIs('admin.tasks*') ? 'active' : '' }}">
                     <span class="las la-clipboard-list"></span>
-                    <span>Tasks</span>
+                    <span>Tugas</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.video-contents.index') }}" class="{{ request()->routeIs('admin.video-contents*') ? 'active' : '' }}">
                     <span class="las la-video"></span>
-                    <span>Video Contents</span>
+                    <span>Konten Video</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.enrollments') }}" class="{{ request()->routeIs('admin.enrollments*') ? 'active' : '' }}">
                     <span class="las la-user-check"></span>
-                    <span>Enrollments</span>
+                    <span>Pendaftaran</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.account') }}" class="{{ request()->routeIs('admin.account*') ? 'active' : '' }}">
                     <span class="las la-user-circle"></span>
-                    <span>Account</span>
+                    <span>Akun</span>
                 </a>
             </li>
 

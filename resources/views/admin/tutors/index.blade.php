@@ -15,7 +15,7 @@
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    
 }
 
 .page-header h1 {
@@ -33,9 +33,13 @@
 .content-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
 }
+
+.page-container {
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
 
 .card-header {
     padding: 1.5rem;
@@ -70,7 +74,6 @@
 .btn-primary:hover {
     background: var(--deep-brown);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(148, 78, 37, 0.3);
     color: white;
     text-decoration: none;
 }
@@ -207,10 +210,10 @@
                         <td>{{ $tutor->created_at->format('M d, Y') }}</td>
                         <td>
                             <div style="display: flex; gap: 0.5rem;">
-                                <a href="{{ route('admin.tutors.edit', $tutor->id) }}" class="btn-edit">
+                                <!--<a href="{{ route('admin.tutors.edit', $tutor->id) }}" class="btn-edit">
                                     <i class="las la-edit"></i>
                                     Edit
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.tutors.destroy', $tutor->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this tutor? This will also remove all their classes.')">
                                     @csrf
                                     @method('DELETE')

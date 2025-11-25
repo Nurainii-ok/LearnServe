@@ -1,6 +1,220 @@
 @extends('layouts.admin')
 
+<<<<<<< HEAD
 @section('title', 'All Tasks')
+=======
+@section('title', 'Tasks Management')
+
+@section('styles')
+<style>
+.page-container {
+    padding: 0px;
+    margin: 0;
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
+.data-table-container {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.table-header {
+    background: var(--light-cream);
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-header h2 {
+    margin: 0;
+    color: var(--primary-brown);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--primary-brown);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background: var(--deep-brown);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.875rem;
+}
+
+.data-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.data-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: rgba(236, 172, 87, 0.1);
+    color: var(--primary-gold);
+}
+
+.status-in_progress {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.status-completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-green);
+}
+
+.status-overdue {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error-red);
+}
+
+.priority-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.priority-high {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error-red);
+}
+
+.priority-medium {
+    background: rgba(236, 172, 87, 0.1);
+    color: var(--primary-gold);
+}
+
+.priority-low {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-edit {
+    background: var(--primary-gold);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: all 0.3s;
+}
+
+.btn-edit:hover {
+    background: var(--soft-gold);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background: var(--error-red);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+}
+
+.pagination-container {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.due-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.overdue {
+    color: var(--error-red);
+    font-weight: 600;
+}
+</style>
+@endsection
+>>>>>>> 6b8d8d75a398d844b6c63b83ea914317d1dedead
 
 @section('content')
 <div class="container-fluid">

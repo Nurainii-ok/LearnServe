@@ -247,4 +247,5 @@ class VideoContentController extends Controller
     {
         return session('role') === 'admin' ? 'admin.video-contents.index' : 'tutor.video-contents.index';
     }
+
 }

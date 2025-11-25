@@ -17,7 +17,6 @@
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     margin: 0 2rem 2rem 2rem;
 }
 
@@ -34,10 +33,13 @@
     font-size: 1rem;
 }
 
+.page-container {
+    padding-top: 70px; /* Atur sesuai tinggi header */
+}
+
 .content-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #e5e7eb;
     margin: 0 2rem;
     padding: 0 !important; /* tambahkan */
@@ -76,7 +78,6 @@
 .btn-primary:hover {
     background: var(--deep-brown);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(148, 78, 37, 0.3);
     color: white;
     text-decoration: none;
 }
@@ -153,7 +154,6 @@
 .data-table tbody tr:hover {
     background: #f9fafb;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     transition: all 0.2s ease;
 }
 
@@ -244,10 +244,10 @@
     <div class="content-card">
         <div class="card-header">
             <h2>All Bootcamps ({{ $bootcamps->total() }})</h2>
-            <a href="{{ route('admin.bootcamps.create') }}" class="btn-primary">
+            <!--<a href="{{ route('admin.bootcamps.create') }}" class="btn-primary">
                 <i class="las la-plus-circle"></i>
                 Create New Bootcamp
-            </a>
+            </a>-->
         </div>
         
         @if($bootcamps->count() > 0)
@@ -349,9 +349,9 @@
                         <td>{{ $bootcamp->start_date ? $bootcamp->start_date->format('M d, Y') : 'Not set' }}</td>
                         <td>
                             <div style="display: flex; gap: 0.375rem; justify-content: center;">
-                                <a href="{{ route('admin.bootcamps.edit', $bootcamp->id) }}" class="btn-edit" title="Edit Bootcamp">
+                                <!--<a href="{{ route('admin.bootcamps.edit', $bootcamp->id) }}" class="btn-edit" title="Edit Bootcamp">
                                     <i class="las la-edit"></i>
-                                </a>
+                                </a>-->
                                 <form action="{{ route('admin.bootcamps.destroy', $bootcamp->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this bootcamp? This action cannot be undone.')">
                                     @csrf
                                     @method('DELETE')
