@@ -1,336 +1,174 @@
 @extends('layouts.admin')
 
-@section('title', 'Tasks Management')
-
-@section('styles')
-<style>
-.page-container {
-    padding: 0px;
-    margin: 0;
-}
-
-.data-table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: 1px solid #e5e7eb;
-    overflow: hidden;
-}
-
-.table-header {
-    background: var(--light-cream);
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.table-header h2 {
-    margin: 0;
-    color: var(--primary-brown);
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.btn-primary {
-    background: var(--primary-brown);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.3s;
-}
-
-.btn-primary:hover {
-    background: var(--deep-brown);
-    color: white;
-    text-decoration: none;
-    transform: translateY(-1px);
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.data-table th,
-.data-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #f3f4f6;
-    font-size: 0.875rem;
-}
-
-.data-table th {
-    background: #f9fafb;
-    font-weight: 600;
-    color: var(--text-primary);
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.data-table tbody tr:hover {
-    background: #f9fafb;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.status-pending {
-    background: rgba(236, 172, 87, 0.1);
-    color: var(--primary-gold);
-}
-
-.status-in_progress {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-}
-
-.status-completed {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success-green);
-}
-
-.status-overdue {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-}
-
-.priority-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-left: 0.5rem;
-}
-
-.priority-high {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-}
-
-.priority-medium {
-    background: rgba(236, 172, 87, 0.1);
-    color: var(--primary-gold);
-}
-
-.priority-low {
-    background: rgba(107, 114, 128, 0.1);
-    color: #6b7280;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.btn-edit {
-    background: var(--primary-gold);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.75rem;
-    transition: all 0.3s;
-}
-
-.btn-edit:hover {
-    background: var(--soft-gold);
-    color: white;
-    text-decoration: none;
-}
-
-.btn-delete {
-    background: var(--error-red);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-delete:hover {
-    background: #dc2626;
-}
-
-.pagination-container {
-    padding: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-    background: #f9fafb;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-secondary);
-}
-
-.empty-state i {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #d1d5db;
-}
-
-.alert {
-    padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    font-weight: 500;
-}
-
-.alert-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-}
-
-.due-date {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
-
-.overdue {
-    color: var(--error-red);
-    font-weight: 600;
-}
-</style>
-@endsection
+@section('title', 'All Tasks')
 
 @section('content')
-<div class="page-container">
-    @if(session('success'))
-        <div class="alert alert-success">
-            <i class="las la-check-circle"></i>
-            {{ session('success') }}
-        </div>
-    @endif
-    <div class="data-table-container">
-        <div class="table-header">
-            <h2>Tasks Management</h2>
-            <a href="{{ route('admin.tasks.create') }}" class="btn-primary">
-                <i class="las la-plus"></i> Add New Task
-            </a>
-        </div>
-
-        @if(session('success'))
-            <div style="background: rgba(16, 185, 129, 0.1); color: var(--success-green); padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if($tasks->count() > 0)
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Class</th>
-                            <th>Assigned By</th>
-                            <th>Priority</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($tasks as $task)
-                            <tr>
-                                <td>
-                                    <div>
-                                        <strong>{{ $task->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem;">
-                                            {{ Str::limit($task->description, 60) }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">All Tasks Management</h4>
+                    <p class="text-muted mb-0">Monitor all tasks created by tutors across the platform</p>
+                </div>
+                <div class="card-body">
+                    @if($tasks->count() > 0)
+                        <!-- Summary Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="mb-0">{{ $tasks->total() }}</h4>
+                                                <p class="mb-0">Total Tasks</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="las la-tasks fa-2x"></i>
+                                            </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <strong>{{ $task->class->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem;">{{ $task->class->tutor->name }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="mb-0">{{ $tasks->where('status', 'completed')->count() }}</h4>
+                                                <p class="mb-0">Completed</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="las la-check-circle fa-2x"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>{{ $task->assignedBy->name }}</td>
-                                <td>
-                                    <span class="priority-badge priority-{{ $task->priority }}">
-                                        {{ ucfirst($task->priority) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="due-date {{ \Carbon\Carbon::parse($task->due_date)->isPast() && $task->status !== 'completed' ? 'overdue' : '' }}">
-                                        {{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}
-                                        <div style="font-size: 0.7rem;">{{ \Carbon\Carbon::parse($task->due_date)->format('H:i') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="mb-0">{{ $tasks->where('status', 'in_progress')->count() }}</h4>
+                                                <p class="mb-0">In Progress</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="las la-hourglass-half fa-2x"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <span class="status-badge status-{{ $task->status }}">
-                                        {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="{{ route('admin.tasks.edit', $task->id) }}" class="btn-edit">
-                                            <i class="las la-edit"></i> Edit
-                                        </a>
-                                        <form action="{{ route('admin.tasks.destroy', $task->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this task?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete">
-                                                <i class="las la-trash"></i> Delete
-                                            </button>
-                                        </form>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h4 class="mb-0">{{ $tasks->where('status', 'overdue')->count() }}</h4>
+                                                <p class="mb-0">Overdue</p>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="las la-exclamation-triangle fa-2x"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="pagination-container">
-                {{ $tasks->links() }}
+                        <!-- Tasks Table -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Class</th>
+                                        <th>Tutor</th>
+                                        <th>Due Date</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Submissions</th>
+                                        <th>Graded</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($tasks as $task)
+                                        <tr>
+                                            <td>
+                                                <strong>{{ $task->title }}</strong>
+                                                <br>
+                                                <small class="text-muted">{{ Str::limit($task->description, 60) }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">{{ $task->class->title }}</span>
+                                            </td>
+                                            <td>
+                                                {{ $task->assignedBy->name }}
+                                                <br>
+                                                <small class="text-muted">{{ $task->assignedBy->email }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ $task->is_overdue ? 'bg-danger' : 'bg-info' }}">
+                                                    {{ $task->due_date->format('M d, Y') }}
+                                                </span>
+                                                <br>
+                                                <small class="text-muted">{{ $task->due_date->format('H:i') }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge 
+                                                    @if($task->priority === 'high') bg-danger
+                                                    @elseif($task->priority === 'medium') bg-warning
+                                                    @else bg-success
+                                                    @endif">
+                                                    {{ ucfirst($task->priority) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge 
+                                                    @if($task->status === 'completed') bg-success
+                                                    @elseif($task->status === 'overdue') bg-danger
+                                                    @elseif($task->status === 'in_progress') bg-warning
+                                                    @else bg-secondary
+                                                    @endif">
+                                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">
+                                                    {{ $task->submissions->count() }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    {{ $task->submissions->whereNotNull('grade')->count() }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ $task->created_at->format('M d, Y') }}
+                                                <br>
+                                                <small class="text-muted">{{ $task->created_at->diffForHumans() }}</small>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            {{ $tasks->links() }}
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <i class="las la-tasks display-1 text-muted"></i>
+                            <h5 class="mt-3">No Tasks Found</h5>
+                            <p class="text-muted">No tasks have been created by tutors yet.</p>
+                        </div>
+                    @endif
+                </div>
             </div>
-        @else
-            <div class="empty-state">
-                <i class="las la-tasks"></i>
-                <h3>No tasks found</h3>
-                <p>No tasks have been created yet. <a href="{{ route('admin.tasks.create') }}" style="color: var(--primary-brown);">Create the first task</a></p>
-            </div>
-        @endif
+        </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add animation to table rows
-    const rows = document.querySelectorAll('.data-table tbody tr');
-    rows.forEach((row, index) => {
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
-            row.style.transition = 'all 0.3s ease';
-            row.style.opacity = '1';
-            row.style.transform = 'translateY(0)';
-        }, index * 50);
-    });
-});
-</script>
 @endsection

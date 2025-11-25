@@ -13,7 +13,7 @@ class RoleMiddleware
         $userRole = session('role');
 
         if (! $userRole || ! in_array($userRole, $roles)) {
-            return redirect()->route('auth')->with('error', 'Akses ditolak.');
+            return redirect()->route('login')->with('error', 'Akses ditolak.');
         }
 
         return $next($request);

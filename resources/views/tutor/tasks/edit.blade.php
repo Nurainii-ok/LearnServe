@@ -246,7 +246,7 @@ textarea.form-control {
     <div class="form-container">
         <div class="form-header">
             <h2>Edit Task: {{ $task->title }}</h2>
-            <a href="{{ route('tutor.tasks') }}" class="back-btn">
+            <a href="{{ route('tutor.tasks.index') }}" class="back-btn">
                 <i class="las la-arrow-left"></i> Back to Tasks
             </a>
         </div>
@@ -348,7 +348,7 @@ textarea.form-control {
             </div>
 
             <div class="form-actions">
-                <a href="{{ route('tutor.tasks') }}" class="btn-secondary">Cancel</a>
+                <a href="{{ route('tutor.tasks.index') }}" class="btn-secondary">Cancel</a>
                 <button type="submit" class="btn-primary">Update Task</button>
             </div>
         </form>

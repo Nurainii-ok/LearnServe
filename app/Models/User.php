@@ -36,6 +36,36 @@ class User extends Authenticatable
         return $this->hasMany(Enrollment::class);
     }
 
+    public function taskSubmissions()
+    {
+        return $this->hasMany(TaskSubmission::class);
+    }
+
+    public function gradedSubmissions()
+    {
+        return $this->hasMany(TaskSubmission::class, 'graded_by');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_by');
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(TaskSubmission::class, 'user_id');
+    }
+
+    public function bootcampUsers()
+    {
+        return $this->hasMany(BootcampUser::class, 'user_id');
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class, 'user_id');
+    }
+
     public function classEnrollments()
     {
         return $this->hasMany(Enrollment::class)->where('type', 'class');

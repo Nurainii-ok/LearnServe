@@ -236,7 +236,7 @@
                         Create New Class
                     </button>
                     
-                    <button onclick="window.location.href='{{ route('tutor.tasks') }}'" class="btn-action" style="
+                    <button onclick="window.location.href='{{ route('tutor.tasks.index') }}'" class="btn-action" style="
                         background: var(--primary-gold);
                         color: white;
                         padding: 1rem;

@@ -33,7 +33,7 @@
             </li>
 
             <li>
-                <a href="{{ route('tutor.tasks') }}" class="{{ request()->routeIs('tutor.tasks*') ? 'active' : '' }}">
+                <a href="{{ route('tutor.tasks.index') }}" class="{{ request()->routeIs('tutor.tasks*') ? 'active' : '' }}">
                     <span class="las la-clipboard-check"></span>
                     <span>Tasks & Assignments</span>
                 </a>

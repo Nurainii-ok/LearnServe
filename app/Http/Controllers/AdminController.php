@@ -48,10 +48,23 @@ class AdminController extends Controller
             ->get();
             
         // Get recent task submissions
-        $recentTaskSubmissions = \App\Models\TaskSubmission::with(['task.class', 'student'])
+        $recentTaskSubmissions = \App\Models\TaskSubmission::with(['task.class', 'user'])
             ->latest()
             ->take(10)
             ->get();
+            
+        // Get task completion statistics
+        $totalTasks = Task::count();
+        $totalSubmissions = \App\Models\TaskSubmission::count();
+        $completedTasks = \App\Models\TaskSubmission::whereNotNull('grade')->count();
+        $pendingTasks = \App\Models\TaskSubmission::whereNull('grade')->count();
+        $taskCompletionRate = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100, 1) : 0;
+        
+        // Get certificates statistics
+        $totalCertificates = \App\Models\Certificate::count();
+        $taskCertificates = 0; // Legacy task certificates
+        $classCertificates = 0; // Legacy class certificates  
+        $bootcampCertificates = \App\Models\Certificate::whereNotNull('bootcamp_id')->count();
         
         return view('admin.dashboard', compact(
             'totalMembers', 
@@ -66,7 +79,16 @@ class AdminController extends Controller
             'recentEnrollments',
             'recentMembers', 
             'recentTutors',
-            'recentTaskSubmissions'
+            'recentTaskSubmissions',
+            'totalTasks',
+            'totalSubmissions',
+            'completedTasks',
+            'pendingTasks',
+            'taskCompletionRate',
+            'totalCertificates',
+            'taskCertificates',
+            'classCertificates',
+            'bootcampCertificates'
         ));
     }
 

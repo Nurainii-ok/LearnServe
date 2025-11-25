@@ -366,11 +366,90 @@
         </div>
     </div>
 
+    <!-- Task Progress Overview -->
+    <div class="content-section">
+        <div class="section-header">
+            <h3>Task Progress Overview</h3>
+            <span class="badge bg-primary">{{ $taskProgressPercentage }}% Complete</span>
+        </div>
+        <div class="section-content">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-semibold">Overall Progress</span>
+                            <span class="text-muted">{{ $completedTasks }}/{{ $allTasks }} tasks completed</span>
+                        </div>
+                        <div class="progress" style="height: 12px; border-radius: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ $taskProgressPercentage }}%; transition: width 0.6s ease;"
+                                 aria-valuenow="{{ $taskProgressPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Task Statistics -->
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="h4 mb-1 text-success">{{ $completedTasks }}</div>
+                                <div class="small text-muted">Completed</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="h4 mb-1 text-warning">{{ $pendingTasks }}</div>
+                                <div class="small text-muted">Pending Grade</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="h4 mb-1 text-info">{{ $notSubmittedTasks }}</div>
+                                <div class="small text-muted">Not Submitted</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 border rounded">
+                                <div class="h4 mb-1 text-primary">{{ $certificatesCount }}</div>
+                                <div class="small text-muted">Certificates</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Circular Progress -->
+                    <div class="text-center">
+                        <div class="position-relative d-inline-block">
+                            <svg width="120" height="120" class="circular-progress">
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="var(--success-green)" stroke-width="8"
+                                        stroke-dasharray="{{ 2 * 3.14159 * 50 }}" 
+                                        stroke-dashoffset="{{ 2 * 3.14159 * 50 * (1 - $taskProgressPercentage / 100) }}"
+                                        stroke-linecap="round" 
+                                        style="transition: stroke-dashoffset 0.6s ease; transform: rotate(-90deg); transform-origin: center;"/>
+                            </svg>
+                            <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                <div class="h3 mb-0 fw-bold text-success">{{ $taskProgressPercentage }}%</div>
+                                <div class="small text-muted">Complete</div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{{ route('member.tasks.index') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="bx bx-task"></i> View All Tasks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Upcoming Tasks -->
     <div class="content-section">
         <div class="section-header">
             <h3>Upcoming Tasks</h3>
-            <a href="{{ route('member.tasks') }}" class="view-all-btn">View All</a>
+            <a href="{{ route('member.tasks.index') }}" class="view-all-btn">View All</a>
         </div>
         <div class="section-content">
             @if($upcomingTasks->count() > 0)

@@ -60,12 +60,55 @@ class MemberController extends Controller
         // Calculate average grade
         $averageGrade = $memberGrades->avg('score') ?? 0;
         
-        // Get upcoming tasks for enrolled classes
+        // Get task progress for enrolled classes
         $enrolledClassIds = $memberEnrollments->where('type', 'class')
             ->pluck('class_id')
             ->filter();
+            
+        // Get all tasks for enrolled classes
+        $allTasks = Task::whereIn('class_id', $enrolledClassIds)->count();
+        
+        // Get completed tasks (submitted and graded)
+        $completedTasks = \App\Models\TaskSubmission::whereHas('task', function($query) use ($enrolledClassIds) {
+            $query->whereIn('class_id', $enrolledClassIds);
+        })
+        ->where('user_id', $memberId)
+        ->whereNotNull('grade')
+        ->count();
+        
+        // Get pending tasks
+        $pendingTasks = \App\Models\TaskSubmission::whereHas('task', function($query) use ($enrolledClassIds) {
+            $query->whereIn('class_id', $enrolledClassIds);
+        })
+        ->where('user_id', $memberId)
+        ->whereNull('grade')
+        ->count();
+        
+        // Get not submitted tasks
+        $submittedTaskIds = \App\Models\TaskSubmission::where('user_id', $memberId)->pluck('task_id');
+        $notSubmittedTasks = Task::whereIn('class_id', $enrolledClassIds)
+            ->whereNotIn('id', $submittedTaskIds)
+            ->count();
+            
+        // Calculate progress percentage
+        $taskProgressPercentage = $allTasks > 0 ? round(($completedTasks / $allTasks) * 100, 1) : 0;
+        
+        // Get certificates count
+        $certificatesCount = \App\Models\Certificate::where('user_id', $memberId)
+            ->where('status', 'active')
+            ->count();
+            
+        // Get bootcamp progress
+        $certificateService = new \App\Services\CertificateService();
+        $bootcampProgress = [];
+        
+        foreach ($memberEnrollments->where('type', 'bootcamp') as $enrollment) {
+            $progress = $certificateService->getBootcampProgress($memberId, $enrollment->bootcamp_id);
+            $bootcampProgress[$enrollment->bootcamp_id] = $progress;
+        }
+            
+        // Get upcoming tasks
         $upcomingTasks = Task::whereIn('class_id', $enrolledClassIds)
-            ->where('status', 'pending')
             ->where('due_date', '>', now())
             ->with(['class'])
             ->orderBy('due_date')
@@ -82,7 +125,14 @@ class MemberController extends Controller
             'memberGrades',
             'averageGrade',
             'upcomingTasks',
-            'memberEnrollments'
+            'memberEnrollments',
+            'allTasks',
+            'completedTasks',
+            'pendingTasks',
+            'notSubmittedTasks',
+            'taskProgressPercentage',
+            'certificatesCount',
+            'bootcampProgress'
         ));
     }
     
