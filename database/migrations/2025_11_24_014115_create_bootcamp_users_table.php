@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bootcamp_users', function (Blueprint $table) {
+        if (!Schema::hasTable('bootcamp_users')) {
+            Schema::create('bootcamp_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('bootcamp_id');
@@ -40,6 +41,7 @@ return new class extends Migration
             // Unique constraint - one enrollment per user per bootcamp
             $table->unique(['user_id', 'bootcamp_id']);
         });
+        }
     }
 
     /**

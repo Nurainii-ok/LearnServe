@@ -34,6 +34,16 @@
                             </div>
                         </div>
                         <div class="col-md-4 text-end">
+                            <!-- Zoom Meeting Button -->
+                            @if($bootcamp->zoom_link)
+                                <a href="{{ $bootcamp->zoom_link }}" 
+                                   class="btn btn-primary mb-2" 
+                                   target="_blank">
+                                    <i class="las la-video"></i> Join Meeting
+                                </a>
+                                <br>
+                            @endif
+                            
                             @if($bootcampUser->certificate_eligible)
                                 <span class="badge bg-success fs-6">
                                     <i class="las la-trophy"></i> Certificate Ready!

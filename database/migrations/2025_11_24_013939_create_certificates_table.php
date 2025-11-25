@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        if (!Schema::hasTable('certificates')) {
+            Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('bootcamp_id');
@@ -42,6 +43,7 @@ return new class extends Migration
             // Unique constraint - one certificate per user per bootcamp
             $table->unique(['user_id', 'bootcamp_id']);
         });
+        }
     }
 
     /**

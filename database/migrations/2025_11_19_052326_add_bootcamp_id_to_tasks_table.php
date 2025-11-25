@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            // Add bootcamp_id column
-            $table->unsignedBigInteger('bootcamp_id')->nullable()->after('class_id');
-        });
+        if (!Schema::hasColumn('tasks', 'bootcamp_id')) {
+            Schema::table('tasks', function (Blueprint $table) {
+                // Add bootcamp_id column
+                $table->unsignedBigInteger('bootcamp_id')->nullable()->after('class_id');
+            });
+            
+            // Add foreign key constraint in separate statement
+            Schema::table('tasks', function (Blueprint $table) {
+                $table->foreign('bootcamp_id')->references('id')->on('bootcamps')->onDelete('cascade');
+            });
+        }
         
         // Make class_id nullable in separate statement
         Schema::table('tasks', function (Blueprint $table) {
             $table->unsignedBigInteger('class_id')->nullable()->change();
-        });
-        
-        // Add foreign key constraint in separate statement
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->foreign('bootcamp_id')->references('id')->on('bootcamps')->onDelete('cascade');
         });
     }
 

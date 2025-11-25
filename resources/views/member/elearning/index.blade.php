@@ -147,6 +147,29 @@
     color: var(--deep-brown);
     text-decoration: none;
 }
+
+.btn-join-meeting {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-join-meeting:hover {
+    background: #0056b3;
+    color: white;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
 </style>
 @endsection
 
@@ -189,10 +212,19 @@
                                     <span><i class="bx bx-time"></i> {{ $enrollment->bootcamp->duration ?? 'Flexible' }}</span>
                                 </div>
                                 <p class="text-muted mb-3">{{ Str::limit($enrollment->bootcamp->description, 100) }}</p>
-                                <a href="{{ route('elearning.bootcamp', $enrollment->bootcamp->id) }}" class="btn-start-learning">
-                                    <i class="bx bx-play-circle"></i>
-                                    Start Learning
-                                </a>
+                                @if($enrollment->bootcamp->zoom_link)
+                                    <a href="{{ $enrollment->bootcamp->zoom_link }}" 
+                                       class="btn-join-meeting" 
+                                       target="_blank">
+                                        <i class="bx bx-video"></i>
+                                        Join Meeting
+                                    </a>
+                                @else
+                                    <a href="{{ route('elearning.bootcamp', $enrollment->bootcamp->id) }}" class="btn-start-learning">
+                                        <i class="bx bx-play-circle"></i>
+                                        Start Learning
+                                    </a>
+                                @endif
                             @endif
                         </div>
                     </div>

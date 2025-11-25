@@ -256,10 +256,45 @@ textarea.form-control {
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="start_date">Start Date *</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date', now()->format('Y-m-d')) }}" required>
+                    @error('start_date')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="end_date">End Date *</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ old('end_date', now()->addDays(30)->format('Y-m-d')) }}" required>
+                    @error('end_date')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="schedule">Schedule</label>
                 <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Mon-Fri 9:00-17:00">
                 @error('schedule')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="zoom_link">Zoom Meeting Link</label>
+                <input type="url" 
+                       id="zoom_link" 
+                       name="zoom_link" 
+                       class="form-control" 
+                       value="{{ old('zoom_link') }}"
+                       placeholder="https://zoom.us/j/1234567890">
+                <small class="form-text text-muted">
+                    <i class="las la-info-circle"></i> 
+                    Enter Zoom meeting link for students to join live sessions
+                </small>
+                @error('zoom_link')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>

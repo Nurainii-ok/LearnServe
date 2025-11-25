@@ -24,7 +24,8 @@ class Bootcamp extends Model
         'category',
         'image',
         'level',
-        'requirements'
+        'requirements',
+        'zoom_link'
     ];
 
     protected $casts = [

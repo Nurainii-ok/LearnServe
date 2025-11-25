@@ -314,14 +314,7 @@ class BootcampTaskController extends Controller
 
     private function generateCertificatePDF($certificate)
     {
-        // This would integrate with a PDF generation library like DomPDF or TCPDF
-        // For now, we'll just create a placeholder
-        $filename = 'certificate-' . $certificate->certificate_number . '.pdf';
-        
-        // TODO: Implement actual PDF generation
-        // For now, just update the filename
-        $certificate->update(['certificate_file' => $filename]);
-        
-        return $filename;
+        $certificateService = new \App\Services\CertificateService();
+        return $certificateService->generatePDF($certificate);
     }
 }

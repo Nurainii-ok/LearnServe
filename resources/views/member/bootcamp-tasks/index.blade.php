@@ -97,6 +97,14 @@
                                                     <i class="las la-tasks"></i> Lihat Tugas
                                                 </a>
                                                 
+                                                @if($bootcamp->zoom_link)
+                                                    <a href="{{ $bootcamp->zoom_link }}" 
+                                                       class="btn btn-success" 
+                                                       target="_blank">
+                                                        <i class="las la-video"></i> Join Meeting
+                                                    </a>
+                                                @endif
+                                                
                                                 @if($certificate)
                                                     <a href="{{ route('member.certificates') }}" 
                                                        class="btn btn-outline-success btn-sm">
