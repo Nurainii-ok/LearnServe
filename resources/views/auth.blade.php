@@ -72,7 +72,7 @@
                     <select name="role" required>
                         <!--<option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>-->
                         <!--<option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>-->
-                        <option value="tutor" {{ old('role') == 'tutor' ? 'selected' : '' }}>Tutor</option>
+                        <!--<option value="tutor" {{ old('role') == 'tutor' ? 'selected' : '' }}>Tutor</option>-->
                         <option value="member" {{ old('role') == 'member' ? 'selected' : '' }}>Member</option>
                     </select>
                 </div>

@@ -12,7 +12,7 @@
 /* ========== STAT CARDS ========== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -51,23 +51,11 @@
 }
 
 .stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--light-cream, #f5efe7);
-    color: var(--primary-brown, #5c3d2e);
-    font-size: 1.75rem;
+    font-size: 2.5rem;
+    opacity: .7;
 }
 
-.stat-card.featured .stat-icon {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-
-/* ========== GRID LAYOUT ========== */
+/* ========== DASHBOARD GRID ========== */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -82,21 +70,23 @@
     overflow: hidden;
 }
 
-/* ========== CARD HEADER ========== */
 .card-header {
     padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-    background: #fafafa;
+    border-bottom: 1px solid #f3f4f6;
     display: flex;
-    justify-content: space-between;
+    justify-content: between;
     align-items: center;
 }
 
 .card-header h3 {
     margin: 0;
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: var(--text-primary, #1f2937);
+    color: #1f2937;
+}
+
+.card-body {
+    padding: 1.5rem;
 }
 
 /* ========== BUTTON ========== */
@@ -183,75 +173,22 @@
 .status-paused { background: #f59e0b; }
 .status-dropped { background: #ef4444; }
 
-/* ========== TUTOR LIST ========== */
-.tutor-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #f3f4f6;
-}
-
-.tutor-contact {
-    display: flex;
-    gap: .5rem;
-}
-
-.contact-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: #f3f4f6;
-    color: #6b7280;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.contact-btn:hover {
-    background: var(--primary-brown, #5c3d2e);
-    color: #fff;
-}
-
-/* ========== EMPTY STATE ========== */
-.empty-state {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    color: #6b7280;
-}
-
-.empty-state i {
-    font-size: 3rem;
-    opacity: .5;
-    margin-bottom: 1rem;
-}
-
-/* ========== BADGE TYPE ========== */
-.badge {
-    padding: .25rem .5rem;
-    border-radius: 4px;
-    font-size: .75rem;
-    font-weight: 500;
-}
-
-.badge-info { background: #17a2b8; color: #fff; }
-.badge-primary { background: #944e25; color: #fff; }
-
-/* ========== RESPONSIVE FIXES ========== */
+/* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: 1fr;
     }
 }
-
-
 </style>
 @endsection
 
@@ -268,16 +205,6 @@
                 <i class="las la-users"></i>
             </div>
         </div>
-        
-        <!--<div class="stat-card">
-            <div class="stat-info">
-                <h3>{{ $totalTutors }}</h3>
-                <p>Total Tutors</p>
-            </div>
-            <div class="stat-icon">
-                <i class="las la-chalkboard-teacher"></i>
-            </div>
-        </div>-->
         
         <div class="stat-card">
             <div class="stat-info">
@@ -299,7 +226,7 @@
             </div>
         </div>
         
-        <div class="stat-card">
+        <!--<div class="stat-card">
             <div class="stat-info">
                 <h3>{{ $totalEnrollments ?? 0 }}</h3>
                 <p>Jumlah Pendaftaran</p>
@@ -307,17 +234,106 @@
             <div class="stat-icon">
                 <i class="las la-user-check"></i>
             </div>
-        </div>
-        
-        <!--<div class="stat-card">
-            <div class="stat-info">
-                <h3>Rp{{ number_format($totalRevenue, 0, ',', '.') }}</h3>
-                <p>Monthly Revenue</p>
-            </div>
-            <div class="stat-icon">
-                <i class="las la-chart-line"></i>
-            </div>
         </div>-->
+    </div>
+
+    <!-- Task Completion Overview -->
+    <div class="dashboard-card mb-4">
+        <div class="card-header">
+            <h3>Task Completion Overview</h3>
+            <span class="status-badge status-completed">{{ $taskCompletionRate }}% Complete</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-semibold">Overall Task Completion</span>
+                            <span class="text-muted">{{ $completedTasks }}/{{ $totalTasks }} tasks completed</span>
+                        </div>
+                        <div class="progress" style="height: 12px; border-radius: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ $taskCompletionRate }}%; transition: width 0.6s ease;"
+                                 aria-valuenow="{{ $taskCompletionRate }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Task Statistics Grid -->
+                    <div class="row">
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card text-center">
+                                <div class="stat-info">
+                                    <h3 class="text-primary">{{ $totalTasks }}</h3>
+                                    <p>Total Tasks</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card text-center">
+                                <div class="stat-info">
+                                    <h3 class="text-success">{{ $completedTasks }}</h3>
+                                    <p>Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card text-center">
+                                <div class="stat-info">
+                                    <h3 class="text-warning">{{ $pendingTasks }}</h3>
+                                    <p>Pending Grade</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card text-center">
+                                <div class="stat-info">
+                                    <h3 class="text-info">{{ $totalCertificates }}</h3>
+                                    <p>Certificates Issued</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Certificate Breakdown -->
+                    <div class="text-center">
+                        <h5 class="mb-3">Certificates by Type</h5>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Task Certificates</span>
+                                <span class="badge bg-primary">{{ $taskCertificates }}</span>
+                            </div>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-primary" style="width: {{ $totalCertificates > 0 ? ($taskCertificates / $totalCertificates) * 100 : 0 }}%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Class Certificates</span>
+                                <span class="badge bg-info">{{ $classCertificates }}</span>
+                            </div>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-info" style="width: {{ $totalCertificates > 0 ? ($classCertificates / $totalCertificates) * 100 : 0 }}%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Bootcamp Certificates</span>
+                                <span class="badge bg-success">{{ $bootcampCertificates }}</span>
+                            </div>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: {{ $totalCertificates > 0 ? ($bootcampCertificates / $totalCertificates) * 100 : 0 }}%"></div>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.certificates') }}" class="btn-secondary btn-sm">
+                            <i class="las la-certificate"></i> View All Certificates
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main Dashboard Grid -->
@@ -348,15 +364,17 @@
                                     <td>
                                         <div class="user-info">
                                             <div class="user-avatar">
-                                                {{ strtoupper(substr($member->name, 0, 1)) }}
+                                                {{ substr($member->name, 0, 1) }}
                                             </div>
-                                            <span class="font-medium">{{ $member->name }}</span>
+                                            <div>
+                                                <div class="font-medium">{{ $member->name }}</div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>{{ $member->email }}</td>
                                     <td>{{ $member->created_at->format('M d, Y') }}</td>
                                     <td>
-                                        <span class="status-badge">Active</span>
+                                        <span class="status-badge status-active">Active</span>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -364,15 +382,13 @@
                         </table>
                     </div>
                 @else
-                    <div class="empty-state">
-                        <i class="las la-users"></i>
-                        <h4>No members found</h4>
-                        <p>No members have registered yet.</p>
+                    <div class="text-center py-4">
+                        <p class="text-gray-500">No recent members</p>
                     </div>
                 @endif
             </div>
         </div>
-        
+
         <!-- Recent Tutors -->
         <div class="dashboard-card">
             <div class="card-header">
@@ -418,72 +434,39 @@
         </div>
     </div>
 
-    <!-- Recent Enrollments -->
+    <!-- Recent Enrollments 
         <div class="dashboard-card">
             <div class="card-header">
                 <h3>Pendaftaran Terbaru</h3>
-                <!--<a href="{{ route('admin.enrollments') }}" class="btn-secondary">
+                <a href="{{ route('admin.enrollments') }}" class="btn-secondary">
                     See all <i class="las la-arrow-right"></i>
-                </a>-->
+                </a>
             </div>
             <div class="card-body">
-                @if(isset($recentEnrollments) && $recentEnrollments->count() > 0)
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Student</th>
-                                    <th>Course</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($recentEnrollments as $enrollment)
-                                <tr>
-                                    <td>
-                                        <div class="user-info">
-                                            <div class="user-avatar">
-                                                {{ strtoupper(substr($enrollment->user->name, 0, 1)) }}
-                                            </div>
-                                            <span class="font-medium">{{ $enrollment->user->name }}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @if($enrollment->type == 'class' && $enrollment->class)
-                                            {{ Str::limit($enrollment->class->title, 30) }}
-                                        @elseif($enrollment->type == 'bootcamp' && $enrollment->bootcamp)
-                                            {{ Str::limit($enrollment->bootcamp->title, 30) }}
-                                        @else
-                                            <span class="text-muted">Course not found</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-{{ $enrollment->type == 'class' ? 'info' : 'primary' }}">
-                                            {{ ucfirst($enrollment->type) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-{{ $enrollment->status }}">
-                                            {{ ucfirst($enrollment->status) }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('M d, Y') : 'N/A' }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                @if($recentEnrollments->count() > 0)
+                    <div class="space-y-3">
+                        @foreach($recentEnrollments->take(5) as $enrollment)
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <div class="font-medium">{{ $enrollment->user->name }}</div>
+                                <div class="text-sm text-gray-500">
+                                    {{ $enrollment->class->title ?? $enrollment->bootcamp->title }}
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                {{ $enrollment->created_at->format('M d') }}
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 @else
-                    <div class="empty-state">
-                        <i class="las la-user-check"></i>
-                        <h4>No enrollments found</h4>
-                        <p>No students have enrolled yet.</p>
+                    <div class="text-center py-4">
+                        <p class="text-gray-500">No recent enrollments</p>
                     </div>
                 @endif
             </div>
-        </div>
+        </div>-->
+    </div>
 
     <!-- Quick Actions -->
     <!--<div class="quick-actions">
@@ -588,37 +571,6 @@
         </div>
     </div>
     @endif
+
 </div>
-@endsection
-
-@section('scripts')
-<script>
-// Dashboard interactions
-document.addEventListener('DOMContentLoaded', function() {
-    // Add smooth animations to cards
-    const statCards = document.querySelectorAll('.stat-card');
-    statCards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            card.style.transition = 'all 0.5s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 100);
-    });
-
-    // Action button hover effects
-    const actionButtons = document.querySelectorAll('.action-btn');
-    actionButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-});
-</script>
 @endsection

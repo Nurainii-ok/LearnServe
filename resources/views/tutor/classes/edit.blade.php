@@ -258,13 +258,13 @@ textarea.form-control {
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="capacity">Capacity *</label>
                     <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity', $class->capacity) }}" min="1" required>
                     @error('capacity')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
-                </div>
+                </div>-->
             </div>
 
             <div class="form-row">
@@ -276,13 +276,13 @@ textarea.form-control {
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="schedule">Schedule</label>
                     <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule', $class->schedule) }}" placeholder="e.g., Mon,Wed,Fri 10:00-12:00">
                     @error('schedule')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
-                </div>
+                </div>-->
             </div>
 
             <!-- Date fields removed as requested -->

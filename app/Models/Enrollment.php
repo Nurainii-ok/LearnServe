@@ -43,6 +43,16 @@ class Enrollment extends Model
         return $this->belongsTo(Bootcamp::class);
     }
 
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {

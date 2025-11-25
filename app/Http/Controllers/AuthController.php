@@ -33,7 +33,10 @@ class AuthController extends Controller
                     ->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            // simpan session
+            // Login menggunakan Laravel Auth
+            auth()->login($user);
+            
+            // simpan session role untuk middleware
             session([
                 'user_id'  => $user->id,
                 'username' => $user->name,
@@ -45,7 +48,7 @@ class AuthController extends Controller
                 'admin'  => redirect()->route('admin.dashboard'),
                 'tutor'  => redirect()->route('tutor.dashboard'),
                 'member' => redirect()->route('home'),
-                default  => redirect()->route('auth')->with('error', 'Role tidak dikenali.'),
+                default  => redirect()->route('login')->with('error', 'Role tidak dikenali.'),
             };
         }
 
@@ -82,7 +85,10 @@ class AuthController extends Controller
                 'role'     => $request->role,
             ]);
 
-            // auto login
+            // auto login menggunakan Laravel Auth
+            auth()->login($user);
+            
+            // simpan session role untuk middleware
             session([
                 'user_id'  => $user->id,
                 'username' => $user->name,
@@ -94,7 +100,7 @@ class AuthController extends Controller
                 'admin'  => redirect()->route('admin.dashboard'),
                 'tutor'  => redirect()->route('tutor.dashboard'),
                 'member' => redirect()->route('home'),
-                default  => redirect()->route('auth')->with('error', 'Role tidak dikenali.'),
+                default  => redirect()->route('login')->with('error', 'Role tidak dikenali.'),
             };
             
         } catch (\Exception $e) {
@@ -109,10 +115,13 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Logout dari Laravel Auth
+        auth()->logout();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth')->with('success', 'Berhasil logout.');
+        return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 
 }

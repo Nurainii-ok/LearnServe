@@ -124,7 +124,7 @@ class TutorController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'capacity' => 'required|integer|min:1',
+            //'capacity' => 'required|integer|min:1',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
         ]);
@@ -151,7 +151,7 @@ class TutorController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'capacity' => 'required|integer|min:1',
+            //'capacity' => 'required|integer|min:1',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
             'status' => 'required|in:active,inactive,completed'
@@ -755,13 +755,17 @@ class TutorController extends Controller
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
             'duration' => 'required|integer|min:1',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
+            'zoom_link' => 'nullable|url'
         ]);
 
         Bootcamp::create(array_merge($request->all(), [
             'tutor_id' => session('user_id'),
-            'status' => 'active'
+            'status' => 'active',
+            'enrolled' => 0
         ]));
 
         return redirect()->route('tutor.bootcamps')->with('success', 'Bootcamp created successfully!');
@@ -785,10 +789,17 @@ class TutorController extends Controller
             'duration' => 'required|integer|min:1',
             'schedule' => 'nullable|string',
             'category' => 'nullable|string',
-            'status' => 'required|in:active,inactive,completed'
+            'status' => 'required|in:active,inactive,completed',
+            'zoom_link' => 'nullable|url'
         ]);
 
-        $bootcamp->update($request->all());
+        // Update end date if duration changed
+        $updateData = $request->all();
+        if ($request->duration != $bootcamp->duration) {
+            $updateData['end_date'] = $bootcamp->start_date->addDays($request->duration);
+        }
+
+        $bootcamp->update($updateData);
 
         return redirect()->route('tutor.bootcamps')->with('success', 'Bootcamp updated successfully!');
     }

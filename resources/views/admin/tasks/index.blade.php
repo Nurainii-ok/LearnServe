@@ -1,335 +1,529 @@
 @extends('layouts.admin')
 
-@section('title', 'Tasks Management')
+@section('title', 'All Tasks')
 
 @section('styles')
 <style>
-.page-container {
-    padding: 0px;
-    margin: 0;
-}
+    :root {
+        --primary-brown: #944e25;
+        --primary-gold: #ecac57;
+        --light-cream: #f3efec;
+        --deep-brown: #6b3419;
+        --soft-gold: #f4d084;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --success-green: #10b981;
+        --error-red: #ef4444;
+        --warning-orange: #f59e0b;
+        --info-blue: #3b82f6;
+        --border-color: #e2e8f0;
+        --bg-light: #f8fafc;
+    }
 
-.data-table-container {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    overflow: hidden;
-}
+    /* Page Container */
+    .page-container {
+        background: var(--bg-light);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
 
-.table-header {
-    background: var(--light-cream);
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .page-header {
+        margin-bottom: 2rem;
+    }
 
-.table-header h2 {
-    margin: 0;
-    color: var(--primary-brown);
-    font-size: 1.25rem;
-    font-weight: 600;
-}
+    .page-header h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
 
-.btn-primary {
-    background: var(--primary-brown);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.3s;
-}
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+    }
 
-.btn-primary:hover {
-    background: var(--deep-brown);
-    color: white;
-    text-decoration: none;
-    transform: translateY(-1px);
-}
+    /* Card Styles */
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
 
-.table-responsive {
-    overflow-x: auto;
-}
+    .card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        background: white;
+    }
 
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
 
-.data-table th,
-.data-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #f3f4f6;
-    font-size: 0.875rem;
-}
+    .card-body {
+        padding: 0;
+    }
 
-.data-table th {
-    background: #f9fafb;
-    font-weight: 600;
-    color: var(--text-primary);
-    border-bottom: 2px solid #e5e7eb;
-}
+    /* Table Styles */
+    .table-responsive {
+        overflow-x: auto;
+    }
 
-.data-table tbody tr:hover {
-    background: #f9fafb;
-}
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-.status-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
+    .data-table thead th {
+        text-align: left;
+        padding: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: var(--bg-light);
+        border-bottom: 2px solid var(--border-color);
+        white-space: nowrap;
+    }
 
-.status-pending {
-    background: rgba(236, 172, 87, 0.1);
-    color: var(--primary-gold);
-}
+    .data-table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+        vertical-align: top;
+    }
 
-.status-in_progress {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-}
+    .data-table tbody tr {
+        transition: background 0.2s;
+    }
 
-.status-completed {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success-green);
-}
+    .data-table tbody tr:hover {
+        background: var(--bg-light);
+    }
 
-.status-overdue {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-}
+    .data-table tbody tr:last-child td {
+        border-bottom: none;
+    }
 
-.priority-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-left: 0.5rem;
-}
+    /* Task Info */
+    .task-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 0.25rem;
+        line-height: 1.4;
+    }
 
-.priority-high {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-}
+    .task-description {
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
 
-.priority-medium {
-    background: rgba(236, 172, 87, 0.1);
-    color: var(--primary-gold);
-}
+    /* Tutor Info */
+    .tutor-name {
+        font-weight: 500;
+        color: var(--text-primary);
+        display: block;
+    }
 
-.priority-low {
-    background: rgba(107, 114, 128, 0.1);
-    color: #6b7280;
-}
+    .tutor-email {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+    }
 
-.action-buttons {
-    display: flex;
-    gap: 0.5rem;
-}
+    /* Badges */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
 
-.btn-edit {
-    background: var(--primary-gold);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.75rem;
-    transition: all 0.3s;
-}
+    .badge-class {
+        background: #dbeafe;
+        color: #1e40af;
+    }
 
-.btn-edit:hover {
-    background: var(--soft-gold);
-    color: white;
-    text-decoration: none;
-}
+    .badge-date {
+        background: #f3f4f6;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
 
-.btn-delete {
-    background: var(--error-red);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+    .badge-date.overdue {
+        background: #fee2e2;
+        color: #991b1b;
+    }
 
-.btn-delete:hover {
-    background: #dc2626;
-}
+    .badge-priority-high {
+        background: #fee2e2;
+        color: #991b1b;
+    }
 
-.pagination-container {
-    padding: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-    background: #f9fafb;
-}
+    .badge-priority-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
 
-.empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-secondary);
-}
+    .badge-priority-low {
+        background: #dcfce7;
+        color: #166534;
+    }
 
-.empty-state i {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #d1d5db;
-}
+    .badge-status-completed {
+        background: #dcfce7;
+        color: #166534;
+    }
 
-.alert {
-    padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    font-weight: 500;
-}
+    .badge-status-overdue {
+        background: #fee2e2;
+        color: #991b1b;
+    }
 
-.alert-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-}
+    .badge-status-in_progress {
+        background: #fef3c7;
+        color: #92400e;
+    }
 
-.due-date {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
+    .badge-status-pending {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
 
-.overdue {
-    color: var(--error-red);
-    font-weight: 600;
-}
+    .badge-count {
+        background: var(--info-blue);
+        color: white;
+        min-width: 28px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .badge-count.success {
+        background: var(--success-green);
+    }
+
+    /* Date & Time Display */
+    .date-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+
+    .date-main {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.875rem;
+    }
+
+    .date-time {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+    }
+
+    .date-relative {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        font-style: italic;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+        color: var(--primary-brown);
+    }
+
+    .empty-state h5 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Pagination */
+    .pagination-container {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: center;
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-light);
+    }
+
+    /* Stats Summary (Optional) */
+    .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .stat-icon.primary {
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--info-blue);
+    }
+
+    .stat-icon.success {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success-green);
+    }
+
+    .stat-icon.warning {
+        background: rgba(245, 158, 11, 0.1);
+        color: var(--warning-orange);
+    }
+
+    .stat-icon.danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--error-red);
+    }
+
+    .stat-info h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 0.125rem 0;
+        color: var(--text-primary);
+    }
+
+    .stat-info p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1rem;
+        }
+
+        .data-table thead th,
+        .data-table tbody td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .stats-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+        }
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="page-container">
-    @if(session('success'))
-        <div class="alert alert-success">
-            <i class="las la-check-circle"></i>
-            {{ session('success') }}
-        </div>
-    @endif
-    <div class="data-table-container">
-        <div class="table-header">
-            <h2>Tasks Management</h2>
-            <a href="{{ route('admin.tasks.create') }}" class="btn-primary">
-                <i class="las la-plus"></i> Add New Task
-            </a>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>All Tasks</h1>
+        <p class="page-subtitle">Monitor all tasks created by tutors across the platform</p>
+    </div>
 
-        @if(session('success'))
-            <div style="background: rgba(16, 185, 129, 0.1); color: var(--success-green); padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-                {{ session('success') }}
-            </div>
-        @endif
+    <!-- Main Card -->
+    <div class="card">
+        <div class="card-body">
+            @if($tasks->count() > 0)
+                <!-- Optional: Stats Summary -->
+                <!-- Uncomment to enable stats display -->
+                <!--
+                <div class="stats-summary" style="padding: 1.5rem; padding-bottom: 0;">
+                    <div class="stat-item">
+                        <div class="stat-icon primary">
+                            <i class="las la-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>{{ $tasks->total() }}</h4>
+                            <p>Total Tasks</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon success">
+                            <i class="las la-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>{{ $tasks->where('status', 'completed')->count() }}</h4>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon warning">
+                            <i class="las la-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>{{ $tasks->where('status', 'in_progress')->count() }}</h4>
+                            <p>In Progress</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon danger">
+                            <i class="las la-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>{{ $tasks->where('status', 'overdue')->count() }}</h4>
+                            <p>Overdue</p>
+                        </div>
+                    </div>
+                </div>
+                -->
 
-        @if($tasks->count() > 0)
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Class</th>
-                            <th>Assigned By</th>
-                            <th>Priority</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($tasks as $task)
+                <!-- Tasks Table -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <div>
-                                        <strong>{{ $task->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem;">
-                                            {{ Str::limit($task->description, 60) }}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <strong>{{ $task->class->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem;">{{ $task->class->tutor->name }}</div>
-                                    </div>
-                                </td>
-                                <td>{{ $task->assignedBy->name }}</td>
-                                <td>
-                                    <span class="priority-badge priority-{{ $task->priority }}">
-                                        {{ ucfirst($task->priority) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="due-date {{ \Carbon\Carbon::parse($task->due_date)->isPast() && $task->status !== 'completed' ? 'overdue' : '' }}">
-                                        {{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}
-                                        <div style="font-size: 0.7rem;">{{ \Carbon\Carbon::parse($task->due_date)->format('H:i') }}</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="status-badge status-{{ $task->status }}">
-                                        {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="{{ route('admin.tasks.edit', $task->id) }}" class="btn-edit">
-                                            <i class="las la-edit"></i> Edit
-                                        </a>
-                                        <form action="{{ route('admin.tasks.destroy', $task->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this task?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete">
-                                                <i class="las la-trash"></i> Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <th>Task</th>
+                                <th>Class</th>
+                                <th>Tutor</th>
+                                <th>Due Date</th>
+                                <!--<th>Priority</th>
+                                <th>Status</th>-->
+                                <th>Submissions</th>
+                                <th>Graded</th>
+                                <th>Created</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach($tasks as $task)
+                                <tr>
+                                    <!-- Task -->
+                                    <td style="min-width: 200px;">
+                                        <span class="task-title">{{ $task->title }}</span>
+                                        <span class="task-description">{{ Str::limit($task->description, 60) }}</span>
+                                    </td>
 
-            <div class="pagination-container">
-                {{ $tasks->links() }}
-            </div>
-        @else
-            <div class="empty-state">
-                <i class="las la-tasks"></i>
-                <h3>No tasks found</h3>
-                <p>No tasks have been created yet. <a href="{{ route('admin.tasks.create') }}" style="color: var(--primary-brown);">Create the first task</a></p>
-            </div>
-        @endif
+                                    <!-- Class -->
+                                    <td>
+                                        <span class="badge badge-class">{{ $task->class->title }}</span>
+                                    </td>
+
+                                    <!-- Tutor -->
+                                    <td style="min-width: 150px;">
+                                        <span class="tutor-name">{{ $task->assignedBy->name }}</span>
+                                        <span class="tutor-email">{{ $task->assignedBy->email }}</span>
+                                    </td>
+
+                                    <!-- Due Date -->
+                                    <td>
+                                        <div class="date-display">
+                                            <span class="badge badge-date {{ $task->is_overdue ? 'overdue' : '' }}">
+                                                {{ $task->due_date->format('M d, Y') }}
+                                            </span>
+                                            <span class="date-time">{{ $task->due_date->format('H:i') }}</span>
+                                        </div>
+                                    </td>
+
+                                    <!-- Priority -->
+                                    <!--<td>
+                                        <span class="badge badge-priority-{{ $task->priority }}">
+                                            {{ ucfirst($task->priority) }}
+                                        </span>
+                                    </td>-->
+
+                                    <!-- Status -->
+                                    <!--<td>
+                                        <span class="badge badge-status-{{ $task->status }}">
+                                            {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                        </span>
+                                    </td>-->
+
+                                    <!-- Submissions -->
+                                    <td>
+                                        <span class="badge badge-count">
+                                            {{ $task->submissions->count() }}
+                                        </span>
+                                    </td>
+
+                                    <!-- Graded -->
+                                    <td>
+                                        <span class="badge badge-count success">
+                                            {{ $task->submissions->whereNotNull('grade')->count() }}
+                                        </span>
+                                    </td>
+
+                                    <!-- Created -->
+                                    <td style="min-width: 120px;">
+                                        <div class="date-display">
+                                            <span class="date-main">{{ $task->created_at->format('M d, Y') }}</span>
+                                            <span class="date-relative">{{ $task->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    {{ $tasks->links() }}
+                </div>
+            @else
+                <!-- Empty State -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="las la-tasks"></i>
+                    </div>
+                    <h5>No Tasks Found</h5>
+                    <p>No tasks have been created by tutors yet.</p>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add animation to table rows
-    const rows = document.querySelectorAll('.data-table tbody tr');
-    rows.forEach((row, index) => {
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
-            row.style.transition = 'all 0.3s ease';
-            row.style.opacity = '1';
-            row.style.transform = 'translateY(0)';
-        }, index * 50);
-    });
-});
-</script>
 @endsection

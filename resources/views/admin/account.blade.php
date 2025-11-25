@@ -52,7 +52,7 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        background: #4f46e5;
+        background: #944e25;
         width: 42px;
         height: 42px;
         border-radius: 50%;
@@ -70,7 +70,7 @@
     }
 
     .btn-primary-custom {
-        background: #4f46e5;
+        background: #944e25;
         border: none;
         padding: 12px 25px;
         border-radius: 8px;
@@ -191,7 +191,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <div class="modal-header" style="background:#4f46e5; color:#fff;">
+            <div class="modal-header" style="background: #944e25; color:#fff;">
                 <h5 class="modal-title"><i class="fas fa-key me-2"></i>Change Password</h5>
                 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>

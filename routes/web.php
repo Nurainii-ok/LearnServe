@@ -5,6 +5,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BootcampTaskController;
+use App\Http\Controllers\CertificateController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PagesController;
@@ -16,6 +19,11 @@ use Illuminate\Support\Facades\Schema;
 
 // Halaman Auth (Login & Register dalam 1 file)
 Route::get('/auth', function () {
+    return view('auth');
+})->name('login');
+
+// Alias untuk backward compatibility
+Route::get('/login', function () {
     return view('auth');
 })->name('auth');
 
@@ -49,6 +57,9 @@ Route::prefix('/')->middleware(['prevent-back'])->group(function () {
     Route::get('/kelas', [PagesController::class, 'kelas'])->name('kelas');
     Route::get('/checkout/{id?}', [PagesController::class, 'checkout'])->name('checkout');
     Route::get('/checkout-test', function() { return view('pages.checkout_test'); })->name('checkout.test');
+    
+    // Public Certificate Verification
+    Route::get('/certificate/verify/{code}', [CertificateController::class, 'verify'])->name('certificate.verify');
 });
 
 // Payment Routes (Midtrans)
@@ -276,10 +287,7 @@ Route::get('/test-database-structure', function() {
     }
 })->withoutMiddleware(['web', 'csrf']);
 
-// Payment routes
-Route::post('/payment/notification', [PaymentController::class, 'handleNotification']);
-Route::get('/payment/status/{orderId}', [PaymentController::class, 'checkStatus']);
-Route::post('/payment/sync/{orderId}', [PaymentController::class, 'syncStatus'])->name('payment.sync');
+// Duplicate routes removed - using payment prefix group above
 
 // Member
 Route::middleware(['role:member','prevent-back'])->group(function () {
@@ -296,16 +304,28 @@ Route::middleware(['role:member','prevent-back'])->group(function () {
 });
 
 // Member Dashboard
-Route::prefix('member')->middleware(['role:member','prevent-back'])->name('member.')->group(function () {
+Route::prefix('member')->middleware(['auth', 'role:member','prevent-back'])->name('member.')->group(function () {
     Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('dashboard');
     Route::get('/enrollments', [MemberController::class, 'enrollments'])->name('enrollments');
     Route::get('/grades', [MemberController::class, 'grades'])->name('grades');
-    Route::get('/tasks', [MemberController::class, 'tasks'])->name('tasks');
-    Route::post('/tasks/{task}/submit', [MemberController::class, 'submitTask'])->name('tasks.submit');
+    Route::get('/tasks', [TaskController::class, 'memberIndex'])->name('tasks.index');
+    // Alias for backward compatibility
+    Route::get('/tasks-alias', [TaskController::class, 'memberIndex'])->name('tasks');
+    Route::get('/tasks/{task}', [TaskController::class, 'memberShow'])->name('tasks.show');
+    Route::post('/tasks/{task}/submit', [TaskController::class, 'memberSubmit'])->name('tasks.submit');
+    
+    // Bootcamp Tasks
+    Route::get('/bootcamp-tasks', [BootcampTaskController::class, 'memberIndex'])->name('bootcamp-tasks');
+    Route::get('/bootcamp-tasks/{bootcamp}', [BootcampTaskController::class, 'memberBootcampTasks'])->name('bootcamp-tasks.tasks');
+    Route::get('/bootcamp-tasks/{bootcamp}/task/{task}', [BootcampTaskController::class, 'memberTaskDetail'])->name('bootcamp-tasks.task-detail');
+    Route::post('/bootcamp-tasks/{bootcamp}/task/{task}/submit', [BootcampTaskController::class, 'memberSubmitTask'])->name('bootcamp-tasks.submit');
+    
+    // Certificates
+    Route::get('/certificates', [CertificateController::class, 'memberIndex'])->name('certificates');
 });
 
 // E-Learning Routes for Members
-Route::prefix('elearning')->middleware(['role:member','prevent-back'])->name('elearning.')->group(function () {
+Route::prefix('elearning')->middleware(['auth', 'role:member','prevent-back'])->name('elearning.')->group(function () {
     Route::get('/', [ELearningController::class, 'index'])->name('index');
     Route::get('/class/{classId}', [ELearningController::class, 'showClass'])->name('class');
     Route::get('/bootcamp/{bootcampId}', [ELearningController::class, 'showBootcamp'])->name('bootcamp');
@@ -313,7 +333,7 @@ Route::prefix('elearning')->middleware(['role:member','prevent-back'])->name('el
 });
 
 // Admin
-Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:admin','prevent-back'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
     // Members CRUD
@@ -357,13 +377,14 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
     Route::put('/payments/{id}', [AdminController::class, 'paymentsUpdate'])->name('payments.update');
     Route::delete('/payments/{id}', [AdminController::class, 'paymentsDestroy'])->name('payments.destroy');
     
-    // Tasks CRUD
+    // Tasks Management (Admin can view all tasks)
     Route::get('/tasks', [AdminController::class, 'tasks'])->name('tasks');
-    Route::get('/tasks/create', [AdminController::class, 'tasksCreate'])->name('tasks.create');
-    Route::post('/tasks', [AdminController::class, 'tasksStore'])->name('tasks.store');
-    Route::get('/tasks/{id}/edit', [AdminController::class, 'tasksEdit'])->name('tasks.edit');
-    Route::put('/tasks/{id}', [AdminController::class, 'tasksUpdate'])->name('tasks.update');
-    Route::delete('/tasks/{id}', [AdminController::class, 'tasksDestroy'])->name('tasks.destroy');
+    
+    // Bootcamp Tasks Overview
+    Route::get('/bootcamp-tasks', [BootcampTaskController::class, 'adminIndex'])->name('bootcamp-tasks');
+    
+    // Certificates Management
+    Route::get('/certificates', [CertificateController::class, 'adminIndex'])->name('certificates');
     
     // Enrollments Management
     Route::get('/enrollments', [EnrollmentController::class, 'adminIndex'])->name('enrollments');
@@ -386,7 +407,7 @@ Route::prefix('admin')->middleware(['role:admin','prevent-back'])->name('admin.'
 });
 
 // Tutor
-Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.')->group(function () {
+Route::prefix('tutor')->middleware(['auth', 'role:tutor','prevent-back'])->name('tutor.')->group(function () {
     Route::get('/dashboard', [TutorController::class, 'dashboard'])->name('dashboard');
     
     // Classes CRUD
@@ -405,14 +426,25 @@ Route::prefix('tutor')->middleware(['role:tutor','prevent-back'])->name('tutor.'
     Route::put('/bootcamps/{id}', [TutorController::class, 'bootcampsUpdate'])->name('bootcamps.update');
     Route::delete('/bootcamps/{id}', [TutorController::class, 'bootcampsDestroy'])->name('bootcamps.destroy');
     
-    // Tasks CRUD
-    Route::get('/tasks', [TutorController::class, 'tasks'])->name('tasks');
-    Route::get('/tasks/create', [TutorController::class, 'tasksCreate'])->name('tasks.create');
-    Route::post('/tasks', [TutorController::class, 'tasksStore'])->name('tasks.store');
-    Route::get('/tasks/{id}/edit', [TutorController::class, 'tasksEdit'])->name('tasks.edit');
-    Route::put('/tasks/{id}', [TutorController::class, 'tasksUpdate'])->name('tasks.update');
-    Route::delete('/tasks/{id}', [TutorController::class, 'tasksDestroy'])->name('tasks.destroy');
-    Route::get('/tasks/{id}/submissions', [TutorController::class, 'getTaskSubmissions'])->name('tasks.submissions');
+    // Tasks Management (Tutor can manage own tasks)
+    Route::get('/tasks', [TaskController::class, 'tutorIndex'])->name('tasks.index');
+    Route::get('/tasks/create', [TaskController::class, 'tutorCreate'])->name('tasks.create');
+    Route::post('/tasks', [TaskController::class, 'tutorStore'])->name('tasks.store');
+    Route::get('/tasks/{task}', [TaskController::class, 'tutorShow'])->name('tasks.show');
+    Route::get('/tasks/{task}/edit', [TaskController::class, 'tutorEdit'])->name('tasks.edit');
+    Route::put('/tasks/{task}', [TaskController::class, 'tutorUpdate'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [TaskController::class, 'tutorDestroy'])->name('tasks.destroy');
+    Route::post('/submissions/{submission}/grade', [TaskController::class, 'tutorGrade'])->name('submissions.grade');
+    Route::post('/submissions/{submission}/certificate', [CertificateController::class, 'issueTaskCertificate'])->name('submissions.certificate');
+    
+    // Bootcamp Task Reviews
+    Route::get('/bootcamp-tasks', [BootcampTaskController::class, 'tutorIndex'])->name('bootcamp-tasks');
+    Route::get('/bootcamp-tasks/{bootcamp}/submissions', [BootcampTaskController::class, 'tutorBootcampTasks'])->name('bootcamp-tasks.submissions');
+    Route::get('/bootcamp-tasks/review/{submission}', [BootcampTaskController::class, 'tutorReviewSubmission'])->name('bootcamp-tasks.review');
+    Route::post('/bootcamp-tasks/review/{submission}', [BootcampTaskController::class, 'tutorSubmitReview'])->name('bootcamp-tasks.submit-review');
+    
+    // Certificates Management
+    Route::get('/certificates', [CertificateController::class, 'adminIndex'])->name('certificates');
     
     // Grades CRUD 6
     Route::get('/grades', [TutorController::class, 'grades'])->name('grades');

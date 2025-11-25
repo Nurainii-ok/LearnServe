@@ -71,6 +71,16 @@ class Payment extends Model
         return $this->belongsTo(Bootcamp::class, 'bootcamp_id');
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
     // Helper method to get customer name
     public function getCustomerNameAttribute()
     {

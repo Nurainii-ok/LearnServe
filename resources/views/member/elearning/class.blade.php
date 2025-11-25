@@ -200,8 +200,8 @@
         </div>
     </div>
 
-    @if($class->tutor)
-    <!-- Instructor Info -->
+    <!--@if($class->tutor)
+     Instructor Info 
     <div class="instructor-info">
         <div class="d-flex align-items-center">
             <img src="{{ $class->tutor->profile_picture ? asset('storage/' . $class->tutor->profile_picture) : asset('assets/default-avatar.png') }}" 
@@ -213,7 +213,7 @@
             </div>
         </div>
     </div>
-    @endif
+    @endif-->
 
     <!-- Video Content -->
     @if($videos->count() > 0)

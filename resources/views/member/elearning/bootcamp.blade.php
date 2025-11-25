@@ -177,6 +177,27 @@
     align-items: center;
     gap: 0.5rem;
 }
+
+.btn-join-meeting {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-join-meeting:hover {
+    background: #0056b3;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
 </style>
 @endsection
 
@@ -206,9 +227,18 @@
                 </div>
             </div>
             <div class="col-md-4 text-md-end">
-                <div class="bootcamp-badge">
-                    <i class="bx bx-graduation"></i>
-                    Bootcamp Course
+                <div class="d-flex flex-column align-items-md-end gap-2">
+                    <div class="bootcamp-badge">
+                        <i class="bx bx-graduation"></i>
+                        Bootcamp Course
+                    </div>
+                    @if($bootcamp->zoom_link)
+                        <a href="{{ $bootcamp->zoom_link }}" 
+                           class="btn-join-meeting" 
+                           target="_blank">
+                            <i class="bx bx-video"></i> Join Meeting
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

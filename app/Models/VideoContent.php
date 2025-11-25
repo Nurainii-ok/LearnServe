@@ -45,6 +45,16 @@ class VideoContent extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function tutor()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {

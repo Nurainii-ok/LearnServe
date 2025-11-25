@@ -194,7 +194,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Joined Date</th>
-                        <th>Actions</th>
+                        <!--<th>Actions</th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -212,11 +212,11 @@
                         <td>{{ $member->email }}</td>
                         <td>{{ $member->created_at->format('M d, Y') }}</td>
                         <td>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <!--<a href="{{ route('admin.members.edit', $member->id) }}" class="btn-edit">
+                            <!--<div style="display: flex; gap: 0.5rem;">
+                                <a href="{{ route('admin.members.edit', $member->id) }}" class="btn-edit">
                                     <i class="las la-edit"></i>
                                     Edit
-                                </a>-->
+                                </a>
                                 <form action="{{ route('admin.members.destroy', $member->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this member?')">
                                     @csrf
                                     @method('DELETE')
@@ -225,7 +225,7 @@
                                         Delete
                                     </button>
                                 </form>
-                            </div>
+                            </div>-->
                         </td>
                     </tr>
                     @endforeach

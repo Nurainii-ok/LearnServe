@@ -225,19 +225,20 @@ textarea.form-control {
                         <option value="Business & Consulting" {{ old('category') == 'Business & Consulting' ? 'selected' : '' }}>Business & Consulting</option>
                         <option value="Finance Management" {{ old('category') == 'Finance Management' ? 'selected' : '' }}>Finance Management</option>
                         <option value="Self Development" {{ old('category') == 'Self Development' ? 'selected' : '' }}>Self Development</option>
+                        <option value="Data" {{ old('category') == 'Data' ? 'selected' : '' }}>Data</option>
                     </select>
                     @error('category')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="capacity">Capacity *</label>
+                <!--<div class="form-group">
+                    <label for="capacity">Capacity </label>
                     <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity', 20) }}" min="1" required>
                     @error('capacity')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
-                </div>
+                </div>-->
             </div>
 
             <div class="form-row">
@@ -249,13 +250,13 @@ textarea.form-control {
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="schedule">Schedule</label>
                     <input type="text" id="schedule" name="schedule" class="form-control" value="{{ old('schedule') }}" placeholder="e.g., Mon,Wed,Fri 10:00-12:00">
                     @error('schedule')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
-                </div>
+                </div>-->
             </div>
 
             <!-- Date fields removed as requested -->

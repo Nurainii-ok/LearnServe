@@ -18,12 +18,25 @@ class TaskSubmission extends Model
         'grade',
         'feedback',
         'graded_at',
-        'graded_by'
+        'graded_by',
+        'submission_status',
+        'revision_count',
+        'mentor_feedback',
+        'reviewed_at',
+        'reviewed_by',
+        'submission_url',
+        'submission_notes',
+        'meets_minimum_score',
+        'resubmitted_at',
+        'revision_history'
     ];
 
     protected $casts = [
         'graded_at' => 'datetime',
-        'grade' => 'integer'
+        'reviewed_at' => 'datetime',
+        'resubmitted_at' => 'datetime',
+        'revision_history' => 'array',
+        'meets_minimum_score' => 'boolean'
     ];
 
     // Relationships
@@ -47,56 +60,171 @@ class TaskSubmission extends Model
         return $this->belongsTo(User::class, 'graded_by');
     }
 
-    // Scopes
-    public function scopeGraded($query)
+    public function reviewedBy()
     {
-        return $query->whereNotNull('grade');
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
-    public function scopeUngraded($query)
+    public function mentor()
     {
-        return $query->whereNull('grade');
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
-    public function scopeByTask($query, $taskId)
-    {
-        return $query->where('task_id', $taskId);
-    }
-
-    public function scopeByUser($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
-
-    // Helper methods
-    public function isGraded()
+    // Accessors
+    public function getIsGradedAttribute()
     {
         return !is_null($this->grade);
     }
 
-    public function hasFile()
+    public function getIsLateAttribute()
     {
-        return !is_null($this->file_path);
+        return $this->created_at > $this->task->due_date;
     }
 
-    public function getFileUrl()
+    public function getGradeLetterAttribute()
     {
-        return $this->file_path ? asset('storage/' . $this->file_path) : null;
-    }
+        if (is_null($this->grade)) {
+            return 'Not Graded';
+        }
 
-    public function getGradePercentage()
-    {
-        return $this->grade ? $this->grade . '%' : 'Not Graded';
-    }
-
-    public function getGradeLetter()
-    {
-        if (!$this->grade) return 'N/A';
-        
         if ($this->grade >= 90) return 'A';
         if ($this->grade >= 80) return 'B';
         if ($this->grade >= 70) return 'C';
         if ($this->grade >= 60) return 'D';
         return 'F';
+    }
+
+    public function getFileUrlAttribute()
+    {
+        if ($this->file_path) {
+            return asset('storage/' . $this->file_path);
+        }
+        return null;
+    }
+
+    public function getStatusDisplayAttribute()
+    {
+        return ucfirst(str_replace('_', ' ', $this->submission_status));
+    }
+
+    public function getStatusBadgeClassAttribute()
+    {
+        return match($this->submission_status) {
+            'pending' => 'bg-secondary',
+            'under_review' => 'bg-info',
+            'passed' => 'bg-success',
+            'revision' => 'bg-warning',
+            'failed' => 'bg-danger',
+            default => 'bg-secondary'
+        };
+    }
+
+    public function getIsPassedAttribute()
+    {
+        return $this->submission_status === 'passed';
+    }
+
+    public function getIsRevisionAttribute()
+    {
+        return $this->submission_status === 'revision';
+    }
+
+    public function getIsFailedAttribute()
+    {
+        return $this->submission_status === 'failed';
+    }
+
+    public function getCanResubmitAttribute()
+    {
+        return in_array($this->submission_status, ['revision', 'failed']);
+    }
+
+    public function getHasUrlSubmissionAttribute()
+    {
+        return !empty($this->submission_url);
+    }
+
+    public function getHasFileSubmissionAttribute()
+    {
+        return !empty($this->file_path);
+    }
+
+    // Methods for bootcamp workflow
+    public function markAsPassed($mentorId, $grade = null, $feedback = null)
+    {
+        $this->update([
+            'submission_status' => 'passed',
+            'reviewed_by' => $mentorId,
+            'reviewed_at' => now(),
+            'grade' => $grade ?? $this->grade,
+            'mentor_feedback' => $feedback,
+            'meets_minimum_score' => ($grade ?? $this->grade) >= $this->task->min_score
+        ]);
+
+        // Update bootcamp user progress
+        $this->updateBootcampProgress();
+    }
+
+    public function markAsRevision($mentorId, $feedback)
+    {
+        $revisionHistory = $this->revision_history ?? [];
+        $revisionHistory[] = [
+            'revision_number' => $this->revision_count + 1,
+            'feedback' => $feedback,
+            'reviewed_by' => $mentorId,
+            'reviewed_at' => now()->toISOString(),
+            'previous_status' => $this->submission_status
+        ];
+
+        $this->update([
+            'submission_status' => 'revision',
+            'reviewed_by' => $mentorId,
+            'reviewed_at' => now(),
+            'mentor_feedback' => $feedback,
+            'revision_count' => $this->revision_count + 1,
+            'revision_history' => $revisionHistory
+        ]);
+    }
+
+    public function markAsFailed($mentorId, $feedback)
+    {
+        $this->update([
+            'submission_status' => 'failed',
+            'reviewed_by' => $mentorId,
+            'reviewed_at' => now(),
+            'mentor_feedback' => $feedback,
+            'meets_minimum_score' => false
+        ]);
+    }
+
+    public function resubmit($content = null, $filePath = null, $url = null, $notes = null)
+    {
+        $updateData = [
+            'submission_status' => 'pending',
+            'resubmitted_at' => now(),
+            'reviewed_at' => null,
+            'reviewed_by' => null
+        ];
+
+        if ($content !== null) $updateData['content'] = $content;
+        if ($filePath !== null) $updateData['file_path'] = $filePath;
+        if ($url !== null) $updateData['submission_url'] = $url;
+        if ($notes !== null) $updateData['submission_notes'] = $notes;
+
+        $this->update($updateData);
+    }
+
+    private function updateBootcampProgress()
+    {
+        if (!$this->task->bootcamp_id) return;
+
+        $bootcampUser = \App\Models\BootcampUser::where('user_id', $this->user_id)
+                                               ->where('bootcamp_id', $this->task->bootcamp_id)
+                                               ->first();
+
+        if ($bootcampUser) {
+            $bootcampUser->updateProgress();
+            $bootcampUser->calculateAverageScore();
+        }
     }
 }
