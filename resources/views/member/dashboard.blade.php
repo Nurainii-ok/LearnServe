@@ -595,7 +595,7 @@
             <div class="card-header-custom">
                 <h3>
                     <i class="bx bx-task"></i>
-                    Task Progress
+                    Progres Tugas
                 </h3>
                 <div class="progress-badge">
                     <i class="bx bx-check-circle"></i>
@@ -637,11 +637,11 @@
             <div class="card-header-custom">
                 <h3>
                     <i class="bx bx-book-bookmark"></i>
-                    My Recent Classes
+                    Kegiatan Saya
                 </h3>
-                <a href="{{ route('member.enrollments') }}" class="view-all-btn">
+                <!--<a href="{{ route('member.enrollments') }}" class="view-all-btn">
                     View All <i class="bx bx-right-arrow-alt"></i>
-                </a>
+                </a>-->
             </div>
             <div class="card-body-custom">
                 @if($recentClasses->count() > 0)
@@ -710,11 +710,11 @@
         <div class="card-header-custom">
             <h3>
                 <i class="bx bx-calendar-check"></i>
-                Upcoming Tasks
+                Tugas
             </h3>
-            <a href="{{ route('member.tasks.index') }}" class="view-all-btn">
+            <!--<a href="{{ route('member.tasks.index') }}" class="view-all-btn">
                 View All <i class="bx bx-right-arrow-alt"></i>
-            </a>
+            </a>-->
         </div>
         <div class="card-body-custom">
             @if($upcomingTasks->count() > 0)

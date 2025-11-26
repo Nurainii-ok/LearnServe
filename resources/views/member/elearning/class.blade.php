@@ -180,7 +180,7 @@
     </div>
 
     <!-- Course Header -->
-    <div class="course-header">
+    <!--<div class="course-header">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h1 class="mb-2">{{ $class->title }}</h1>
@@ -198,7 +198,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!--@if($class->tutor)
      Instructor Info 

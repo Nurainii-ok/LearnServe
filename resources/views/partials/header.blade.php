@@ -25,14 +25,14 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" 
-                       href="{{ url('home') }}">
+                       href="{{ url('/') }}">
                         Beranda
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('kelas') ? 'active' : '' }}" 
-                       href="{{ url('/kelas') }}">
+                    <a class="nav-link {{ request()->is('learning') ? 'active' : '' }}" 
+                       href="{{ url('/learning') }}">
                         Kelas
                     </a>
                 </li>

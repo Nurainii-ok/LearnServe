@@ -177,4 +177,38 @@
     font-size: 1.2rem;
 }
 
+/* COLLAPSE SIDEBAR */
+.sidebar.closed {
+    width: 70px;
+    padding: 22px 10px;
+}
+
+.sidebar.closed .brand-text {
+    display: none;
+}
+
+.sidebar.closed .sidebar-menu ul li a span:nth-child(2) {
+    display: none; /* hide menu text */
+}
+
+.sidebar.closed .sidebar-menu ul li a {
+    justify-content: center;
+}
+
+/* Header ikut mengecil */
+.sidebar.closed ~ .main-header {
+    left: 70px;
+    width: calc(100% - 70px);
+}
+
+
 </style>
+
+<script>
+    const navToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+    });
+</script>

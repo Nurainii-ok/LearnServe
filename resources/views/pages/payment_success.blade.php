@@ -72,9 +72,9 @@
                             <a href="{{ $courseUrl }}" class="btn btn-success btn-lg">
                                 <i class="fas fa-play-circle me-2"></i>Start Learning Now!
                             </a>
-                            <a href="{{ route('elearning.index') }}" class="btn btn-outline-primary">
+                            <!--<a href="{{ route('elearning.index') }}" class="btn btn-outline-primary">
                                 <i class="fas fa-graduation-cap me-2"></i>My E-Learning
-                            </a>
+                            </a>-->
                         @endif
                         
                         <a href="{{ route('home') }}" class="btn btn-outline-secondary">

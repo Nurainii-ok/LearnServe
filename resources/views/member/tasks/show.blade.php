@@ -3,241 +3,280 @@
 @section('title', $task->title)
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <!-- Task Details Card -->
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">{{ $task->title }}</h4>
-                    <div>
-                        <span class="badge 
-                            @if($task->priority === 'high') bg-danger
-                            @elseif($task->priority === 'medium') bg-warning
-                            @else bg-success
-                            @endif">
-                            {{ ucfirst($task->priority) }} Priority
-                        </span>
-                        @if($task->is_overdue && !$submission)
-                            <span class="badge bg-danger ms-1">Overdue</span>
-                        @endif
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <h6>Description:</h6>
-                                <p>{{ $task->description }}</p>
-                            </div>
-                            
-                            @if($task->instructions)
-                                <div class="mb-3">
-                                    <h6>Instructions:</h6>
-                                    <div class="alert alert-info">
-                                        {{ $task->instructions }}
-                                    </div>
-                                </div>
-                            @endif
+<div class="container-fluid px-4 py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('member.tasks.index') }}">Tasks</a></li>
+            <li class="breadcrumb-item active">{{ Str::limit($task->title, 50) }}</li>
+        </ol>
+    </nav>
 
-                            @if($task->attachments && count($task->attachments) > 0)
-                                <div class="mb-3">
-                                    <h6>Task Attachments:</h6>
-                                    <div class="d-flex flex-wrap gap-2">
-                                        @foreach($task->attachments as $attachment)
-                                            <a href="{{ asset('storage/' . $attachment['path']) }}" 
-                                               class="btn btn-outline-primary btn-sm" target="_blank">
-                                                <i class="las la-download"></i> {{ $attachment['original_name'] }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h6 class="card-title">Task Information</h6>
-                                    <p class="mb-2"><strong>Class:</strong> {{ $task->class->title }}</p>
-                                    <p class="mb-2"><strong>Assigned by:</strong> {{ $task->assignedBy->name }}</p>
-                                    <p class="mb-2"><strong>Due Date:</strong></p>
-                                    <p class="mb-0">
-                                        <span class="badge {{ $task->is_overdue ? 'bg-danger' : 'bg-info' }} fs-6">
-                                            {{ $task->due_date->format('M d, Y H:i') }}
-                                        </span>
-                                    </p>
-                                    @if($task->is_overdue)
-                                        <small class="text-danger">
-                                            <i class="las la-exclamation-triangle"></i> 
-                                            This task is overdue
-                                        </small>
-                                    @endif
-                                </div>
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Task Details Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h2 class="h4 mb-3 fw-bold">{{ $task->title }}</h2>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span class="badge rounded-pill px-3 py-2
+                                    @if($task->priority === 'high') bg-danger bg-opacity-10 text-danger
+                                    @elseif($task->priority === 'medium') bg-warning bg-opacity-10 text-warning
+                                    @else bg-success bg-opacity-10 text-success
+                                    @endif">
+                                    <i class="las la-flag"></i> {{ ucfirst($task->priority) }} Priority
+                                </span>
+                                @if($task->is_overdue && !$submission)
+                                    <span class="badge rounded-pill px-3 py-2 bg-danger bg-opacity-10 text-danger">
+                                        <i class="las la-clock"></i> Overdue
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h6 class="text-muted text-uppercase small fw-semibold mb-3">Description</h6>
+                        <p class="text-secondary mb-0">{{ $task->description }}</p>
+                    </div>
+                    
+                    <!-- Instructions -->
+                    @if($task->instructions)
+                        <div class="mb-4">
+                            <h6 class="text-muted text-uppercase small fw-semibold mb-3">Instructions</h6>
+                            <div class="alert alert-info border-0 bg-info bg-opacity-10">
+                                <i class="las la-info-circle text-info"></i>
+                                <span class="ms-2">{{ $task->instructions }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Attachments -->
+                    @if($task->attachments && count($task->attachments) > 0)
+                        <div class="mb-4">
+                            <h6 class="text-muted text-uppercase small fw-semibold mb-3">Task Attachments</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach($task->attachments as $attachment)
+                                    <a href="{{ asset('storage/' . $attachment['path']) }}" 
+                                       class="btn btn-outline-primary btn-sm rounded-pill" target="_blank">
+                                        <i class="las la-paperclip"></i> {{ $attachment['original_name'] }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 
             <!-- Submission Section -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
                         @if($submission)
-                            My Submission
+                            <i class="las la-check-circle text-success"></i> My Submission
                         @else
-                            Submit Your Work
+                            <i class="las la-file-upload"></i> Submit Your Work
                         @endif
                     </h5>
-                </div>
-                <div class="card-body">
+
                     @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
+                        <div class="alert alert-success border-0 bg-success bg-opacity-10 text-success alert-dismissible fade show" role="alert">
+                            <i class="las la-check-circle"></i>
+                            <span class="ms-2">{{ session('success') }}</span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
 
                     @if($submission)
-                        <!-- Show existing submission -->
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="mb-3">
-                                    <h6>Submitted Content:</h6>
-                                    @if($submission->content)
-                                        <div class="border p-3 bg-light rounded">
-                                            {{ $submission->content }}
+                        <!-- Existing Submission -->
+                        @if($submission->content)
+                            <div class="mb-4">
+                                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Submitted Content</h6>
+                                <div class="border rounded-3 p-4 bg-light">
+                                    <p class="mb-0">{{ $submission->content }}</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($submission->file_path)
+                            <div class="mb-4">
+                                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Submitted File</h6>
+                                <a href="{{ $submission->file_url }}" class="btn btn-outline-primary rounded-pill" target="_blank">
+                                    <i class="las la-download"></i> {{ $submission->original_filename }}
+                                </a>
+                            </div>
+                        @endif
+
+                        @if($submission->is_graded)
+                            <div class="mb-4">
+                                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Grade & Feedback</h6>
+                                <div class="alert border-0 bg-success bg-opacity-10">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <strong class="text-success">Your Grade</strong>
+                                        <span class="badge bg-success fs-5 px-3 py-2">
+                                            {{ $submission->grade }}/100 ({{ $submission->grade_letter }})
+                                        </span>
+                                    </div>
+                                    @if($submission->feedback)
+                                        <div class="mt-3 pt-3 border-top border-success border-opacity-25">
+                                            <strong class="text-success d-block mb-2">Teacher's Feedback</strong>
+                                            <p class="mb-0 text-secondary">{{ $submission->feedback }}</p>
                                         </div>
-                                    @else
-                                        <p class="text-muted">No text content submitted.</p>
                                     @endif
-                                </div>
-
-                                @if($submission->file_path)
-                                    <div class="mb-3">
-                                        <h6>Submitted File:</h6>
-                                        <a href="{{ $submission->file_url }}" class="btn btn-outline-primary" target="_blank">
-                                            <i class="las la-download"></i> {{ $submission->original_filename }}
-                                        </a>
-                                    </div>
-                                @endif
-
-                                @if($submission->is_graded)
-                                    <div class="mb-3">
-                                        <h6>Grade & Feedback:</h6>
-                                        <div class="alert alert-success">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <strong>Grade:</strong>
-                                                <span class="badge bg-success fs-6">
-                                                    {{ $submission->grade }}/100 ({{ $submission->grade_letter }})
-                                                </span>
-                                            </div>
-                                            @if($submission->feedback)
-                                                <div class="mt-2">
-                                                    <strong>Feedback:</strong>
-                                                    <p class="mb-0 mt-1">{{ $submission->feedback }}</p>
-                                                </div>
-                                            @endif
-                                            <small class="text-muted">
-                                                Graded on {{ $submission->graded_at->format('M d, Y H:i') }} 
-                                                by {{ $submission->gradedBy->name }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Submission Status</h6>
-                                        <p class="mb-2">
-                                            <strong>Submitted:</strong><br>
-                                            {{ $submission->created_at->format('M d, Y H:i') }}
-                                        </p>
-                                        @if($submission->is_late)
-                                            <p class="mb-2">
-                                                <span class="badge bg-warning">Late Submission</span>
-                                            </p>
-                                        @endif
-                                        <p class="mb-2">
-                                            <strong>Status:</strong><br>
-                                            @if($submission->is_graded)
-                                                <span class="badge bg-success">Graded</span>
-                                            @else
-                                                <span class="badge bg-warning">Pending Grade</span>
-                                            @endif
-                                        </p>
-                                        
-                                        @if(!$submission->is_graded)
-                                            <button type="button" class="btn btn-primary btn-sm w-100" 
-                                                    data-bs-toggle="modal" data-bs-target="#resubmitModal">
-                                                <i class="las la-edit"></i> Update Submission
-                                            </button>
-                                        @endif
-                                    </div>
+                                    <small class="text-muted d-block mt-3">
+                                        <i class="las la-clock"></i>
+                                        Graded on {{ $submission->graded_at->format('M d, Y H:i') }} 
+                                        by {{ $submission->gradedBy->name }}
+                                    </small>
                                 </div>
                             </div>
-                        </div>
+                        @endif
+
+                        @if(!$submission->is_graded)
+                            <button type="button" class="btn btn-primary rounded-pill px-4" 
+                                    data-bs-toggle="modal" data-bs-target="#resubmitModal">
+                                <i class="las la-edit"></i> Update Submission
+                            </button>
+                        @endif
                     @else
-                        <!-- Submission form -->
+                        <!-- Submission Form -->
                         <form action="{{ route('member.tasks.submit', $task) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="mb-3">
-                                        <label for="content" class="form-label">Your Answer/Response</label>
-                                        <textarea class="form-control @error('content') is-invalid @enderror" 
-                                                  id="content" name="content" rows="6" 
-                                                  placeholder="Write your response here...">{{ old('content') }}</textarea>
-                                        @error('content')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="file" class="form-label">Upload File (Optional)</label>
-                                        <input type="file" class="form-control @error('file') is-invalid @enderror" 
-                                               id="file" name="file" 
-                                               accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip">
-                                        <div class="form-text">
-                                            Supported formats: PDF, DOC, PPT, Images, ZIP. Max size: 10MB
-                                        </div>
-                                        @error('file')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <h6 class="card-title">Submission Guidelines</h6>
-                                            <ul class="small mb-3">
-                                                <li>Read the task description carefully</li>
-                                                <li>Follow the instructions provided</li>
-                                                <li>You can submit text, file, or both</li>
-                                                <li>You can update your submission until graded</li>
-                                            </ul>
-                                            
-                                            @if($task->is_overdue)
-                                                <div class="alert alert-warning small">
-                                                    <i class="las la-exclamation-triangle"></i>
-                                                    This task is overdue, but you can still submit it.
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-4">
+                                <label for="content" class="form-label fw-semibold">Your Answer/Response</label>
+                                <textarea class="form-control border-2 @error('content') is-invalid @enderror" 
+                                          id="content" name="content" rows="8" 
+                                          placeholder="Write your response here..."
+                                          style="resize: vertical;">{{ old('content') }}</textarea>
+                                @error('content')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('member.tasks.index') }}" class="btn btn-secondary">
-                                    <i class="las la-arrow-left"></i> Back to Tasks
+                            <div class="mb-4">
+                                <label for="file" class="form-label fw-semibold">Upload File (Optional)</label>
+                                <input type="file" class="form-control border-2 @error('file') is-invalid @enderror" 
+                                       id="file" name="file" 
+                                       accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip">
+                                <div class="form-text">
+                                    <i class="las la-info-circle"></i>
+                                    Supported: PDF, DOC, PPT, Images, ZIP. Max: 10MB
+                                </div>
+                                @error('file')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            @if($task->is_overdue)
+                                <div class="alert alert-warning border-0 bg-warning bg-opacity-10 mb-4">
+                                    <i class="las la-exclamation-triangle text-warning"></i>
+                                    <span class="ms-2">This task is overdue, but you can still submit it.</span>
+                                </div>
+                            @endif
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="{{ route('member.tasks.index') }}" class="btn btn-light rounded-pill px-4">
+                                    <i class="las la-arrow-left"></i> Back
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">
                                     <i class="las la-paper-plane"></i> Submit Task
                                 </button>
                             </div>
                         </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Task Info Card -->
+            <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 1;">
+                <div class="card-body p-4">
+                    <h6 class="text-muted text-uppercase small fw-semibold mb-4">Task Information</h6>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="las la-school fs-5 text-primary me-2"></i>
+                            <small class="text-muted">Class</small>
+                        </div>
+                        <p class="mb-0 fw-semibold">{{ $task->class->title }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="las la-user fs-5 text-primary me-2"></i>
+                            <small class="text-muted">Assigned By</small>
+                        </div>
+                        <p class="mb-0 fw-semibold">{{ $task->assignedBy->name }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="las la-calendar fs-5 text-primary me-2"></i>
+                            <small class="text-muted">Due Date</small>
+                        </div>
+                        <span class="badge {{ $task->is_overdue ? 'bg-danger' : 'bg-primary' }} bg-opacity-10 
+                                           {{ $task->is_overdue ? 'text-danger' : 'text-primary' }} 
+                                           fs-6 px-3 py-2 fw-normal">
+                            {{ $task->due_date->format('M d, Y H:i') }}
+                        </span>
+                        @if($task->is_overdue)
+                            <div class="mt-2">
+                                <small class="text-danger">
+                                    <i class="las la-exclamation-triangle"></i> 
+                                    This task is overdue
+                                </small>
+                            </div>
+                        @endif
+                    </div>
+
+                    @if($submission)
+                        <hr class="my-4">
+                        <h6 class="text-muted text-uppercase small fw-semibold mb-4">Submission Status</h6>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="las la-clock fs-5 text-primary me-2"></i>
+                                <small class="text-muted">Submitted On</small>
+                            </div>
+                            <p class="mb-0 fw-semibold">{{ $submission->created_at->format('M d, Y H:i') }}</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="las la-info-circle fs-5 text-primary me-2"></i>
+                                <small class="text-muted">Status</small>
+                            </div>
+                            @if($submission->is_graded)
+                                <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                    <i class="las la-check-circle"></i> Graded
+                                </span>
+                            @else
+                                <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2">
+                                    <i class="las la-hourglass-half"></i> Pending Grade
+                                </span>
+                            @endif
+                            @if($submission->is_late)
+                                <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 ms-1">
+                                    <i class="las la-exclamation"></i> Late
+                                </span>
+                            @endif
+                        </div>
+                    @else
+                        <hr class="my-4">
+                        <h6 class="text-muted text-uppercase small fw-semibold mb-3">Guidelines</h6>
+                        <ul class="list-unstyled small text-secondary">
+                            <li class="mb-2"><i class="las la-check text-success"></i> Read the description carefully</li>
+                            <li class="mb-2"><i class="las la-check text-success"></i> Follow all instructions</li>
+                            <li class="mb-2"><i class="las la-check text-success"></i> Submit text, file, or both</li>
+                            <li class="mb-2"><i class="las la-check text-success"></i> Update before grading</li>
+                        </ul>
                     @endif
                 </div>
             </div>
@@ -248,47 +287,45 @@
 <!-- Resubmit Modal -->
 @if($submission && !$submission->is_graded)
 <div class="modal fade" id="resubmitModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
             <form action="{{ route('member.tasks.submit', $task) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Update Submission</h5>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Update Submission</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="las la-info-circle"></i>
-                        Updating your submission will replace your previous work and reset any pending grades.
+                <div class="modal-body px-4">
+                    <div class="alert alert-info border-0 bg-info bg-opacity-10">
+                        <i class="las la-info-circle text-info"></i>
+                        <span class="ms-2">Updating will replace your previous work and reset any pending grades.</span>
                     </div>
                     
-                    <div class="mb-3">
-                        <label for="modal_content" class="form-label">Your Answer/Response</label>
-                        <textarea class="form-control" id="modal_content" name="content" rows="6">{{ $submission->content }}</textarea>
+                    <div class="mb-4">
+                        <label for="modal_content" class="form-label fw-semibold">Your Answer/Response</label>
+                        <textarea class="form-control border-2" id="modal_content" name="content" rows="8" 
+                                  style="resize: vertical;">{{ $submission->content }}</textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="modal_file" class="form-label">Upload New File (Optional)</label>
-                        <input type="file" class="form-control" id="modal_file" name="file" 
+                        <label for="modal_file" class="form-label fw-semibold">Upload New File (Optional)</label>
+                        <input type="file" class="form-control border-2" id="modal_file" name="file" 
                                accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip">
                         <div class="form-text">
-                            Leave empty to keep current file. Upload new file to replace.
+                            <i class="las la-info-circle"></i>
+                            Leave empty to keep current file. Upload new to replace.
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Submission</button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        <i class="las la-check"></i> Update Submission
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 @endif
-
-<div class="d-flex justify-content-start mt-3">
-    <a href="{{ route('member.tasks.index') }}" class="btn btn-secondary">
-        <i class="las la-arrow-left"></i> Back to Tasks
-    </a>
-</div>
 @endsection

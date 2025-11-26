@@ -1,272 +1,366 @@
-<!-- Header -->
-<!--<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-     id="layout-navbar">
-  <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-      <i class="bx bx-menu bx-sm"></i>
-    </a>
-  </div>
+<header class="main-header layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme">
+    <div class="header-left">
+        <a class="layout-menu-toggle nav-link" href="javascript:void(0);">
+            <i class="la la-bars fs-3"></i>
+        </a>
 
-  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">-->
-    <!-- Search -->
-    <!--<div class="navbar-nav align-items-center">
-      <div class="nav-item d-flex align-items-center">
-        <i class="bx bx-search fs-4 lh-0"></i>
-        <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
-      </div>
-    </div>-->
-    <!-- /Search -->
-    
-    <!-- Back to Website Button -->
-    <!--<div class="me-3">
-      <a href="{{ route('home') }}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" title="Back to Website">
-        <i class="bx bx-globe"></i>
-        <span class="d-none d-md-inline">Back to Website</span>
-      </a>
+
+
+
+        <h1 class="page-title">
+            @if(request()->routeIs('admin.dashboard'))
+                <span class="las la-home"></span> Dashboard
+            @elseif(request()->routeIs('admin.members*'))
+                <span class="las la-users"></span> Member Management
+            @elseif(request()->routeIs('admin.tutors*'))
+                <span class="las la-chalkboard-teacher"></span> Tutor Management
+            @elseif(request()->routeIs('admin.classes*'))
+                <span class="las la-school"></span> Class Management
+            @elseif(request()->routeIs('admin.payments*'))
+                <span class="las la-credit-card"></span> Payment Management
+            @elseif(request()->routeIs('admin.tasks*'))
+                <span class="las la-tasks"></span> Task Management
+            @elseif(request()->routeIs('admin.account*'))
+                <span class="las la-cog"></span> Account Settings
+            @else
+              Admin Panel
+            @endif
+        </h1>
     </div>
 
-    <ul class="navbar-nav flex-row align-items-center ms-auto">-->
+    <div class="header-center">
+        <div class="search-wrapper">
+            <span class="las la-search search-icon"></span>
+            <input type="search" placeholder="Search members, tutors, classes..." class="search-input" />
+        </div>
+    </div>
 
-      <!-- User -->
-      <!--<li class="nav-item navbar-dropdown dropdown-user dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <div class="avatar avatar-online">
-            @if(session('profile_photo'))
-              <img src="{{ asset('storage/'.session('profile_photo')) }}" alt class="w-px-40 h-auto rounded-circle" />
-            @else
-              <div class="avatar-initial rounded-circle" style="background-color: var(--primary-gold); color: white; font-weight: 600;">
-                {{ strtoupper(substr(session('username', 'U'), 0, 1)) }}
-              </div>
-            @endif
-          </div>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="#">
-              <div class="d-flex">
-                <div class="flex-shrink-0 me-3">
-                  <div class="avatar avatar-online">
-                    @if(session('profile_photo'))
-                      <img src="{{ asset('storage/'.session('profile_photo')) }}" alt class="w-px-40 h-auto rounded-circle" />
+    <div class="header-right">
+        <div class="user-wrapper">
+            <div class="user-avatar">
+                @if(session('user_id'))
+                    @php
+                        $currentUser = \App\Models\User::find(session('user_id'));
+                    @endphp
+                    @if($currentUser && $currentUser->profile_photo)
+                        <img 
+                            src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
+                            alt="User Avatar"
+                            class="avatar-img">
                     @else
-                      <div class="avatar-initial rounded-circle" style="background-color: var(--primary-gold); color: white; font-weight: 600;">
-                        {{ strtoupper(substr(session('username', 'U'), 0, 1)) }}
-                      </div>
+                        <div class="avatar-initial">
+                            {{ strtoupper(substr(session('username', 'A'), 0, 1)) }}
+                        </div>
                     @endif
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <span class="fw-semibold d-block">{{ session('username', 'Member') }}</span>
-                  <small class="text-muted">Member</small>
-                </div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{{ route('profile') }}">
-              <i class="bx bx-user me-2"></i>
-              <span class="align-middle">My Profile</span>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider"></div>
-          </li>
-          <li>
-            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-              @csrf
-              <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
-                <i class="bx bx-power-off me-2"></i>
-                <span class="align-middle">Log Out</span>
-              </button>
-            </form>
-          </li>
-        </ul>
-      </li>-->
-      <!--/ User -->
-    <!--</ul>
-  </div>
-</nav>-->
-
-<header>
-    <h1>
-        <label for="nav-toggle">
-            <span class="las la-bars"></span>
-        </label>
-
-        @if(request()->routeIs('admin.dashboard'))
-            Admin Dashboard
-        @elseif(request()->routeIs('admin.members*'))
-            Member Management
-        @elseif(request()->routeIs('admin.tutors*'))
-            Tutor Management
-        @elseif(request()->routeIs('admin.classes*'))
-            Class Management
-        @elseif(request()->routeIs('admin.payments*'))
-            Payment Management
-        @elseif(request()->routeIs('admin.tasks*'))
-            Task Management
-        @elseif(request()->routeIs('admin.account*'))
-            Account Settings
-        @else
-            {{ __('Admin Panel') }}
-        @endif
-    </h1>
-
-    <div class="search-wrapper">
-        <span class="las la-search"></span>
-        <input type="search" placeholder="Search members, tutors, classes..." />
-    </div>
-
-    <!-- Back to Website Button -->
-    <!--<div class="back-to-website">
-        <a href="{{ route('home') }}" class="btn-back-to-website" title="Back to Website">
-            <span class="las la-globe"></span>
-            <span class="back-text">Back to Website</span>
-        </a>
-    </div>-->
-
-    <div class="user-wrapper">
-        @if(session('user_id'))
-            @php
-                $currentUser = \App\Models\User::find(session('user_id'));
-            @endphp
-            @if($currentUser && $currentUser->profile_photo)
-                <img 
-                    src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
-                    width="40" 
-                    height="40" 
-                    alt="User Avatar"
-                    style="border-radius: 50%; object-fit: cover;">
-            @else
-                <div style="
-                    width:40px; 
-                    height:40px; 
-                    border-radius:50%; 
-                    background: var(--primary-brown); 
-                    color:#fff; 
-                    display:flex; 
-                    align-items:center; 
-                    justify-content:center; 
-                    font-weight:bold;
-                ">
-                    {{ strtoupper(substr(session('username', 'A'), 0, 1)) }}
-                </div>
-            @endif
+                @else
+                    <div class="avatar-initial">A</div>
+                @endif
+            </div>
 
             <div class="user-info">
-                <h4>{{ session('username', 'Administrator') }}</h4>
-                <small>{{ ucfirst(session('role', 'admin')) }}</small>
+                <h4 class="user-name">{{ session('username', 'Administrator') }}</h4>
+                <small class="user-role">{{ ucfirst(session('role', 'admin')) }}</small>
             </div>
-        @else
-            <div style="
-                width:40px; 
-                height:40px; 
-                border-radius:50%; 
-                background: var(--primary-brown); 
-                color:#fff; 
-                display:flex; 
-                align-items:center; 
-                justify-content:center; 
-                font-weight:bold;
-            ">
-                A
-            </div>
-            <div class="user-info">
-                <h4>Administrator</h4>
-                <small>Super Admin</small>
-            </div>
-        @endif
+        </div>
     </div>
 </header>
 
 <style>
 /* =======================================
-   FIXED HEADER YANG TIDAK BERPINDA-PINDAH
+   MODERN HEADER STYLES
 =========================================*/
-header {
+.main-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 50px;
-    background: #FAFAF7;
-    position: fixed; /* FIXED supaya tidak gerak */
+    padding: 0 2rem;
+    background: #ffffff;
+    position: fixed;
     top: 0;
-    left: 260px; /* LEBAR SIDEBAR */
+    left: 260px;
     width: calc(100% - 260px);
     height: 70px;
     z-index: 200;
-    border-bottom: 1px solid #eee;
-    transition: 0.3s ease;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
-/* Judul */
-header h1 {
-    font-size: 20px;
+/* =======================================
+   HEADER LEFT - Title & Menu Toggle
+=========================================*/
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 0 0 auto;
+    min-width: 250px;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0;
+}
+
+.menu-toggle:hover {
+    background: #f3f4f6;
+}
+
+.menu-toggle .las {
+    font-size: 1.5rem;
+    color: #374151;
+}
+
+.page-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 1;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
-/* Search wrapper */
+.page-title .las {
+    font-size: 1.25rem;
+    color: #6b7280;
+}
+
+/* =======================================
+   HEADER CENTER - Search
+=========================================*/
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 2rem;
+    max-width: 600px;
+}
+
 .search-wrapper {
     display: flex;
     align-items: center;
-    background: #f1f1f1;
-    padding: 8px 15px;
-    border-radius: 30px;
-    gap: 5px;
-    flex: 1;
-    max-width: 350px;
+    background: #f9fafb;
+    padding: 0.625rem 1rem;
+    border-radius: 12px;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
 }
 
-.search-wrapper input {
+.search-wrapper:focus-within {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-icon {
+    font-size: 1.25rem;
+    color: #9ca3af;
+    transition: color 0.2s ease;
+}
+
+.search-wrapper:focus-within .search-icon {
+    color: #3b82f6;
+}
+
+.search-input {
     width: 100%;
     border: none;
     outline: none;
     background: transparent;
+    font-size: 0.875rem;
+    color: #111827;
+    font-family: inherit;
 }
 
-/* User wrapper */
+.search-input::placeholder {
+    color: #9ca3af;
+}
+
+/* =======================================
+   HEADER RIGHT - User Profile
+=========================================*/
+.header-right {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .user-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* ================================
-   Sidebar tertutup (mobile / toggle)
-================================*/
-.sidebar.closed + header {
+.user-wrapper:hover {
+    background: #f9fafb;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+
+.avatar-initial {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 2px solid #e5e7eb;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.user-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: capitalize;
+    line-height: 1;
+}
+
+/* =======================================
+   SIDEBAR CLOSED STATE
+=========================================*/
+.sidebar.closed ~ .main-header {
     left: 70px;
     width: calc(100% - 70px);
 }
 
-/* ================================
-   MOBILE BREAKPOINT
-================================*/
+/* =======================================
+   RESPONSIVE BREAKPOINTS
+=========================================*/
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .main-header {
+        padding: 0 1.5rem;
+    }
+
+    .header-center {
+        padding: 0 1rem;
+    }
+
+    .page-title {
+        font-size: 1rem;
+    }
+
+    .user-info {
+        display: none;
+    }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-    header {
+    .main-header {
         left: 0 !important;
         width: 100% !important;
+        padding: 0 1rem;
         height: auto;
+        min-height: 60px;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 0.75rem;
+    }
+
+    .header-left {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .page-title {
+        font-size: 0.875rem;
+    }
+
+    .page-title .las {
+        display: none;
+    }
+
+    .header-center {
+        order: 3;
+        width: 100%;
+        padding: 0;
+        max-width: none;
+        padding-bottom: 0.75rem;
     }
 
     .search-wrapper {
-        width: 100%;
         max-width: none;
     }
 
+    .header-right {
+        flex: 0 0 auto;
+    }
+
     .user-wrapper {
-        width: 100%;
-        justify-content: flex-start;
+        padding: 0.25rem;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .menu-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .menu-toggle .las {
+        font-size: 1.25rem;
+    }
+
+    .search-wrapper {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .search-input {
+        font-size: 0.8125rem;
     }
 }
 </style>
-
