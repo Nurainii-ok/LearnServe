@@ -32,7 +32,7 @@
 .profile-header {
     background: linear-gradient(135deg, var(--primary-brown) 0%, var(--deep-brown) 100%);
     color: white;
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     position: relative;
 }
@@ -71,6 +71,7 @@
     margin: 0;
     position: relative;
     z-index: 1;
+    color: white !important;
 }
 
 .profile-role {
@@ -84,6 +85,23 @@
 .profile-body {
     padding: 2rem;
 }
+
+.profile-header-flex {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 1.5rem;
+}
+
+.profile-info {
+    position: relative;
+    z-index: 1;
+}
+
+.profile-header .profile-avatar {
+    margin: 0; /* agar tidak di tengah lagi */
+}
+
 
 .form-group {
     margin-bottom: 1.5rem;
@@ -186,13 +204,17 @@
 <div class="profile-container">
     <div class="profile-card">
         <!-- Profile Header -->
-        <div class="profile-header">
+        <div class="profile-header profile-header-flex">
             <div class="profile-avatar">
                 {{ strtoupper(substr($user->name, 0, 1)) }}
             </div>
-            <h1 class="profile-name">{{ $user->name }}</h1>
-            <p class="profile-role">Member Account</p>
+
+            <div class="profile-info">
+                <h1 class="profile-name">{{ $user->name }}</h1>
+                <p class="profile-role">Member Account</p>
+            </div>
         </div>
+
 
         <!-- Profile Body -->
         <div class="profile-body">

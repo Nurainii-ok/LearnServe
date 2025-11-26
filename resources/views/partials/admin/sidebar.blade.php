@@ -60,12 +60,12 @@
                 </a>
             </li>
 
-            <li>
+            <!--<li>
                 <a href="{{ route('admin.video-contents.index') }}" class="{{ request()->routeIs('admin.video-contents*') ? 'active' : '' }}">
                     <span class="las la-video"></span>
                     <span>Konten Video</span>
                 </a>
-            </li>
+            </li>-->
 
             <li>
                 <a href="{{ route('admin.enrollments') }}" class="{{ request()->routeIs('admin.enrollments*') ? 'active' : '' }}">

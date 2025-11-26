@@ -1,110 +1,184 @@
-<nav class="navbar navbar-expand-lg custom-navbar">
-  <div class="container">
+<header>
+    <h1>
+        <label for="nav-toggle">
+            <span class="las la-bars"></span>
+        </label>
 
-    @if(request()->routeIs('checkout'))
-      <!-- Header khusus untuk halaman Beli Sekarang -->
-      <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
-        <img src="{{ asset('assets/Logo.jpg') }}" alt="LearnServe" 
-            style="height: 80px; width: auto; margin-right: 8px;">
-      </a>
-
-      <div class="ms-auto">
-        @if(!empty($class))
-          <a href="{{ route('detail_kursus', ['id' => $class->id]) }}" class="btn btn-outline-danger fw-semibold">Batal</a>
-        @elseif(!empty($bootcamp))
-          <a href="{{ route('deskripsi_bootcamp', ['id' => $bootcamp->id]) }}" class="btn btn-outline-danger fw-semibold">Batal</a>
+        {{-- Dynamic Page Title --}}
+        @if(request()->routeIs('admin.dashboard'))
+            Admin Dashboard
+        @elseif(request()->routeIs('admin.members*'))
+            Member Management
+        @elseif(request()->routeIs('admin.tutors*'))
+            Tutor Management
+        @elseif(request()->routeIs('admin.classes*'))
+            Class Management
+        @elseif(request()->routeIs('admin.payments*'))
+            Payment Management
+        @elseif(request()->routeIs('admin.tasks*'))
+            Task Management
+        @elseif(request()->routeIs('admin.account*'))
+            Account Settings
+        @else
+            {{ __('Admin Panel') }}
         @endif
-      </div>
-    @else
-      <!-- Header normal -->
-      <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
-        <img src="{{ asset('assets/Logo.jpg') }}" alt="LearnServe" 
-            style="height: 80px; width: auto; margin-right: 8px;">
-        <span style="color: #944e25;"></span>
-      </a>
+    </h1>
 
-      <!-- Toggle button (mobile) -->
-      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="search-wrapper">
+        <span class="las la-search"></span>
+        <input type="search" placeholder="Search members, tutors, classes..." />
+    </div>
 
-      <!-- Menu -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <a class="nav-link fw-semibold {{ request()->routeIs('home') ? 'active' : 'text-white' }}" 
-              href="{{ route('home') }}">
-              Beranda
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-semibold {{ request()->routeIs('learning') ? 'active' : 'text-white' }}" 
-              href="{{ route('learning') }}">
-              Kelas
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-semibold {{ request()->routeIs('bootcamp') ? 'active' : 'text-white' }}" 
-              href="{{ route('bootcamp') }}">
-              Bootcamp
-            </a>
-          </li>
-        </ul>
+    <div class="user-wrapper">
+        @php
+            $currentUser = session('user_id') ? \App\Models\User::find(session('user_id')) : null;
+        @endphp
 
-        <!-- Jika belum login -->
-        @if(!session()->has('role'))
-        <div class="d-flex">
-          <a href="{{ route('auth') }}" class="btn btn-outline-light me-2 custom-login-btn">Login</a>
-          <a href="{{ route('auth') }}?tab=register" class="btn btn-warning fw-semibold custom-register-btn">Register</a>
+        @if($currentUser && $currentUser->profile_photo)
+            <img 
+                src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
+                width="40" height="40"
+                alt="User Avatar"
+                style="border-radius: 50%; object-fit: cover;">
+        @else
+            <div style="
+                width:40px; height:40px; border-radius:50%;
+                background: var(--primary-brown); color:#fff;
+                display:flex; align-items:center; justify-content:center;
+                font-weight:bold;
+            ">
+                {{ strtoupper(substr(session('username', 'A'), 0, 1)) }}
+            </div>
+        @endif
+
+        <div class="user-info">
+            <h4>{{ session('username', 'Administrator') }}</h4>
+            <small>{{ ucfirst(session('role', 'admin')) }}</small>
         </div>
-        @endif
+    </div>
+</header>
 
-        <!-- Jika sudah login -->
-        @if(session()->has('role'))
-        <div class="dropdown">
-          <button class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle border-0 bg-transparent p-2" 
-            type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
-            style="cursor: pointer; background: transparent !important; border: none !important;">
+<style>
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: #FAFAF7;
+    position: fixed;
+    top: 0;
+    left: 260px; /* default sidebar width */
+    width: calc(100% - 260px);
+    height: 70px;
+    z-index: 200;
+    border-bottom: 1px solid #eee;
+    transition: 0.3s ease;
+}
 
-            @if(session('profile_photo'))
-              <img src="{{ asset('storage/'.session('profile_photo')) }}" 
-                  class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
-            @else
-              <div class="rounded-circle bg-info d-flex justify-content-center align-items-center" 
-                  style="width:40px; height:40px; font-weight:bold; color:white;">
-                {{ strtoupper(substr(session('username'),0,1)) }}
-              </div>
-            @endif
-            
-            <span class="ms-2">{{ session('username') }}</span>
-          </button>
+/* Responsive for medium screens */
+@media (max-width: 992px) {
+    header {
+        left: 70px;
+        width: calc(100% - 70px);
+        padding: 15px 20px;
+    }
+}
 
-          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-            <li class="px-3 py-2">
-              <strong>{{ session('username') }}</strong><br>
-              <small class="text-muted">{{ session('role') }}</small>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              @if(session('role') === 'admin')
-                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a>
-              @elseif(session('role') === 'tutor')
-                <a class="dropdown-item" href="{{ route('tutor.dashboard') }}">Dashboard</a>
-              @else
-                <a class="dropdown-item" href="{{ route('profile') }}">Profil</a>
-              @endif
-            </li>
-            <li>
-              <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="dropdown-item text-danger">Logout</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-        @endif
-      </div>
-    @endif
+/* Small screens */
+@media (max-width: 576px) {
+    header {
+        left: 60px;
+        width: calc(100% - 60px);
+    }
+}
 
-  </div>
-</nav>
+/* Page title */
+header h1 {
+    font-size: 20px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: unset;
+}
+
+/* Search bar */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 8px 15px;
+    border-radius: 30px;
+    gap: 5px;
+    flex: unset;
+    max-width: 350px;
+}
+
+.search-wrapper input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+/* User wrapper */
+.user-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Sidebar collapsed */
+.sidebar.closed + header {
+    left: 70px;
+    width: calc(100% - 70px);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    header {
+        left: 0 !important;
+        width: 100% !important;
+        height: auto;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+        max-width: none;
+    }
+
+    .user-wrapper {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+/* Sidebar toggle via #nav-toggle */
+#nav-toggle:checked ~ .sidebar {
+    width: 70px !important;
+    padding: 20px 10px !important;
+}
+
+#nav-toggle:checked ~ .main-content header {
+    left: 70px !important;
+    width: calc(100% - 70px) !important;
+}
+
+#nav-toggle:checked ~ .main-content {
+    margin-left: 70px !important;
+}
+
+#nav-toggle:checked ~ .sidebar .brand-text {
+    display: none !important;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a span:not(.las) {
+    display: none !important;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a {
+    justify-content: center !important;
+}
+</style>

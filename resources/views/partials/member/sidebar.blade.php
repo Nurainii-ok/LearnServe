@@ -31,28 +31,28 @@
             <li>
                 <a href="{{ route('member.enrollments') }}" class="{{ request()->routeIs('member.enrollments*') ? 'active' : '' }}">
                     <span class="las la-book"></span>
-                    <span>My Enrollments</span>
+                    <span>Riwayat Pendaftaran</span>
                 </a>
             </li>
 
-            <li>
+            <!--<li>
                 <a href="{{ route('member.grades') }}" class="{{ request()->routeIs('member.grades*') ? 'active' : '' }}">
                     <span class="las la-medal"></span>
                     <span>My Grades</span>
                 </a>
-            </li>
+            </li>-->
 
             <li>
                 <a href="{{ route('member.tasks') }}" class="{{ request()->routeIs('member.tasks*') ? 'active' : '' }}">
                     <span class="las la-clipboard-list"></span>
-                    <span>My Tasks</span>
+                    <span>Tugas</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('elearning.index') }}" class="{{ request()->routeIs('elearning*') ? 'active' : '' }}">
                     <span class="las la-play-circle"></span>
-                    <span>E-Learning</span>
+                    <span>Aktivitas Belajar</span>
                 </a>
             </li>
 

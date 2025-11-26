@@ -99,13 +99,13 @@ class MemberController extends Controller
             ->count();
             
         // Get bootcamp progress
-        $certificateService = new \App\Services\CertificateService();
+        /*$certificateService = new \App\Services\CertificateService();
         $bootcampProgress = [];
         
         foreach ($memberEnrollments->where('type', 'bootcamp') as $enrollment) {
             $progress = $certificateService->getBootcampProgress($memberId, $enrollment->bootcamp_id);
             $bootcampProgress[$enrollment->bootcamp_id] = $progress;
-        }
+        }*/
             
         // Get upcoming tasks
         $upcomingTasks = Task::whereIn('class_id', $enrolledClassIds)
@@ -132,7 +132,7 @@ class MemberController extends Controller
             'notSubmittedTasks',
             'taskProgressPercentage',
             'certificatesCount',
-            'bootcampProgress'
+            //'bootcampProgress'
         ));
     }
     

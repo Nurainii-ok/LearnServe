@@ -7,6 +7,8 @@ use App\Models\Bootcamp;
 use App\Models\User;
 use App\Models\BootcampTask;
 use App\Models\BootcampTaskSubmission;
+use App\Models\Task;
+use App\Models\TaskSubmission;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -19,10 +21,10 @@ class CertificateService
     public function checkBootcampCompletion($userId, $bootcampId)
     {
         // Get total tasks in bootcamp
-        $totalTasks = BootcampTask::where('bootcamp_id', $bootcampId)->count();
+        $totalTasks = Task::where('bootcamp_id', $bootcampId)->count();
         
         // Get completed tasks by user (status = 'passed')
-        $completedTasks = BootcampTaskSubmission::whereHas('bootcampTask', function($query) use ($bootcampId) {
+        $completedTasks = TaskSubmission::whereHas('bootcampTask', function($query) use ($bootcampId) {
             $query->where('bootcamp_id', $bootcampId);
         })
         ->where('user_id', $userId)
@@ -64,7 +66,7 @@ class CertificateService
                 'bootcamp_title' => $bootcamp->title,
                 'instructor_name' => $bootcamp->tutor->name ?? 'LearnServe Team',
                 'completion_date' => now()->format('Y-m-d'),
-                'total_tasks' => BootcampTask::where('bootcamp_id', $bootcampId)->count()
+                'total_tasks' => Task::where('bootcamp_id', $bootcampId)->count()
             ]
         ]);
         
@@ -155,18 +157,19 @@ class CertificateService
     /**
      * Get completion progress for bootcamp
      */
-    public function getBootcampProgress($userId, $bootcampId)
+    /*public function getBootcampProgress($userId, $bootcampId)
     {
-        $totalTasks = BootcampTask::where('bootcamp_id', $bootcampId)->count();
+        $totalTasks = Task::where('bootcamp_id', $bootcampId)->count();
         
-        $completedTasks = BootcampTaskSubmission::whereHas('bootcampTask', function($query) use ($bootcampId) {
+        $completedTasks = TaskSubmission::whereHas('Task', function($query) use ($bootcampId) {
             $query->where('bootcamp_id', $bootcampId);
         })
         ->where('user_id', $userId)
-        ->where('status', 'passed')
+        ->where('passed')
         ->count();
+
         
-        $pendingTasks = BootcampTaskSubmission::whereHas('bootcampTask', function($query) use ($bootcampId) {
+        $pendingTasks = TaskSubmission::whereHas('Task', function($query) use ($bootcampId) {
             $query->where('bootcamp_id', $bootcampId);
         })
         ->where('user_id', $userId)
@@ -183,5 +186,5 @@ class CertificateService
             'progress_percentage' => $progressPercentage,
             'is_completed' => $totalTasks > 0 && $totalTasks === $completedTasks
         ];
-    }
+    }*/
 }
