@@ -637,7 +637,7 @@
                                                 {{ $submissionCount }}
                                             </span>
                                             @if($submissionCount > 0)
-                                                <a href="#" onclick="showSubmissions({{ $task->id }}); return false;" class="view-link">
+                                                <a href="{{ route('tutor.tasks.submissions', $task->id) }}" class="view-link">
                                                     View All
                                                 </a>
                                             @else
@@ -752,9 +752,9 @@
                                                 <i class="las la-download"></i> File
                                             </a>
                                         @endif
-                                        <button class="btn-grade">
-                                            <i class="las la-star"></i> Grade
-                                        </button>
+                                        <a href="{{ route('tutor.bootcamp-tasks.review', $submission->id) }}" class="btn-grade">
+                                            <i class="las la-edit"></i> Review
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
