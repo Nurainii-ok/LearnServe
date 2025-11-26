@@ -1,184 +1,129 @@
-<header>
-    <h1>
-        <label for="nav-toggle">
-            <span class="las la-bars"></span>
-        </label>
+<nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container">
 
-        {{-- Dynamic Page Title --}}
-        @if(request()->routeIs('admin.dashboard'))
-            Admin Dashboard
-        @elseif(request()->routeIs('admin.members*'))
-            Member Management
-        @elseif(request()->routeIs('admin.tutors*'))
-            Tutor Management
-        @elseif(request()->routeIs('admin.classes*'))
-            Class Management
-        @elseif(request()->routeIs('admin.payments*'))
-            Payment Management
-        @elseif(request()->routeIs('admin.tasks*'))
-            Task Management
-        @elseif(request()->routeIs('admin.account*'))
-            Account Settings
-        @else
-            {{ __('Admin Panel') }}
-        @endif
-    </h1>
+        <!-- Brand -->
+        <a class="navbar-brand" href="{{ url('/') }}">
+            LearnServe
+        </a>
 
-    <div class="search-wrapper">
-        <span class="las la-search"></span>
-        <input type="search" placeholder="Search members, tutors, classes..." />
-    </div>
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation">
 
-    <div class="user-wrapper">
-        @php
-            $currentUser = session('user_id') ? \App\Models\User::find(session('user_id')) : null;
-        @endphp
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        @if($currentUser && $currentUser->profile_photo)
-            <img 
-                src="{{ asset('storage/profile_photos/' . $currentUser->profile_photo) }}" 
-                width="40" height="40"
-                alt="User Avatar"
-                style="border-radius: 50%; object-fit: cover;">
-        @else
-            <div style="
-                width:40px; height:40px; border-radius:50%;
-                background: var(--primary-brown); color:#fff;
-                display:flex; align-items:center; justify-content:center;
-                font-weight:bold;
-            ">
-                {{ strtoupper(substr(session('username', 'A'), 0, 1)) }}
-            </div>
-        @endif
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
 
-        <div class="user-info">
-            <h4>{{ session('username', 'Administrator') }}</h4>
-            <small>{{ ucfirst(session('role', 'admin')) }}</small>
+            <!-- Left Menu -->
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" 
+                       href="{{ url('home') }}">
+                        Beranda
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('kelas') ? 'active' : '' }}" 
+                       href="{{ url('/kelas') }}">
+                        Kelas
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('bootcamp') ? 'active' : '' }}" 
+                       href="{{ url('/bootcamp') }}">
+                        Bootcamp
+                    </a>
+                </li>
+
+                <!--<li class="nav-item">
+                    <a class="nav-link {{ request()->is('tentang') ? 'active' : '' }}" 
+                       href="{{ url('/tentang') }}">
+                        Tentang Kami
+                    </a>
+                </li>-->
+
+            </ul>
+
+            <!-- Right Menu -->
+            <ul class="navbar-nav ms-3">
+
+                @guest
+                    <!-- Login -->
+                    <li class="nav-item">
+                        <a class="btn custom-login-btn me-2" href="{{ route('login') }}">
+                            Login
+                        </a>
+                    </li>
+
+                    <!-- Register -->
+                    <li class="nav-item">
+                        <a class="btn custom-register-btn" href="{{ route('auth') }}">
+                            Daftar
+                        </a>
+                    </li>
+                @endguest
+
+
+                @auth
+                <!-- DROPDOWN USER -->
+            
+                <li class="nav-item dropdown">
+                    <button class="dropdown-toggle btn" id="userDropdown" 
+                            data-bs-toggle="dropdown" aria-expanded="false">
+
+                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name='.Auth::user()->name }}"
+                            alt="avatar"
+                            class="rounded-circle me-2"
+                            width="32" height="32">
+
+                        {{ Auth::user()->name }}
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+
+                        {{-- Jika role admin atau tutor --}}
+                        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'tutor')
+                            <li>
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    Dashboard
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Jika role member --}}
+                        @if(Auth::user()->role == 'member')
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile') }}">
+                                    Profil Saya
+                                </a>
+                            </li>
+                        @endif
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+
+
+                @endauth
+
+            </ul>
         </div>
+
     </div>
-</header>
-
-<style>
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 50px;
-    background: #FAFAF7;
-    position: fixed;
-    top: 0;
-    left: 260px; /* default sidebar width */
-    width: calc(100% - 260px);
-    height: 70px;
-    z-index: 200;
-    border-bottom: 1px solid #eee;
-    transition: 0.3s ease;
-}
-
-/* Responsive for medium screens */
-@media (max-width: 992px) {
-    header {
-        left: 70px;
-        width: calc(100% - 70px);
-        padding: 15px 20px;
-    }
-}
-
-/* Small screens */
-@media (max-width: 576px) {
-    header {
-        left: 60px;
-        width: calc(100% - 60px);
-    }
-}
-
-/* Page title */
-header h1 {
-    font-size: 20px;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: unset;
-}
-
-/* Search bar */
-.search-wrapper {
-    display: flex;
-    align-items: center;
-    background: #f1f1f1;
-    padding: 8px 15px;
-    border-radius: 30px;
-    gap: 5px;
-    flex: unset;
-    max-width: 350px;
-}
-
-.search-wrapper input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-}
-
-/* User wrapper */
-.user-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Sidebar collapsed */
-.sidebar.closed + header {
-    left: 70px;
-    width: calc(100% - 70px);
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    header {
-        left: 0 !important;
-        width: 100% !important;
-        height: auto;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .search-wrapper {
-        width: 100%;
-        max-width: none;
-    }
-
-    .user-wrapper {
-        width: 100%;
-        justify-content: flex-start;
-    }
-}
-
-/* Sidebar toggle via #nav-toggle */
-#nav-toggle:checked ~ .sidebar {
-    width: 70px !important;
-    padding: 20px 10px !important;
-}
-
-#nav-toggle:checked ~ .main-content header {
-    left: 70px !important;
-    width: calc(100% - 70px) !important;
-}
-
-#nav-toggle:checked ~ .main-content {
-    margin-left: 70px !important;
-}
-
-#nav-toggle:checked ~ .sidebar .brand-text {
-    display: none !important;
-}
-
-#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a span:not(.las) {
-    display: none !important;
-}
-
-#nav-toggle:checked ~ .sidebar .sidebar-menu ul li a {
-    justify-content: center !important;
-}
-</style>
+</nav>

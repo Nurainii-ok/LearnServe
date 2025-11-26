@@ -238,7 +238,7 @@
     </div>
 
     <!-- Task Completion Overview -->
-    <div class="dashboard-card mb-4">
+    <!--<div class="dashboard-card mb-4">
         <div class="card-header">
             <h3>Task Completion Overview</h3>
             <span class="status-badge status-completed">{{ $taskCompletionRate }}% Complete</span>
@@ -246,7 +246,6 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
-                    <!-- Progress Bar -->
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="fw-semibold">Overall Task Completion</span>
@@ -259,8 +258,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Task Statistics Grid -->
                     <div class="row">
                         <div class="col-6 col-lg-3">
                             <div class="stat-card text-center">
@@ -297,7 +294,6 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <!-- Certificate Breakdown -->
                     <div class="text-center">
                         <h5 class="mb-3">Certificates by Type</h5>
                         <div class="mb-3">
@@ -334,7 +330,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Main Dashboard Grid -->
     <div class="dashboard-grid">
