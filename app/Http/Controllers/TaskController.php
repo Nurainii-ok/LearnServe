@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Classes;
+use App\Models\Bootcamp;
 use App\Models\TaskSubmission;
 use App\Models\Enrollment;
 use App\Models\User;
@@ -29,9 +30,9 @@ class TaskController extends Controller
     public function tutorCreate()
     {
         
-        $classes = Classes::where('tutor_id', Auth::id())->get();
+        $bootcamps = Bootcamp::where('tutor_id', Auth::id())->get();
         
-        return view('tutor.tasks.create', compact('classes'));
+        return view('tutor.tasks.create', compact('bootcamps'));
     }
 
     public function tutorStore(Request $request)
@@ -40,7 +41,7 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'class_id' => 'required|exists:classes,id',
+            'bootcamp_id' => 'required|exists:bootcamps,id',
             'due_date' => 'required|date|after:now',
             'priority' => 'required|in:low,medium,high',
             'instructions' => 'nullable|string',
@@ -62,6 +63,7 @@ class TaskController extends Controller
         Task::create([
             'title' => $request->title,
             'description' => $request->description,
+            'bootcamp_id' => $request->bootcamp_id,
             'class_id' => $request->class_id,
             'assigned_by' => Auth::id(),
             'due_date' => $request->due_date,
@@ -88,6 +90,81 @@ class TaskController extends Controller
                                    ->get();
 
         return view('tutor.tasks.show', compact('task', 'submissions'));
+    }
+
+    public function tutorSubmissions(Task $task)
+    {
+        // Ensure tutor can only view their own tasks
+        if ($task->assigned_by !== Auth::id()) {
+            abort(403);
+        }
+
+        $submissions = TaskSubmission::with('user')
+                                   ->where('task_id', $task->id)
+                                   ->latest()
+                                   ->get();
+
+        return view('tutor.tasks.submissions', compact('task', 'submissions'));
+    }
+
+    public function tutorReviewSubmission(TaskSubmission $submission)
+    {
+        // Ensure tutor can only review their own task submissions
+        if ($submission->task->assigned_by !== Auth::id()) {
+            abort(403);
+        }
+
+        $task = $submission->task;
+        return view('tutor.tasks.review', compact('submission', 'task'));
+    }
+
+    public function tutorSubmitReview(Request $request, TaskSubmission $submission)
+    {
+        // Ensure tutor can only review their own task submissions
+        if ($submission->task->assigned_by !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'action' => 'required|in:pass,revision,fail',
+            'grade' => 'nullable|integer|min:0|max:100',
+            'feedback' => 'required|string|min:10',
+            'certificate_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240'
+        ]);
+
+        // Handle certificate upload if provided
+        $certificatePath = null;
+        if ($request->hasFile('certificate_file')) {
+            $certificatePath = $request->file('certificate_file')->store('certificates', 'public');
+        }
+
+        // Use the model methods to update status
+        switch ($request->action) {
+            case 'pass':
+                $submission->markAsPassed(Auth::id(), $request->grade, $request->feedback);
+                
+                // Save certificate path if uploaded
+                if ($certificatePath) {
+                    $submission->update(['certificate_file' => $certificatePath]);
+                }
+                
+                $message = 'Task marked as passed!';
+                if ($certificatePath) {
+                    $message .= ' Certificate uploaded successfully!';
+                }
+                break;
+            case 'revision':
+                $submission->markAsRevision(Auth::id(), $request->feedback);
+                $message = 'Task marked for revision!';
+                break;
+            case 'fail':
+                $submission->markAsFailed(Auth::id(), $request->feedback);
+                $message = 'Task marked as failed!';
+                break;
+        }
+
+        return redirect()->route('tutor.tasks.submissions', $submission->task->id)
+                        ->with('success', $message);
     }
 
     public function tutorGrade(Request $request, TaskSubmission $submission)

@@ -275,6 +275,13 @@ textarea.form-control {
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="image">Class Image *</label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
+                    @error('image')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <!--<div class="form-group">
                     <label for="schedule">Schedule</label>

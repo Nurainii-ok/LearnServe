@@ -11,11 +11,11 @@
         @if(request()->routeIs('tutor.dashboard'))
             Tutor Dashboard
         @elseif(request()->routeIs('tutor.classes*'))
-            My Classes
+            Kelas
         @elseif(request()->routeIs('tutor.bootcamps*'))
-            My Bootcamps
+            Bootcamp
         @elseif(request()->routeIs('tutor.tasks*'))
-            Tasks & Assignments
+            Tugas
         @elseif(request()->routeIs('tutor.video-contents*'))
             Video Contents
         @elseif(request()->routeIs('tutor.account*'))

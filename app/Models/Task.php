@@ -59,9 +59,10 @@ class Task extends Model
     }
 
     public function bootcamp()
-    {
-        return $this->belongsTo(Bootcamp::class, 'bootcamp_id');
-    }
+{
+    return $this->belongsTo(Classes::class, 'class_id');
+}
+
 
     // Scopes
     public function scopeForTutor($query, $tutorId)

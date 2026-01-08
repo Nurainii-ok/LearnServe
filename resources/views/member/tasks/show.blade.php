@@ -130,8 +130,9 @@
                                     @endif
                                     <small class="text-muted d-block mt-3">
                                         <i class="las la-clock"></i>
-                                        Graded on {{ $submission->graded_at->format('M d, Y H:i') }} 
-                                        by {{ $submission->gradedBy->name }}
+                                        Graded on {{ optional($submission->graded_at)->format('M d, Y H:i') ?? 'N/A' }}
+                                        by {{ $submission->gradedBy->name ?? 'Unknown' }}
+
                                     </small>
                                 </div>
                             </div>

@@ -17,6 +17,15 @@
     --text-secondary: #6b7280;
 }
 
+.class-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #e5e7eb;
+}
+
+
 .dashboard-content {
     padding: 0;
     margin: 0;
@@ -205,62 +214,81 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Class Title</th>
-                            <th>Students</th>
-                            <th>Capacity</th>
-                            <th>Price</th>
-                            <th>Schedule</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Class Title</th>
+                                    <th>Students</th>
+                                    <th>Capacity</th>
+                                    <th>Price</th>
+                                    <th>Schedule</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($classes as $class)
-                            <tr>
-                                <td>
-                                    <div>
-                                        <strong>{{ $class->title }}</strong>
-                                        <div style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem;">
-                                            {{ Str::limit($class->description, 50) }}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="student-count">{{ $class->payments_count ?? 0 }}</span>
-                                </td>
-                                <td>{{ $class->capacity }}</td>
-                                <td>
-                                    <span class="price">Rp{{ number_format($class->price, 0, ',', '.') }}</span>
-                                </td>
-                                <td>
-                                    @if($class->schedule)
-                                        <div style="font-size: 0.75rem;">{{ $class->schedule }}</div>
-                                    @else
-                                        <span style="color: var(--text-secondary); font-size: 0.75rem;">Not set</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="status-badge status-{{ $class->status }}">
-                                        {{ ucfirst($class->status) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="{{ route('tutor.classes.edit', $class->id) }}" class="btn-edit">
-                                            <i class="las la-edit"></i> Edit
-                                        </a>
-                                        <form action="{{ route('tutor.classes.destroy', $class->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this class?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete">
-                                                <i class="las la-trash"></i> Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+@foreach($classes as $class)
+<tr>
+
+    <!-- Thumbnail -->
+    <td>
+        @if($class->image)
+            <img src="{{ asset('storage/' . $class->image) }}" class="class-thumb">
+        @else
+            <div style="width:60px;height:60px;background:#f3f4f6;border-radius:8px;display:flex;justify-content:center;align-items:center;border:1px solid #eee;">
+                <i class="las la-image" style="font-size:22px;color:#9ca3af;"></i>
+            </div>
+        @endif
+    </td>
+
+    <!-- Class Title -->
+    <td>
+        <strong>{{ $class->title }}</strong>
+        <div style="color: var(--text-secondary); font-size: 0.75rem;">
+            {{ Str::limit($class->description, 50) }}
+        </div>
+    </td>
+
+    <!-- Students -->
+    <td><span class="student-count">{{ $class->payments_count ?? 0 }}</span></td>
+
+    <!-- Capacity -->
+    <td>{{ $class->capacity }}</td>
+
+    <!-- Price -->
+    <td><span class="price">Rp{{ number_format($class->price, 0, ',', '.') }}</span></td>
+
+    <!-- Schedule -->
+    <td>{{ $class->schedule ?? 'Not set' }}</td>
+
+    <!-- Status -->
+    <td>
+        <span class="status-badge status-{{ $class->status }}">{{ ucfirst($class->status) }}</span>
+    </td>
+
+    <!-- Actions -->
+    <td>
+        <div class="action-buttons">
+            <a href="{{ route('tutor.classes.edit', $class->id) }}" class="btn-edit">
+                <i class="las la-edit"></i> Edit
+            </a>
+            <form action="{{ route('tutor.classes.destroy', $class->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this class?')">
+                @csrf
+                @method('DELETE')
+                <button class="btn-delete">
+                    <i class="las la-trash"></i> Delete
+                </button>
+            </form>
+        </div>
+    </td>
+
+</tr>
+@endforeach
+</tbody>
+
                 </table>
             </div>
 

@@ -8,20 +8,29 @@
 
 
         <h1 class="page-title">
-            @if(request()->routeIs('admin.dashboard'))
-                <span class="las la-home"></span> Dashboard
-            @elseif(request()->routeIs('admin.members*'))
-                <span class="las la-users"></span> Member Management
+            @if(request()->routeIs('member.dashboard'))
+                <span class=""></span> Dashboard
+            @elseif(request()->routeIs('profile'))
+                <span class=""></span> Profil
+            @elseif(request()->routeIs('member.enrollments*'))
+                <span class=""></span> Riwayat Pendaftaran
+            @elseif(request()->routeIs('member.task*'))
+                <span class=""></span> Tugas
+            @elseif(request()->routeIs('elearning*'))
+                <span class=""></span> Aktivitas
+            @elseif(request()->routeIs('member.members*'))
+                <span class=""></span> Member 
             @elseif(request()->routeIs('admin.tutors*'))
-                <span class="las la-chalkboard-teacher"></span> Tutor Management
+                <span class="las la-chalkboard-teacher"></span> Tutor 
             @elseif(request()->routeIs('admin.classes*'))
-                <span class="las la-school"></span> Class Management
+                <span class="las la-school"></span> Kelas
             @elseif(request()->routeIs('admin.payments*'))
-                <span class="las la-credit-card"></span> Payment Management
+                <span class="las la-credit-card"></span> Pembayaran
             @elseif(request()->routeIs('admin.tasks*'))
-                <span class="las la-tasks"></span> Task Management
+                <span class="las la-tasks"></span> Tugas
             @elseif(request()->routeIs('admin.account*'))
                 <span class="las la-cog"></span> Account Settings
+            
             @else
               Admin Panel
             @endif

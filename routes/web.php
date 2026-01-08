@@ -431,6 +431,9 @@ Route::prefix('tutor')->middleware(['auth', 'role:tutor','prevent-back'])->name(
     Route::get('/tasks/create', [TaskController::class, 'tutorCreate'])->name('tasks.create');
     Route::post('/tasks', [TaskController::class, 'tutorStore'])->name('tasks.store');
     Route::get('/tasks/{task}', [TaskController::class, 'tutorShow'])->name('tasks.show');
+    Route::get('/tasks/{task}/submissions', [TaskController::class, 'tutorSubmissions'])->name('tasks.submissions');
+    Route::get('/tasks/submission/{submission}/review', [TaskController::class, 'tutorReviewSubmission'])->name('tasks.submission.review');
+    Route::post('/tasks/submission/{submission}/review', [TaskController::class, 'tutorSubmitReview'])->name('tasks.submission.submit-review');
     Route::get('/tasks/{task}/edit', [TaskController::class, 'tutorEdit'])->name('tasks.edit');
     Route::put('/tasks/{task}', [TaskController::class, 'tutorUpdate'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'tutorDestroy'])->name('tasks.destroy');

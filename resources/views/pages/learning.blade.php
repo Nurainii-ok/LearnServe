@@ -44,9 +44,16 @@
     <div class="category-filter">
         <div class="container">
             <div class="d-flex justify-content-center flex-wrap gap-2">
-                <a href="{{ route('learning') }}" class="btn btn-sm {{ !request('category') || request('category') == 'all' ? 'btn-warning text-white' : 'btn-outline-secondary' }}">Semua Kelas</a>
+                <a href="{{ route('learning') }}" 
+                   class="btn btn-sm {{ !request('category') || request('category') == 'all' ? 'btn-warning text-white' : 'btn-outline-secondary' }}">
+                    Semua Kelas
+                </a>
+
                 @foreach($categories as $category)
-                <a href="{{ route('learning', ['category' => $category]) }}" class="btn btn-sm {{ request('category') == $category ? 'btn-warning text-white' : 'btn-outline-secondary' }}">{{ ucfirst($category) }}</a>
+                <a href="{{ route('learning', ['category' => $category]) }}" 
+                   class="btn btn-sm {{ request('category') == $category ? 'btn-warning text-white' : 'btn-outline-secondary' }}">
+                    {{ ucfirst($category) }}
+                </a>
                 @endforeach
             </div>
         </div>
@@ -89,17 +96,33 @@
 
             <div class="row g-4">
                 @forelse($classes as $class)
+
+                    @php
+                        // Deteksi image apakah URL atau file storage
+                        $image = null;
+                        if ($class->image) {
+                           $image = filter_var($class->image, FILTER_VALIDATE_URL)
+                        ? $class->image
+                        : asset('storage/class_images/' . $class->image);
+
+                        } else {
+                            $image = asset('assets/Full Stack.jpg');
+                        }
+                    @endphp
+
                     <div class="col-lg-4 col-md-6">
                         <a href="{{ route('detail_kursus', ['id' => $class->id]) }}" class="text-decoration-none">
                             <div class="card h-100 shadow-sm border-0 course-card">
-                                <img src="{{ $class->image ? asset($class->image) : asset('assets/Full Stack.jpg') }}" 
+                                <img src="{{ $image }}"
                                      alt="{{ $class->title }}" 
                                      class="card-img-top"
                                      style="height: 200px; object-fit: cover;">
+
                                 <div class="card-body">
                                     @if($class->category)
                                     <h6 class="text-warning text-uppercase small fw-bold">{{ $class->category }}</h6>
                                     @endif
+
                                     <h5 class="fw-bold mb-2">{{ $class->title }}</h5>
                                     <p class="text-muted small mb-3">{{ Str::limit($class->description, 80) }}</p>
                                     
@@ -120,9 +143,11 @@
                                             <span class="fw-bold text-success">Gratis</span>
                                             @endif
                                         </div>
+
                                         <div class="text-muted small">
                                             @if($class->start_date)
-                                            <i class="fas fa-calendar"></i> {{ $class->start_date->format('d M Y') }}
+                                            <i class="fas fa-calendar"></i> 
+                                            {{ $class->start_date->format('d M Y') }}
                                             @endif
                                         </div>
                                     </div>
@@ -130,18 +155,20 @@
                             </div>
                         </a>
                     </div>
+
                 @empty
                     <div class="col-12 text-center py-5">
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             @if(request('search'))
-                                Tidak ada kursus yang ditemukan untuk pencarian "{{ request('search') }}".
+                                Tidak ada kursus untuk pencarian "{{ request('search') }}".
                             @elseif(request('category'))
                                 Belum ada kursus untuk kategori "{{ request('category') }}".
                             @else
-                                Belum ada kursus yang tersedia saat ini.
+                                Belum ada kursus tersedia saat ini.
                             @endif
                         </div>
+
                         @if(request('search') || request('category'))
                         <a href="{{ route('learning') }}" class="btn btn-warning text-white">Lihat Semua Kelas</a>
                         @endif
@@ -160,14 +187,10 @@
 
 @section('scripts')
 <script>
-    // Script untuk menangani filter kategori
     document.addEventListener('DOMContentLoaded', function() {
         const filterButtons = document.querySelectorAll('.category-filter a');
-        
         filterButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                // Update active state will be handled by server-side rendering
-            });
+            button.addEventListener('click', function(e) {});
         });
     });
 </script>
