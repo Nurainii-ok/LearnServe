@@ -1,61 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Website Course & Bootcamp
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Deskripsi Project
+Project ini merupakan sebuah website course yang menyediakan kelas online dan bootcamp.  
+Website ini dibuat sebagai project berkelompok dan digunakan sebagai portfolio serta tugas ujian.
 
-## About Laravel
+Aplikasi ini memiliki sistem role user dengan 3 jenis pengguna, yaitu **Admin, Tutor, dan Member**, dimana masing-masing memiliki hak akses yang berbeda.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi yang Digunakan
+- Laravel
+- PHP
+- MySQL
+- Blade Template
+- HTML, CSS, JavaScript
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Role dan Fitur User
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Member
+Member merupakan pengguna yang mengikuti kelas atau bootcamp.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Fitur Member:
+- Registrasi akun
+- Login
+- Melihat seluruh konten website
+- Melihat detail kelas atau bootcamp
+- Melakukan pembelian kelas / bootcamp
+- Melakukan pembayaran untuk mengakses materi
+- Mengakses materi setelah pembayaran berhasil
+- Memiliki dashboard yang menampilkan aktivitas member di website
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+### 2. Tutor
+Tutor merupakan pengguna yang bertugas mengelola kelas atau bootcamp.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Fitur Tutor:
+- Membuat kelas atau bootcamp
+- Mengedit kelas atau bootcamp
+- Menambahkan dan mengelola materi
+- Menghapus kelas atau bootcamp yang dibuat
+- Mengelola konten pembelajaran (CRUD)
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Admin
+Admin bertugas mengelola website secara keseluruhan.
 
-## Contributing
+Fitur Admin:
+- Mengelola data user
+- Mengelola konten website
+- Mengakses seluruh data dan fitur website
+- Admin tidak melakukan CRUD kelas atau bootcamp, karena fitur tersebut dikelola oleh Tutor
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Alur Cara Kerja Aplikasi
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. User mengakses website melalui browser.
+2. User melakukan registrasi dan login sesuai dengan role masing-masing.
+3. Member dapat melihat daftar kelas dan bootcamp yang tersedia.
+4. Member memilih kelas atau bootcamp dan melihat informasi detail.
+5. Member melakukan pembelian dan pembayaran.
+6. Setelah pembayaran berhasil, member dapat mengakses materi pembelajaran.
+7. Tutor mengelola kelas, bootcamp, dan materi yang dibuat.
+8. Admin memantau dan mengelola seluruh aktivitas website melalui dashboard admin.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Pembagian Tugas (Project Berkelompok)
+Project ini dikerjakan secara berkelompok dengan pembagian tugas sesuai kemampuan masing-masing anggota, seperti:
+- Backend development
+- Frontend development
+- UI/UX
 
-## License
+Pengembangan dilakukan dengan mengikuti modul pembelajaran dan menggunakan AI sebagai alat bantu untuk memahami kode dan menyelesaikan kendala.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
